@@ -373,6 +373,8 @@ console.log("NozzleList", this.NozzleList)
       this.isFormSubmitted = true;
     //   if (this.WeightCheckForm.invalid) {
     //       return;
+
+    
     //   }
       let formvalue = this.WeightCheckForm.value ;
       formvalue.WeightCheckDetails = this.AddedWeightCheckDetailsList;
