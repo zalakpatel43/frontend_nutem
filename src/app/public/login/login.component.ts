@@ -10,7 +10,7 @@ import { CookieService } from 'ngx-cookie-service';
     styleUrls: ['login.component.scss']
 })
 
-export class LoginComponent implements OnInit  {
+export class LoginComponent implements OnInit {
     frmLogin: UntypedFormGroup = new UntypedFormGroup({});
     isFormSubmitted: boolean = false;
     cookieUserName = '';
@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit  {
 
     private getLoginRoute() {
         this.activatedRoute.params.subscribe((params) => {
-           
+
         });
     }
 
@@ -68,26 +68,24 @@ export class LoginComponent implements OnInit  {
         this.publicService.login(loginData)
             .subscribe((result) => {
 
-                if(result.isSuccess == true)
-                {
-                this.userAuthService.saveToken(result.token);
-                this.userAuthService.saveUser(result);
+                if (result.isSuccess == true) {
+                    this.userAuthService.saveToken(result.token);
+                    this.userAuthService.saveUser(result);
 
-                setTimeout(() => {
-                    this.router.navigateByUrl('secure/dashboard');
-                }, 0);
+                    setTimeout(() => {
+                        this.router.navigateByUrl('secure/dashboard');
+                    }, 0);
 
-                if (loginData.rememberMe === true) {
-                    this.cookieService.set('Skyward_User', loginData.userName);
+                    if (loginData.rememberMe === true) {
+                        this.cookieService.set('Skyward_User', loginData.userName);
+                    }
+                    else {
+                        this.cookieService.delete('Skyward_User');
+                    }
                 }
                 else {
-                    this.cookieService.delete('Skyward_User');
+                    this.error = { error: [result.message] }
                 }
-            }
-            else
-            {
-                this.error = { error : [ result.message]}
-            }
             }, (error) => {
                 if (error && error.status === 400) {
                     this.error = error.error ? (error.error.modelState || null) : null;

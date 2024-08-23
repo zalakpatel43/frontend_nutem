@@ -35,5 +35,7 @@ export class WeightCheckService {
       return this.http.get(`${APIConstant.UserList}`);
     }
 
-
+    addWeightCheck(playload){
+      return this.http.post(`${APIConstant.weightcheckAdd}`,playload);
+    }
 }

@@ -6,6 +6,7 @@ import { List } from '@app-models';
 import { Subscription } from 'rxjs';
 import { WeightCheckService } from '../weight-check.service';
 import { ToastrService } from 'ngx-toastr';
+//import { start } from 'repl';
 
 @Component({
   selector: 'app-add-edit',
@@ -30,7 +31,9 @@ export class WeightCheckAddEditComponent implements OnInit, OnDestroy {
   NozzleList:any[] = [];
   usersList: any[] = [];
   WeightCheckDetails : FormArray;
-  NozzleNameList : any[] = [];
+  AddedWeightCheckDetailsList : any[] = [];
+  EditNozzleDetailsId : number = -1 ;
+  minEndDate: Date | null = null;
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router,
               private formBuilder: UntypedFormBuilder, private weightCheckService: WeightCheckService,
@@ -141,6 +144,28 @@ export class WeightCheckAddEditComponent implements OnInit, OnDestroy {
     return end && start && end < start ? { 'endDateBeforeStartDate': true } : null;
 };
 
+onStartDateChange() {
+    const startDate = this.WeightCheckForm.get('StartDateTime')?.value;
+    if (startDate) {
+      this.minEndDate = new Date(startDate);
+    } else {
+      this.minEndDate = null;
+    }
+  }
+
+  onEndDateChange() {
+    const endDate = this.WeightCheckForm.get('EndDateTime')?.value;
+    const startDate = this.WeightCheckForm.get('StartDateTime')?.value;
+    if(!startDate){
+        this.notificationService.error("please select Start date")
+      }
+    if (startDate && endDate && new Date(endDate) <= new Date(startDate)) {
+      this.notificationService.error("End date should be greated than Start date")
+    } else {
+      this.WeightCheckForm.get('EndDateTime')?.updateValueAndValidity();
+    }
+  }
+
 getToday(){
     return new Date().toISOString().split('T')[0];
 }
@@ -161,11 +186,13 @@ getToday(){
   // }
 
   addWeightDetail() {
+    this.WeightCheckDetails?.clear();
+    this.EditNozzleDetailsId = -1;
     const item = this.formBuilder.group({});
 console.log("NozzleList", this.NozzleList)
     // Dynamically add NozzleName controls based on the API response
     this.NozzleList.forEach((nozzle, index) => {
-        item.addControl(nozzle.nozzelName, this.formBuilder.control(nozzle.nozzelName));
+        item.addControl(nozzle.nozzelName, this.formBuilder.control(""));
       //  this.NozzleNameList.push(nozzle.nozzelName);
     });
 
@@ -179,11 +206,100 @@ console.log("NozzleList", this.NozzleList)
     console.log("weightDeatilsList", this.WeightCheckDetails)
   }
 
+
+  addFinalWeightDetail(){
+
+    const weightDetail = this.WeightCheckDetails.at(0).value;
+
+    if(!weightDetail.Time){
+        this.notificationService.error("please select time");
+    }
+    else if(!weightDetail.DoneBy){
+        this.notificationService.error("please select Done by");
+    }
+    else{
+        if(this.EditNozzleDetailsId >= 0){
+            const average = this.calculateAverageForEntry(weightDetail);
+            weightDetail.Average = average;
+            this.AddedWeightCheckDetailsList[this.EditNozzleDetailsId] = weightDetail;
+            this.addWeightDetail();
+        }
+        else {
+            const average = this.calculateAverageForEntry(weightDetail);
+            weightDetail.Average = average;
+            this.AddedWeightCheckDetailsList.push(weightDetail);
+            this.addWeightDetail();
+          
+            // Log the updated list with averages
+            console.log("Added nozzle with average:", this.AddedWeightCheckDetailsList);
+        }
+       
+    }
+   
+  }
+
+
+  calculateAverageForEntry(entry: any): number {
+    // Extract values for fields excluding 'time' and 'doneBy'
+    const nozzleValues = Object.keys(entry)
+      .filter(key => key !== 'Time' && key !== 'DoneBy' && key !== 'Average') // Exclude specific fields
+      .map(key => parseFloat(entry[key])) // Convert values to numbers
+      .filter(value => !isNaN(value)); // Filter out non-numeric values
+  console.log("nozzle value",nozzleValues.length)
+    const total = nozzleValues.reduce((sum, value) => sum + value, 0);
+    console.log("nozzle value",nozzleValues.length)
+    console.log("total", total)
+    return nozzleValues.length ? total / nozzleValues.length : 0;
+  }
+
+  onEditDetail(weight,i){
+    console.log("weight", weight);
+    console.log("i",i)
+    console.log("details selected for edit", this.AddedWeightCheckDetailsList[i]);
+
+    this.populateFormWithValues(this.AddedWeightCheckDetailsList[i]);
+    this.EditNozzleDetailsId = i;
+  }
+
+  populateFormWithValues(data: any | any[]) {
+    // Ensure data is in array format
+    const dataArray = Array.isArray(data) ? data : [data];
+    
+    // Retrieve the FormArray
+    this.WeightCheckDetails = this.WeightCheckForm.get('WeightCheckDetails') as FormArray;
+  
+    // Clear existing FormArray
+    this.WeightCheckDetails.clear();
+  
+    // Populate each FormGroup in the FormArray
+    dataArray.forEach(dataItem => {
+      const item = this.formBuilder.group({});
+    
+      // Add Nozzle controls dynamically
+      this.NozzleList.forEach(nozzle => {
+        item.addControl(nozzle.nozzelName, this.formBuilder.control(dataItem[nozzle.nozzelName] || ''));
+      });
+    
+      // Add static controls with data
+      item.addControl('Time', this.formBuilder.control(dataItem.Time || '', Validators.required));
+      item.addControl('DoneBy', this.formBuilder.control(dataItem.DoneBy || '', Validators.required));
+     // item.addControl('Average', this.formBuilder.control(dataItem.Average || ''));
+    
+      // Push the populated FormGroup into the FormArray
+      this.WeightCheckDetails.push(item);
+    });
+  
+    console.log("Populated WeightCheckDetails:", this.WeightCheckDetails);
+  }
+  
+
   removeWeightDetail(i: number) {
-    const control = <FormArray>this.WeightCheckForm?.controls['ItemList'];
-    control.removeAt(i);
-    console.log("control", this.WeightCheckDetails)
-    console.log("items", this.WeightCheckDetails);
+    // const control = <FormArray>this.WeightCheckForm?.controls['ItemList'];
+    // control.removeAt(i);
+
+    this.AddedWeightCheckDetailsList.splice(i, 1);
+    console.log("control", this.AddedWeightCheckDetailsList)
+    console.log("items", this.AddedWeightCheckDetailsList);
   }
 
   removeCustomerDetail(index: number) {
@@ -227,16 +343,16 @@ console.log("NozzleList", this.NozzleList)
     //  this.customerTerritoryDetails.removeAt(index);
   }
 
-  private createCustomer() {
-      // let customer: Customer = this.frmCustomer.getRawValue();
-      // this.customerService.add(customer)
-      //     .subscribe(() => {
-      //         this.cancel();
-      //         this.notificationService.success("Customer master created successfully.");
-      //     },
-      //     (error) => {
-      //         this.error = error;
-      //     });
+  private createWeightCheck(Playload) {
+    
+      this.weightCheckService.addWeightCheck(Playload)
+          .subscribe(() => {
+              this.cancel();
+              this.notificationService.success("Customer master created successfully.");
+          },
+          (error) => {
+              this.error = error;
+          });
   }
 
   private updateCustomer() {
@@ -255,15 +371,123 @@ console.log("NozzleList", this.NozzleList)
 
   save() {
       this.isFormSubmitted = true;
-      if (this.WeightCheckForm.invalid) {
-          return;
-      }
+    //   if (this.WeightCheckForm.invalid) {
+    //       return;
+    //   }
+      let formvalue = this.WeightCheckForm.value ;
+      formvalue.WeightCheckDetails = this.AddedWeightCheckDetailsList;
+      console.log("formvalue", formvalue )
+      let Playload = this.transformData(formvalue );
+      console.log("Playload", Playload )
+      console.log("json stringyfy",JSON.stringify(Playload, null, 2))
 
       if (this.isEditMode) {
           this.updateCustomer();
       } else {
-          this.createCustomer();
+          this.createWeightCheck(Playload);
       }
+  }
+
+  transformData(originalData) {
+    // Helper function to format date
+    function formatToDateTime(dateStr) {
+        const date = new Date(dateStr);
+    
+        if (isNaN(date.getTime())) {
+            throw new Error("Invalid date string provided");
+        }
+    
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+    
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
+
+    function formatToTime(timeStr) {
+        const timeRegex = /(\d{1,2}):(\d{2}) (AM|PM)/i;
+
+        // Match the input time
+        const match = timeStr.match(timeRegex);
+    
+        if (!match) {
+            throw new Error('Invalid time format');
+        }
+    
+        // Extract hour, minute, and period from the match
+        let [ , hourStr, minuteStr, period] = match;
+        let hour = parseInt(hourStr, 10);
+        const minute = parseInt(minuteStr, 10);
+    
+        // Convert hour based on AM/PM
+        if (period.toUpperCase() === 'AM') {
+            if (hour === 12) {
+                hour = 0; // Midnight case
+            }
+        } else if (period.toUpperCase() === 'PM') {
+            if (hour !== 12) {
+                hour += 12; // Convert PM hour to 24-hour format
+            }
+        }
+    
+        // Format hour and minute with leading zeros
+        const formattedHour = hour.toString().padStart(2, '0');
+        const formattedMinute = minute.toString().padStart(2, '0');
+    
+        // Get the current date
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = (now.getMonth() + 1).toString().padStart(2, '0');
+        const day = now.getDate().toString().padStart(2, '0');
+    
+        // Construct the final output string
+        const result = `${year}-${month}-${day}T${formattedHour}:${formattedMinute}`;
+    
+        return result;
+    }
+
+    const detailsArray = Array.isArray(originalData.WeightCheckDetails) 
+    ? originalData.WeightCheckDetails 
+    : Object.values(originalData.WeightCheckDetails || {});
+
+    const result = {
+      Id: 0,
+      Code:"",
+      StartDateTime: formatToDateTime(originalData.StartDateTime),
+      EndDateTime: formatToDateTime(originalData.EndDateTime),
+      SAPProductionOrderId: originalData.SAPProductionOrderId,
+      ProductId: originalData.ProductId,
+      ShiftId: originalData.ShiftId,
+      BottleDateCode: originalData.BottleDateCode.toString(), // Adjust if needed
+      PackSize: originalData.PackSize.toString(), // Static value, update if needed
+      TargetWeight: originalData.StandardWeight.toString(), // Static value, update if needed
+      MinWeightRange: originalData.MinWeightRange,
+      MaxWeightRange: originalData.MaxWeightRange,
+      QAUserId: 4, // Static value, update if needed
+      Note: originalData.Note, // Capitalize first letter
+  
+      WeightCheckDetails: Array.isArray(detailsArray) ? detailsArray.map((details, index) => ({
+       
+          Id: index,
+          HeaderId: 0, // Static value, update if needed
+          TDateTime: formatToTime(details.Time), // Assuming Time is the timestamp
+          AvgWeight: details.Average,
+          DoneByUserIdList: details.DoneBy,
+  
+          WeightCheckSubDetails: Object.entries(details)
+                .filter(([key, value]) => key !== 'Average' && key !== 'Time' && key !== 'DoneBy')
+                .map(([nozzleId, weight]) => ({
+                    Id: 0,
+                    DetailId: 0,
+                    NozzleId: Number(nozzleId), // Convert key to number
+                    Weight: weight !== "" ? weight : null
+          }))
+        })) : []
+    };
+  
+    return result;
   }
 
   cancel() {
