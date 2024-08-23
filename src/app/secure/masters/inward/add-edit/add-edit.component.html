@@ -1,0 +1,233 @@
+<div class="row justify-content-center">
+    <div class="col-xl-11 col-lg-12">
+        <div class="border p30 rounded">
+            <div class="row align-items-center mb-4">
+                <div class="col-lg-7 col-sm-9 col-xs-10 d-flex align-items-end">
+                    <h4 class="mb-0"><i class="icon-edit"></i> Add/Edit Inward</h4>
+                </div>
+                <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end">
+                    <a *authPermission="page + '_' + permissions.list" mat-flat-button color="primary"
+                        class="app-button" (click)="cancel()">
+                        View List
+                    </a>
+                </div>
+            </div>
+            <form [formGroup]="frmInward" (submit)="save()" #form="ngForm" novalidate class="app-form">
+                <!-- Basic Details Section -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Basic Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Inward Code</mat-label>
+                                    <input type="text" matInput formControlName="inwardCode" readonly>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Inward Date</mat-label>
+                                    <input matInput [matDatepicker]="picker1" formControlName="inwardDate">
+                                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker1></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>From Warehouse</mat-label>
+                                    <mat-select formControlName="fromWarehouseId">
+                                        <mat-option *ngFor="let warehouse of warehouses" [value]="warehouse.id">
+                                            {{ warehouse.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Inventory Type</mat-label>
+                                    <mat-select formControlName="inventoryTypeId"
+                                        (selectionChange)="onInventoryTypeChange($event.value)">
+                                        <mat-option *ngFor="let type of inventoryTypes" [value]="type.id">
+                                            {{ type.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <ng-container *ngIf="this.showCustomers">
+                                    <mat-form-field>
+                                        <mat-label>Customer</mat-label>
+                                        <mat-select formControlName="customerId">
+                                            <mat-option *ngFor="let customer of customers" [value]="customer.id">
+                                                {{ customer.name }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </ng-container>
+                                <ng-container *ngIf="this.showVendors">
+                                    <mat-form-field>
+                                        <mat-label>Vendor</mat-label>
+                                        <mat-select formControlName="vendorId"
+                                            (selectionChange)="onVendorChange($event.value)">
+                                            <mat-option *ngFor="let vendor of vendors" [value]="vendor.id">
+                                                {{ vendor.name }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </ng-container>
+                                <ng-container *ngIf="this.showWarehouses">
+                                    <mat-form-field>
+                                        <mat-label>Warehouse</mat-label>
+                                        <mat-select formControlName="warehouseId">
+                                            <mat-option *ngFor="let warehouse of warehouses" [value]="warehouse.id">
+                                                {{ warehouse.name }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </ng-container>
+                            </div>
+                            <div class="col-md-4">
+                                <ng-container *ngIf="this.showCustomers">
+                                    // To be implemented
+                                </ng-container>
+                                <ng-container *ngIf="this.showVendors">
+                                    <mat-form-field>
+                                        <mat-label>Purchase Order</mat-label>
+                                        <mat-select formControlName="purchaseOrderId"
+                                            (selectionChange)="onPurchaseOrderChange($event.value)">
+                                            <mat-option *ngFor="let order of purchaseOrders" [value]="order.id">
+                                                {{ order.name }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </ng-container>
+                                <ng-container *ngIf="this.showWarehouses">
+                                    // To be implemented
+                                </ng-container>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Supporting Document No</mat-label>
+                                    <input type="text" matInput formControlName="supportingDocumentNo">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Supporting Document Date</mat-label>
+                                    <input matInput [matDatepicker]="picker2" formControlName="supportingDocumentDate">
+                                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker2></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <label>Supporting Document</label>
+                                <input type="hidden" formControlName="supportingDocumentId">
+                                <file-uploader [documents]="inwardData?.supportingDocument" [isEditMode]="isEditMode"
+                                    [uploader]="fileUploader?.uploader" [label]="''" [hideUploader]="canHideUploader()"
+                                    (removeDocument)="removeFile($event)" (selectedFile)="onSelectFile($event)">
+                                </file-uploader>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <mat-form-field>
+                                    <mat-label>Remarks</mat-label>
+                                    <textarea matInput formControlName="remarks" rows="2"></textarea>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Details Section -->
+                <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h5 class="mb-0">Product Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <div formArrayName="inwardProductDetails">
+                            <div *ngFor="let detail of inwardProductDetails.controls; let i=index" [formGroupName]="i"
+                                class="row mt-3">
+                                <div class="col-md-3">
+                                    <mat-form-field>
+                                        <mat-label>Product</mat-label>
+                                        <input type="hidden" formControlName="id">
+                                        <input type="hidden" formControlName="productId">
+                                        <input type="text" matInput formControlName="productName" readonly>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-3">
+                                    <mat-form-field>
+                                        <mat-label>Product Description</mat-label>
+                                        <input type="text" matInput formControlName="productDescription">
+                                        <mat-validation-message [control]="detail.get('productDescription')"
+                                            [message]="'Product Description'" [formSubmitted]="isFormSubmitted">
+                                        </mat-validation-message>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field>
+                                        <mat-label>Qty</mat-label>
+                                        <input type="number" matInput formControlName="quantity">
+                                        <mat-validation-message [control]="detail.get('quantity')" [message]="'Qty'"
+                                            [formSubmitted]="isFormSubmitted">
+                                        </mat-validation-message>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field>
+                                        <mat-label>UOM</mat-label>
+                                        <input type="hidden" formControlName="uomId">
+                                        <input type="text" matInput formControlName="uomName" readonly>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field>
+                                        <mat-label>PO Quantity</mat-label>
+                                        <input type="number" matInput formControlName="poQuantity" readonly>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field>
+                                        <mat-label>Past Received Quantity</mat-label>
+                                        <input type="number" matInput formControlName="pastReceivedQuantity" readonly>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field>
+                                        <mat-label>Remaining Quantity</mat-label>
+                                        <input type="number" matInput formControlName="remainingQuantity" readonly>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field>
+                                        <mat-label>Remarks</mat-label>
+                                        <textarea matInput formControlName="remarks" rows="1"></textarea>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-1 d-flex align-items-center">
+                                    <button type="button" mat-icon-button color="warn" (click)="removeProductDetail(i)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </div>
+                                <hr />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <button type="submit" mat-flat-button color="primary" class="app-button mr-1">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

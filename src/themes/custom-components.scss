@@ -1,0 +1,133 @@
+@use '@angular/material' as mat;
+
+@mixin custom-components-theme($theme) {
+    $background: mat.get-color-from-palette(mat.get-theme-color($theme, primary));
+    $warn: mat.get-color-from-palette(mat.get-theme-color($theme, warn));
+
+    a,
+    a:hover {
+        color: $background;
+    }
+
+    footer {
+        background: $background;
+        .footerMenu {
+            a {
+                border-left: 1px solid mat.get-color-from-palette($background, default-contrast);
+            }
+        }
+        a {
+            color: mat.get-color-from-palette($background, default-contrast);
+        }
+    }
+
+    .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected,
+    .ng-select.ng-select-focused .ng-select-container .ng-arrow-wrapper .ng-arrow,
+    .ng-select.ng-select-focused .ng-select-container .ng-value-container .ng-placeholder {
+        color: $background !important;
+    }
+
+    .ng-select.ng-select-focused .ng-select-container:after {
+        border-color: $background !important;
+    }
+
+    .ng-select {
+        &.ng-invalid.ng-touched {
+            .ng-placeholder {
+                color: $warn;
+            }
+            .ng-select-container {
+                &:after {
+                    border-bottom-color: $warn;
+                }
+            }
+        }
+    }
+
+    .mat-toolbar.app-header {
+        background: mat.get-color-from-palette($background, default-contrast);
+        color: $background;
+    }
+
+    .mat-drawer-container {
+        background-color: mat.get-color-from-palette($background, default-contrast);
+    }
+
+    .error-text {
+        color: $warn;
+    }
+
+    .alert-warning {
+        color: $warn;
+        border-color: $warn;
+    }
+
+    .permitStatus.active {
+        border-bottom: 2px solid $background;
+    }
+
+    .stepsBar {
+        .stepsItembox {
+            li {
+                background: mat.get-color-from-palette($background, 100);
+                border: 1px solid mat.get-color-from-palette($background, A200);
+                &:first-child {
+                    border-left: 1px solid mat.get-color-from-palette($background, A200);
+                }
+                &:before {
+                    border-color: transparent transparent transparent mat.get-color-from-palette($background, 100);
+                }
+                &:after {
+                    border-color: transparent transparent transparent mat.get-color-from-palette($background, A200);
+                }
+            }
+            li.active {
+                background: $background;
+                color: #fff;
+                &:before {
+                    border-color: transparent transparent transparent $background;
+                }
+                &:after {
+                    border-color: transparent transparent transparent $background;
+                }
+            }
+        }
+    }
+
+    .mat-expanded {
+        mat-panel-title {
+            color: $background !important;
+        }
+    }
+
+    .mat-panel-selectedtitle {
+        color: $background !important;
+    }
+
+    // Node tree color changes
+    .node-content-wrapper-active,
+    .node-content-wrapper.node-content-wrapper-active:hover,
+    .node-content-wrapper-active.node-content-wrapper-focused {
+        background: $background !important;
+        color: mat.get-color-from-palette($background, default-contrast);
+    }
+
+    .node-content-wrapper.node-content-wrapper:hover {
+        background: $background !important;
+        color: mat.get-color-from-palette($background, default-contrast);
+    }
+
+    // Progress bar background color change
+    .ng-bar {
+        background-color: $background !important;
+    }
+
+    .ng-meteor {
+        box-shadow: $background 0px 0px 10px, $background 0px 0px 5px !important;
+    }
+
+    .ng-spinner-icon {
+        border-top-color: $background !important;
+        border-left-color: $background !important;
+    }
+}

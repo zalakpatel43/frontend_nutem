@@ -1,0 +1,36 @@
+export const ApplicationPage = {
+    company: 'adm_company',
+    country: 'adm_country',
+    state: 'adm_state',
+    user: 'adm_user',
+    permission: 'adm_permission',
+    changepassword: 'adm_changepassword',
+    role: 'adm_role',
+    group_code: 'adm_group_code',
+    module: 'adm_module',
+    student:'adm_Student',
+    jobcard:'adm_JobCard',
+    weightCheck : 'adm_weight_check',
+    bom: 'adm_bom',
+    moduleGroup: 'adm_module_group',
+    termsAndConditions: 'adm_terms_conditions',
+    customer: 'adm_customer',
+    product: 'adm_product',
+    salesOrder: 'adm_sales_order',
+    purchaseOrder: 'adm_purchase_order',
+    vendorMaster: 'adm_vendor_master',
+    workflow: 'adm_workflow',
+    inventoryType: 'adm_inventory_type',
+    inward: 'adm_inward',
+    outward: 'adm_outward',
+    qualityParameter: 'adm_quality_parameter',
+    materialRequisition: 'adm_material_requisition',
+    location: 'adm_location',
+};
+
+export const PermissionType = {
+    create: 'create',
+    edit: 'edit',
+    list: 'list',
+    active: 'active'
+};

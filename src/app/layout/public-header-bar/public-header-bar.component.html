@@ -1,0 +1,21 @@
+<div>
+    <mat-toolbar color="primary" class="app-header">
+        <mat-toolbar-row>
+            <a mat-button routerLinkActive="active" [routerLink]="['/home']"><img [src]="imagePath" charset="utf-8"
+                    class="img img-logo" /></a>           
+            <span class="menu-spacer"></span>           
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-sidenav-container fxFlexFill>
+        <mat-sidenav #sidenav position="end">
+            <mat-nav-list>
+              
+            </mat-nav-list>
+        </mat-sidenav>
+        <mat-sidenav-content fxFlexFill>
+            <div class="app-container container-fluid">
+                <router-outlet class="app-router-outlet"></router-outlet>
+            </div>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>

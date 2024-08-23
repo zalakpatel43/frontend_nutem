@@ -1,0 +1,126 @@
+// @use './custom-components' as custom-components;
+// @use '@angular/material/theming';
+// @include mat-core();
+// $primary: mat.define-palette(mat.$light-blue-palette);
+// $accent: mat.define-palette(mat.$light-green-palette, A400, A100, A700);
+// $warn: mat.define-palette(mat.$red-palette);
+// $theme: mat.define-light-theme($primary, $accent, $warn);
+
+// @include mat.all-component-themes($theme);
+// @include custom-components.custom-components-theme($theme);
+
+// // Red theme
+// $red-primary: mat.define-palette(mat.$red-palette);
+// $red-accent: mat.define-palette(mat.$grey-palette, 100, 400, 900);
+// $red-warn: mat.define-palette(mat.$grey-palette);
+
+// $red-theme: mat.define-light-theme($red-primary, $red-accent, $red-warn);
+
+// .red-theme {
+//   @include mat.all-component-themes($red-theme);
+//   @include custom-components.custom-components-theme($red-theme);
+// }
+
+// // Grey theme
+// $grey-primary: mat.define-palette(mat.$grey-palette, 900);
+// $grey-accent: mat.define-palette(mat.$grey-palette);
+// $grey-warn: mat.define-palette(mat.$red-palette);
+
+// $grey-theme: mat.define-light-theme($grey-primary, $grey-accent, $grey-warn);
+
+// .grey-theme {
+//   @include mat.all-component-themes($grey-theme);
+//   @include custom-components.custom-components-theme($grey-theme);
+// }
+
+// // Indigo theme
+// $indigo-app-primary: mat.define-palette(mat.$indigo-palette, A400);
+// $indigo-app-accent: mat.define-palette(mat.$pink-palette);
+// $indigo-warn: mat.define-palette(mat.$red-palette);
+
+// $indigo-theme: mat.define-light-theme($indigo-app-primary, $indigo-app-accent, $indigo-warn);
+
+// .indigo-theme {
+//   @include mat.all-component-themes($indigo-theme);
+//   @include custom-components.custom-components-theme($indigo-theme);
+// }
+
+// // Green theme
+// $green-app-primary: mat.define-palette(mat.$green-palette, 900);
+// $green-app-accent: mat.define-palette(mat.$light-blue-palette);
+// $green-warn: mat.define-palette(mat.$red-palette);
+
+// $green-theme: mat.define-light-theme($green-app-primary, $green-app-accent, $green-warn);
+
+// .green-theme {
+//   @include mat.datepicker-theme($green-theme);
+//   @include mat.all-component-themes($green-theme);
+//   @include custom-components.custom-components-theme($green-theme);
+// }
+
+// // Orange theme
+// $orange-app-primary: mat.define-palette(mat.$orange-palette, 900);
+// $orange-app-accent: mat.define-palette(mat.$pink-palette);
+// $orange-warn: mat.define-palette(mat.$grey-palette);
+
+// $orange-theme: mat.define-light-theme($orange-app-primary, $orange-app-accent, $orange-warn);
+
+// .orange-theme {
+//   @include mat.all-component-themes($orange-theme);
+//   @include custom-components.custom-components-theme($orange-theme);
+// }
+
+// // Teal theme
+// $teal-app-primary: mat.define-palette(mat.$teal-palette, 500);
+// $teal-app-accent: mat.define-palette(mat.$light-blue-palette);
+// $teal-warn: mat.define-palette(mat.$red-palette);
+
+// $teal-theme: mat.define-light-theme($teal-app-primary, $teal-app-accent, $teal-warn);
+
+// .teal-theme {
+//   @include mat.datepicker-theme($teal-theme);
+//   @include mat.all-component-themes($teal-theme);
+//   @include custom-components.custom-components-theme($teal-theme);
+// }
+
+// // Brown theme
+// $brown-app-primary: mat.define-palette(mat.$brown-palette, 300);
+// $brown-app-accent: mat.define-palette(mat.$light-blue-palette);
+// $brown-warn: mat.define-palette(mat.$red-palette);
+
+// $brown-theme: mat.define-light-theme($brown-app-primary, $brown-app-accent, $brown-warn);
+
+// .brown-theme {
+//   @include mat.datepicker-theme($brown-theme);
+//   @include mat.button-theme($brown-theme);
+//   @include mat.all-component-themes($brown-theme);
+//   @include custom-components.custom-components-theme($brown-theme);
+// }
+
+// // Blue-darkgray theme
+// $bluegray-app-primary: mat.define-palette(mat.$blue-grey-palette, 800);
+// $bluegray-app-accent: mat.define-palette(mat.$gray-palette);
+// $bluegray-warn: mat.define-palette(mat.$red-palette);
+
+// $bluegray-theme: mat.define-light-theme($bluegray-app-primary, $bluegray-app-accent, $bluegray-warn);
+
+// .blue-darkgray-theme {
+//   @include mat.datepicker-theme($bluegray-theme);
+//   @include mat.all-component-themes($bluegray-theme);
+//   @include custom-components.custom-components-theme($bluegray-theme);
+// }
+
+// // Blue-lightgray theme
+// $bluelightgray-app-primary: mat.define-palette(mat.$blue-palette, 900);
+// $bluelightgray-app-accent: mat.define-palette(mat.$gray-palette, 300);
+// $bluelightgray-warn: mat.define-palette(mat.$red-palette);
+
+// $bluelightgray-theme: mat.define-light-theme($bluelightgray-app-primary, $bluelightgray-app-accent, $bluelightgray-warn);
+
+// .blue-lightgray-theme {
+//   @include mat.datepicker-theme($bluelightgray-theme);
+//   @include mat.all-component-themes($bluelightgray-theme);
+//   @include custom-components.custom-components-theme($bluelightgray-theme);
+// }
+// @include mat.core-theme($theme);
+// @include mat.all-component-themes($theme);

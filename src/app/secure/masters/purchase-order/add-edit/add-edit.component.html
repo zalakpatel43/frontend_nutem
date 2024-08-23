@@ -1,0 +1,273 @@
+<div class="row justify-content-center">
+    <div class="col-xl-11 col-lg-12">
+        <div class="border p30 rounded">
+            <div class="row align-items-center mb-4">
+                <div class="col-lg-7 col-sm-9 col-xs-10 d-flex align-items-end">
+                    <h4 class="mb-0"><i class="icon-edit"></i> Add/Edit Purchase Order</h4>
+                </div>
+                <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end">
+                    <a *authPermission="page + '_' + permissions.list" mat-flat-button color="primary"
+                        class="app-button" (click)="cancel()">
+                        View List
+                    </a>
+                </div>
+            </div>
+            <form [formGroup]="frmPurchaseOrder" (submit)="save()" #form="ngForm" novalidate class="app-form">
+                <!-- Basic Details Section -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Basic Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Purchase Order Code</mat-label>
+                                    <input type="text" matInput formControlName="purchaseOrderCode" readonly>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Revision No</mat-label>
+                                    <input type="text" matInput formControlName="revisionNo" readonly>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Vendor</mat-label>
+                                    <mat-select formControlName="vendorId" (selectionChange)="onVendorChange($event.value)">
+                                        <mat-option *ngFor="let vendor of vendors" [value]="vendor.id">
+                                            {{ vendor.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Vendor Address</mat-label>
+                                    <mat-select formControlName="vendorAddressId">
+                                        <mat-option *ngFor="let address of vendorAddresses" [value]="address.id">
+                                            {{ address.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Vendor Contact</mat-label>
+                                    <mat-select formControlName="vendorContactId">
+                                        <mat-option *ngFor="let contact of vendorContacts" [value]="contact.id">
+                                            {{ contact.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>PO Date</mat-label>
+                                    <input matInput [matDatepicker]="picker1" formControlName="poDate">
+                                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker1></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Total Product Amount</mat-label>
+                                    <input type="text" matInput formControlName="totalProductAmount" readonly [value]="frmPurchaseOrder.get('totalProductAmount').value | number:'1.2-2'">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Discount Type</mat-label>
+                                    <mat-select formControlName="discountTypeId">
+                                        <mat-option *ngFor="let discount of discountTypes" [value]="discount.id">
+                                            {{ discount.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Discount Type Amount</mat-label>
+                                    <input type="number" matInput formControlName="discountTypeAmount">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Discount Amount</mat-label>
+                                    <input type="text" matInput formControlName="discountAmount" readonly [value]="frmPurchaseOrder.get('discountAmount').value | number:'1.2-2'">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Sub Total</mat-label>
+                                    <input type="text" matInput formControlName="subTotal" readonly [value]="frmPurchaseOrder.get('subTotal').value | number:'1.2-2'">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Total Tax Amount</mat-label>
+                                    <input type="text" matInput formControlName="totalTaxAmount" readonly [value]="frmPurchaseOrder.get('totalTaxAmount').value | number:'1.2-2'">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Total Amount</mat-label>
+                                    <input type="text" matInput formControlName="totalAmount" readonly [value]="frmPurchaseOrder.get('totalAmount').value | number:'1.2-2'">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Approval Status</mat-label>
+                                    <mat-select formControlName="approvalStatusId">
+                                        <mat-option *ngFor="let status of approvalStatuses" [value]="status.id">
+                                            {{ status.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Details Section -->
+                <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h5 class="mb-0">Product Details</h5>
+                        <button type="button" mat-flat-button color="primary" (click)="addProductDetail()">Add Product</button>
+                    </div>
+                    <div class="card-body">
+                        <div formArrayName="purchaseOrderProductDetails">
+                            <div *ngFor="let detail of purchaseOrderProductDetails.controls; let i=index" [formGroupName]="i" class="row mt-3">
+                                <div class="col-md-3">
+                                    <mat-form-field>
+                                        <mat-label>Product</mat-label>
+                                        <mat-select formControlName="productId" (selectionChange)="onProductChange(i, $event.value)">
+                                            <mat-option *ngFor="let product of products" [value]="product.id">
+                                                {{ product.name }} - {{ product.code }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field>
+                                        <mat-label>Drawing Number</mat-label>
+                                        <input type="text" matInput formControlName="drawingNumber">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field>
+                                        <mat-label>UOM</mat-label>
+                                        <input type="text" matInput formControlName="uomName" readonly>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field>
+                                        <mat-label>Qty</mat-label>
+                                        <input type="number" matInput formControlName="qty" (input)="updateProductSubTotal(i)">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field>
+                                        <mat-label>Amount</mat-label>
+                                        <input type="number" matInput formControlName="amount" (input)="updateProductSubTotal(i)">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field>
+                                        <mat-label>Discount Type</mat-label>
+                                        <mat-select formControlName="discountTypeId" (selectionChange)="updateProductSubTotal(i)">
+                                            <mat-option *ngFor="let discount of discountTypes" [value]="discount.id">
+                                                {{ discount.name }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field>
+                                        <mat-label>Discount Type Amount</mat-label>
+                                        <input type="number" matInput formControlName="discountTypeAmount" (input)="updateProductSubTotal(i)">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field>
+                                        <mat-label>Discount Amount</mat-label>
+                                        <input type="text" matInput formControlName="discountAmount" readonly [value]="detail.get('discountAmount').value | number:'1.2-2'">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field>
+                                        <mat-label>Sub Total</mat-label>
+                                        <input type="text" matInput formControlName="subTotal" readonly [value]="detail.get('subTotal').value | number:'1.2-2'">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field>
+                                        <mat-label>Tax (%)</mat-label>
+                                        <input type="number" matInput formControlName="taxTypeAmount" (input)="updateProductSubTotal(i)">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field>
+                                        <mat-label>Delivery Date</mat-label>
+                                        <input matInput [matDatepicker]="picker2" formControlName="deliveryDate">
+                                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker2></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-1 d-flex align-items-center">
+                                    <button type="button" mat-icon-button color="warn" (click)="addProductDetail()">
+                                        <mat-icon>add</mat-icon>
+                                    </button>
+                                    <button type="button" mat-icon-button color="warn" (click)="removeProductDetail(i)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </div>
+                                <hr />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Terms & Conditions Section -->
+                <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h5 class="mb-0">Terms & Conditions</h5>
+                        <button type="button" mat-flat-button color="primary" (click)="addTermsConditionDetail()">Add Term</button>
+                    </div>
+                    <div class="card-body">
+                        <div formArrayName="purchaseOrderTermsDetails">
+                            <div *ngFor="let detail of purchaseOrderTermsDetails.controls; let i=index" [formGroupName]="i" class="row mt-3">
+                                <div class="col-md-10">
+                                    <mat-form-field>
+                                        <mat-label>Term</mat-label>
+                                        <mat-select formControlName="termsConditionId">
+                                            <mat-option *ngFor="let term of termsConditions" [value]="term.id">
+                                                {{ term.name }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-1 d-flex align-items-center">
+                                    <button type="button" mat-icon-button color="warn" (click)="addTermsConditionDetail()">
+                                        <mat-icon>add</mat-icon>
+                                    </button>
+                                    <button type="button" mat-icon-button color="warn" (click)="removeTermsConditionDetail(i)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </div>
+                                <hr />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <button type="submit" mat-flat-button color="primary" class="app-button mr-1">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

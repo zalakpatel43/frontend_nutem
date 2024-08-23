@@ -1,0 +1,138 @@
+<div>
+    <mat-toolbar color="primary" class="app-header">
+        <mat-toolbar-row>
+            <!-- Logo and Dashboard -->
+            <a mat-button routerLinkActive="active" [routerLink]="['/secure/dashboard']">
+                <img [src]="imagePath" class="img img-logo" />
+            </a>
+
+            <!-- Main Menu Links -->
+            <div fxShow="true" fxHide.lt-md>
+
+                <!-- Masters Menu -->
+                <button mat-button [matMenuTriggerFor]="mastersMenu" aria-label="Masters Menu"
+                    matTooltip="Masters Menu">
+                    Master
+                    <mat-icon>arrow_drop_down</mat-icon>
+                </button>
+                <mat-menu #mastersMenu="matMenu">
+                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'user']">User</a>
+                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'role']"
+                        *authPermission="rolePage + '_' + permissions.list">Role</a>
+                    <!-- <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'permissions']"
+                        *authPermission="permissionPage + '_' + permissions.list">Permission</a> -->
+                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'company']"
+                        *authPermission="companyPage + '_' + permissions.list">Company</a>
+                    <!-- <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'location']"
+                        *authPermission="locationPage + '_' + permissions.list">Locations</a>
+                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'module']"
+                        *authPermission="modulePage + '_' + permissions.list">Module</a>
+                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'student']"
+                        *authPermission="modulePage + '_' + permissions.list">Student</a>
+
+                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'module-group']"
+                        *authPermission="moduleGroupPage + '_' + permissions.list">Module Group</a> -->
+                </mat-menu>
+
+                <!-- Configuration Menu -->
+                <button mat-button [matMenuTriggerFor]="ProcessMenu" aria-label="Process Menu"
+                    matTooltip="Process Menu">
+                    Process
+                    <mat-icon>arrow_drop_down</mat-icon>
+                </button>
+                <mat-menu #ProcessMenu="matMenu">
+                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'weight-check']"
+                    >Weight Check</a>
+                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'customer']"
+                    *authPermission="customerPage + '_' + permissions.list">Customer</a>
+                    <!-- <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'bom']"
+                        *authPermission="bomPage + '_' + permissions.list">BOM</a>
+                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'group-code']"
+                        *authPermission="groupCodePage + '_' + permissions.list">Group Code</a>
+                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'terms-conditions']"
+                        *authPermission="termsAndConditionsPage + '_' + permissions.list">Terms And Conditions</a>
+                  
+                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'product']"
+                        *authPermission="productPage + '_' + permissions.list">Product</a>
+                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'vendor-master']"
+                        *authPermission="vendorMasterPage + '_' + permissions.list">Vendors</a>
+                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'workflow']"
+                        *authPermission="workflowMasterPage + '_' + permissions.list">Workflow</a>
+                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'inventory-type']"
+                        *authPermission="inventoryTypePage + '_' + permissions.list">Inventory Types</a> -->
+                </mat-menu>
+
+                <!-- Transactions Menu -->
+                <!-- <button mat-button [matMenuTriggerFor]="transactionsMenu" aria-label="Transactions Menu"
+                    matTooltip="Transactions Menu">
+                    Transaction
+                    <mat-icon>arrow_drop_down</mat-icon>
+                </button>
+                <mat-menu #transactionsMenu="matMenu">
+                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'sales-order']"
+                        *authPermission="salesOrderPage + '_' + permissions.list">Sales Order</a>
+                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'purchase-order']"
+                        *authPermission="purchaseOrderPage + '_' + permissions.list">Purchase Order</a>
+                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters','inward']"
+                        *authPermission="inwardPage + '_' + permissions.list">
+                        Inwards
+                    </a>
+                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters','outward']"
+                        *authPermission="outwardPage + '_' + permissions.list">
+                        Outwards
+                    </a>
+                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'quality-parameter']"
+                        *authPermission="qualityParameterPage + '_' + permissions.list">
+                        Quality Parameter
+                    </a>
+                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters','material-requisition']"
+                        *authPermission="materialRequisitionPage + '_' + permissions.list">
+                        Material Requisitions
+                    </a>
+                </mat-menu> -->
+            </div>
+
+            <!-- Spacer -->
+            <span class="menu-spacer"></span>
+
+            <!-- Profile Menu -->
+            <button mat-button [matMenuTriggerFor]="profileMenu" aria-label="User Profile"
+                matTooltip="User Profile Menu">
+                {{userName}}
+                <mat-icon>arrow_drop_down</mat-icon>
+            </button>
+            <mat-menu #profileMenu="matMenu">
+                <a mat-menu-item href="javascript:void(0);" (click)="changePassword()">Change Password</a>
+                <a mat-menu-item [routerLink]="['', 'logout']">Logout</a>
+            </mat-menu>
+
+            <!-- Sidenav Toggle for Small Screens -->
+            <button mat-icon-button (click)="sidenav.toggle()" fxShow="true" fxHide.gt-sm>
+                <mat-icon>menu</mat-icon>
+            </button>
+        </mat-toolbar-row>
+
+    </mat-toolbar>
+    <mat-sidenav-container fxFlexFill>
+        <mat-sidenav #sidenav position="end">
+            <mat-nav-list>
+                <a routerLinkActive="active" mat-list-item (click)="sidenav.toggle()"
+                    [routerLink]="['/secure','dashboard']">Dashboard</a>
+                <a routerLinkActive="active" mat-list-item (click)="sidenav.toggle()"
+                    *authPermission="userPage + '_' + permissions.list"
+                    [routerLink]="['/secure/masters','user']">User</a>
+                <a routerLinkActive="active" mat-list-item (click)="sidenav.toggle()"
+                    *authPermission="rolePage + '_' + permissions.list"
+                    [routerLink]="['/secure/masters','role']">Role</a>
+                <a routerLinkActive="active" mat-list-item (click)="sidenav.toggle()"
+                    [routerLink]="['/secure/masters','permissions']"
+                    *authPermission="permissionPage + '_' + permissions.edit">Permission</a>
+            </mat-nav-list>
+        </mat-sidenav>
+        <mat-sidenav-content fxFlexFill>
+            <div class="app-container container-fluid">
+                <router-outlet class="app-router-outlet"></router-outlet>
+            </div>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>

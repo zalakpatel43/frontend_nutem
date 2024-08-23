@@ -1,0 +1,57 @@
+<!-- CompanyListComponent Template -->
+<div class="row justify-content-center">
+    <div class="col-xl-11 col-lg-12">
+        <div class="border p30 rounded">
+            <div class="row align-items-center">
+                <div class="col-lg-7 col-sm-9 col-10 d-flex align-items-end leftSideHeader">
+                    <h4 class="mb20 float-left">Company List</h4>
+                </div>
+                <div class="col-lg-5 col-sm-3 col-2 d-flex justify-content-end rightSideHeader mb10">
+                    <div>
+                        <a mat-flat-button color="primary" class="app-button"
+                            *authPermission="'company_create'" [routerLink]="['../','add']">
+                            <span>Add New</span>
+                            <i class="icon-plus"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <company-search-panel (searchChanged)="updateSearch($event)"></company-search-panel>
+                    <!-- Replace 'company-search-panel' with your search component -->
+                    <ngx-datatable class="material" [rows]="companyData" [columnMode]="'force'"
+                        [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10"
+                        [loadingIndicator]="loading" [scrollbarH]="true"
+                        [messages]="{emptyMessage: 'No Companies Found', totalMessage: 'Total'}">
+                        <ngx-datatable-column name="Company Name" prop="companyName"></ngx-datatable-column>
+                        <ngx-datatable-column name="Alias" prop="alias"></ngx-datatable-column>
+                        <ngx-datatable-column name="City" prop="city"></ngx-datatable-column>
+                        <ngx-datatable-column name="State" prop="state"></ngx-datatable-column>
+                        <ngx-datatable-column name="Country" prop="country"></ngx-datatable-column>
+                        <ngx-datatable-column name="Email" prop="emailID"></ngx-datatable-column>
+                        <!-- Add or remove columns as needed -->
+                        <ngx-datatable-column name="Status">
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                {{ row.isActive ? 'Active' : 'Inactive' }}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Actions">
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                <a *authPermission="'company_edit'" [routerLink]="['../','edit',row.id]"
+                                    title="Edit" class="button-padding">
+                                    <mat-icon>edit</mat-icon>
+                                </a>
+                                <!-- Include other actions as required -->
+                                <a href="#" (click)="toggleActivate(row.id, !row.isActive)"
+                                    title="{{ row.isActive ? 'Deactivate' : 'Activate' }}" class="button-padding">
+                                    <mat-icon>{{ row.isActive ? 'lock' : 'lock_open' }}</mat-icon>
+                                </a>
+                            </ng-template>
+                        </ngx-datatable-column>
+                    </ngx-datatable>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

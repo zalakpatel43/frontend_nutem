@@ -1,0 +1,48 @@
+<div class="row justify-content-center">
+    <div class="col-xl-11 col-lg-12">
+        <div class="border p30 rounded">
+            <div class="row align-items-center mb-4">
+                <div class="col-lg-7 col-sm-9 col-xs-10 d-flex align-items-end">
+                    <h4 class="mb-0">Product List</h4>
+                </div>
+                <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end">
+                    <a *authPermission="page + '_' + permissions.create" mat-flat-button color="primary"
+                        class="app-button" [routerLink]="['../','add']">
+                        <span>Add New</span>
+                        <i class="icon-plus"></i>
+                    </a>
+                </div>
+            </div>
+            <product-search-panel (searchChanged)="updateSearch($event)"></product-search-panel>
+            <ngx-datatable class="material" [rows]="productData | searchtable : searchData" [columnMode]="'force'"
+                [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10"
+                [loadingIndicator]="loading" [scrollbarH]="true" [rowClass]="isActiveRow"
+                [messages]="{emptyMessage:'No Data to Display',totalMessage:'Total'}">
+                <ngx-datatable-column name="Product Code" prop="productCode"></ngx-datatable-column>
+                <ngx-datatable-column name="Product Name" prop="productName"></ngx-datatable-column>
+                <ngx-datatable-column name="Product Category" prop="productCategory"></ngx-datatable-column>
+                <ngx-datatable-column name="Product Type" prop="productType"></ngx-datatable-column>
+                <ngx-datatable-column name="Product Brand" prop="productBrand"></ngx-datatable-column>
+                <ngx-datatable-column name="HSN Code" prop="hsnCode"></ngx-datatable-column>                
+                <ngx-datatable-column name="Actions" [sortable]="false">
+                    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                        <a *authPermission="page + '_' + permissions.edit" class="button-padding" color="primary"
+                            [routerLink]="['..','edit',row.id]">
+                            <mat-icon>edit</mat-icon>
+                        </a>
+                        <ng-container *authPermission="page + '_' + permissions.active" class="ml-10">
+                            <a *ngIf="row.isActive" class="button-padding" color="primary"
+                                (click)="activateToggleProduct(row, false)">
+                                <mat-icon>lock</mat-icon>
+                            </a>
+                            <a *ngIf="!row.isActive" class="button-padding" color="primary"
+                                (click)="activateToggleProduct(row, true)">
+                                <mat-icon>lock_open</mat-icon>
+                            </a>
+                        </ng-container>
+                    </ng-template>
+                </ngx-datatable-column>
+            </ngx-datatable>
+        </div>
+    </div>
+</div>

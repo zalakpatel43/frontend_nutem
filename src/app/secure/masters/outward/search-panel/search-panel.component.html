@@ -1,0 +1,12 @@
+<div class="row">
+    <div class="col-lg-6">
+        <search-text
+            [placeHolder]="'Search Outward Code, Inventory Type, From Warehouse, Customer Name, Vendor Name, Warehouse, Supporting Document No'"
+            (textSearchEntered)="updateSearchTerms(searchKey, $event)">
+        </search-text>
+    </div>
+    <div class="col-lg-4">
+        <search-inactive (chkChanged)="updateSearchTerms('isActive', $event)">
+        </search-inactive>
+    </div>
+</div>

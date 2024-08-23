@@ -1,0 +1,223 @@
+<div class="row justify-content-center">
+    <div class="col-xl-11 col-lg-12">
+        <div class="border p30 rounded">
+            <div class="row align-items-center mb-4">
+                <div class="col-lg-7 col-sm-9 col-xs-10 d-flex align-items-end">
+                    <h4 class="mb-0"><i class="icon-edit"></i> Add/Edit Weight Check</h4>
+                </div>
+                <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end">
+                    <a *authPermission="page + '_' + permissions.list" mat-flat-button color="primary" class="app-button" (click)="cancel()">
+                        View List
+                    </a>
+                </div>
+            </div>
+            <form [formGroup]="WeightCheckForm" (submit)="save()" #form="ngForm" novalidate class="app-form">
+                <!-- Basic Details Section -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Header Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Code -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Code</mat-label>
+                                    <input matInput formControlName="Code" [disabled]="true">
+                                    <mat-validation-message [control]="WeightCheckForm.controls.Code" [message]="'Code'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                    
+                            <!-- Start Date Time -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Start Date</mat-label>
+                                    <input matInput [matDatepicker]="pickerStart" [min]="getToday()" formControlName="StartDateTime">
+                                    <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+                                    <mat-datepicker #pickerStart></mat-datepicker>
+                                    <mat-validation-message [control]="WeightCheckForm.controls.StartDateTime" [message]="'Start Date Time'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                    
+                            <!-- End Date Time -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>End Date</mat-label>
+                                    <input matInput [matDatepicker]="pickerEnd" formControlName="EndDateTime">
+                                    <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+                                    <mat-datepicker #pickerEnd></mat-datepicker>
+                                    <mat-validation-message [control]="WeightCheckForm.controls.EndDateTime" [message]="'End Date Time'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                    
+                            <!-- Shift -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Shift</mat-label>
+                                    <mat-select formControlName="ShiftId">
+                                        <mat-option *ngFor="let shift of shiftList" [value]="shift.id">
+                                            {{ shift.shiftName }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-validation-message [control]="WeightCheckForm.controls.ShiftId" [message]="'Shift'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                    
+                            <!-- SAP Production Order -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>SAP Production Order</mat-label>
+                                    <mat-select formControlName="SAPProductionOrderId">
+                                        <mat-option *ngFor="let order of productionOrderList" [value]="order.id">
+                                            {{ order.poNumber }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-validation-message [control]="WeightCheckForm.controls.SAPProductionOrderId" [message]="'SAP Production Order'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                    
+                            <!-- Product -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Product</mat-label>
+                                    <mat-select formControlName="ProductId">
+                                        <mat-option *ngFor="let product of productList" [value]="product.id">
+                                            {{ product.productName }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-validation-message [control]="WeightCheckForm.controls.ProductId" [message]="'Product'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                    
+                            <!-- Bottle Date Code -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Bottle Date Code</mat-label>
+                                    <input matInput formControlName="BottleDateCode">
+                                    <mat-validation-message [control]="WeightCheckForm.controls.BottleDateCode" [message]="'Bottle Date Code'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                    
+                            <!-- Pack Size -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Pack Size</mat-label>
+                                    <input matInput formControlName="PackSize" type="number">
+                                    <mat-validation-message [control]="WeightCheckForm.controls.PackSize" [message]="'Pack Size'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                    
+                            <!-- Standard Weight -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Standard Weight</mat-label>
+                                    <input matInput formControlName="StandardWeight" type="number">
+                                    <mat-validation-message [control]="WeightCheckForm.controls.StandardWeight" [message]="'Standard Weight'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                    
+                            <!-- Min Weight Range -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Min Weight Range</mat-label>
+                                    <input matInput formControlName="MinWeightRange" type="number">
+                                    <mat-validation-message [control]="WeightCheckForm.controls.MinWeightRange" [message]="'Min Weight Range'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                    
+                            <!-- Max Weight Range -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Max Weight Range</mat-label>
+                                    <input matInput formControlName="MaxWeightRange" type="number">
+                                    <mat-validation-message [control]="WeightCheckForm.controls.MaxWeightRange" [message]="'Max Weight Range'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                    
+                            <!-- QA User -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>QA User</mat-label>
+                                    <mat-select formControlName="QAUserId">
+                                        <mat-option *ngFor="let user of usersList" [value]="user.id">
+                                            {{ user.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-validation-message [control]="WeightCheckForm.controls.QAUserId" [message]="'QA User'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                    
+                            <!-- Note -->
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-12 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Note</mat-label>
+                                    <textarea matInput formControlName="Note"></textarea>
+                                    <mat-validation-message [control]="WeightCheckForm.controls.Note" [message]="'Note'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <!-- Address Information Section -->
+                <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h5 class="mb-0">Nozzlewise Weight Details</h5>
+                        <!-- <button type="button" mat-flat-button color="primary" (click)="addCustomerDetail()">Add Address</button> -->
+                    </div>
+                    <div class="card-body">
+                        <div formArrayName="WeightCheckDetails">
+
+                            <div *ngFor="let weight of WeightCheckDetails?.controls; let i = index" [formGroupName]="i" class="row mt-3">
+                              <div class="row">
+                                  <div class="col-12 col-sm-12 col-md-1 col-lg-1 mb-3 p-1">
+                                    <mat-form-field>
+                                      <mat-label>Time</mat-label>
+                                      <input matInput [ngxTimepicker]="timepicker" placeholder="Select time" formControlName="Time">
+                                      <ngx-material-timepicker #timepicker></ngx-material-timepicker>
+                                    </mat-form-field>
+                                  </div>
+                                  <div *ngFor="let nozzle of NozzleList" class="col-12 col-sm-12 col-md-1 col-lg-1 mb-3 px-1">
+                                    <mat-form-field>
+                                      <mat-label>{{ nozzle.nozzelName }}</mat-label>
+                                      <input type="number" matInput [formControlName]="nozzle.nozzelName">
+                                    </mat-form-field>
+                                  </div>
+
+                                  <div class="col-12 col-sm-12 col-md-4 col-lg-3 mb-3 p-1">
+                                    <mat-form-field>
+                                      <mat-label>Done By</mat-label>
+                                      <mat-select formControlName="DoneBy" multiple>
+                                        <mat-option *ngFor="let user of usersList" [value]="user.id">
+                                          {{ user.name }}
+                                        </mat-option>
+                                      </mat-select>
+                                      <mat-validation-message [control]="weight.get('DoneBy')" [message]="'Done By'" [formSubmitted]="isFormSubmitted">
+                                      </mat-validation-message>
+                                    </mat-form-field>
+                                  </div>
+                              
+                                  <div class="col-12 col-sm-12 col-md-2 col-lg-2 mb-3 p-1 d-flex align-items-center">
+                                    <button type="button" mat-icon-button color="warn" (click)="addWeightDetail()">
+                                      <mat-icon>add</mat-icon>
+                                    </button>
+                              </div>
+                            </div>
+                          </div>
+                          </div>
+                          
+                    </div>
+                </div>
+
+                
+
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <button type="submit" mat-flat-button color="primary" class="app-button mr-1">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

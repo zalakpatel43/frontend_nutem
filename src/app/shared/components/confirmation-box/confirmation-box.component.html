@@ -1,0 +1,8 @@
+<div class="modal-body text-center">
+    <img height="50" width="50" src="assets/images/warning.png" *ngIf="isWarning"/>
+    <p innerHTML="{{message}}"></p>
+    <button #btnYes mat-flat-button type="button" class="app-button mr-1" style="right:50px" color="warn"
+        (click)="btnClicked(true)">{{yesBtnText}}</button>
+    <button #btnNo mat-flat-button type="button" class="app-button" style="margin-left: 50px;left:50px" color="primary"
+        (click)="btnClicked(false)">{{noBtnText}}</button>
+</div>

@@ -1,0 +1,354 @@
+<div class="row justify-content-center">
+    <div class="col-xl-11 col-lg-12">
+        <div class="border p30 rounded">
+            <div class="row align-items-center mb-4">
+                <div class="col-lg-7 col-sm-9 col-xs-10 d-flex align-items-end">
+                    <h4 class="mb-0"><i class="icon-edit"></i> Add/Edit Customer</h4>
+                </div>
+                <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end">
+                    <a *authPermission="page + '_' + permissions.list" mat-flat-button color="primary" class="app-button" (click)="cancel()">
+                        View List
+                    </a>
+                </div>
+            </div>
+            <form [formGroup]="frmCustomer" (submit)="save()" #form="ngForm" novalidate class="app-form">
+                <!-- Basic Details Section -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Basic Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Customer Code</mat-label>
+                                    <input type="text" matInput formControlName="customerCode">
+                                    <mat-validation-message [control]="frmCustomer.controls.customerCode" [message]="'Customer Code'" [formSubmitted]="isFormSubmitted">
+                                    </mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Customer Name</mat-label>
+                                    <input type="text" matInput formControlName="customerName">
+                                    <mat-validation-message [control]="frmCustomer.controls.customerName" [message]="'Customer Name'" [formSubmitted]="isFormSubmitted">
+                                    </mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Customer Category</mat-label>
+                                    <mat-select formControlName="customerCategoryId">
+                                        <mat-option *ngFor="let category of categories" [value]="category.id">
+                                            {{ category.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-validation-message [control]="frmCustomer.controls.customerCategoryId" [message]="'Customer Category'" [formSubmitted]="isFormSubmitted">
+                                    </mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Industry</mat-label>
+                                    <mat-select formControlName="industryId">
+                                        <mat-option *ngFor="let industry of industries" [value]="industry.id">
+                                            {{ industry.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-validation-message [control]="frmCustomer.controls.industryId" [message]="'Industry'" [formSubmitted]="isFormSubmitted">
+                                    </mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Customer Type</mat-label>
+                                    <mat-select formControlName="customerTypeId">
+                                        <mat-option *ngFor="let type of types" [value]="type.id">
+                                            {{ type.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-validation-message [control]="frmCustomer.controls.customerTypeId" [message]="'Customer Type'" [formSubmitted]="isFormSubmitted">
+                                    </mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Source/Referred By</mat-label>
+                                    <mat-select formControlName="sourceId">
+                                        <mat-option *ngFor="let source of sources" [value]="source.id">
+                                            {{ source.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-validation-message [control]="frmCustomer.controls.sourceId" [message]="'Source/Referred By'" [formSubmitted]="isFormSubmitted">
+                                    </mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Phone No</mat-label>
+                                    <input type="text" matInput formControlName="phoneNo">
+                                    <mat-validation-message [control]="frmCustomer.controls.phoneNo" [message]="'Phone No'" [formSubmitted]="isFormSubmitted">
+                                    </mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Website</mat-label>
+                                    <input type="text" matInput formControlName="website">
+                                    <mat-validation-message [control]="frmCustomer.controls.website" [message]="'Website'" [formSubmitted]="isFormSubmitted">
+                                    </mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-label>GSTIN No</mat-label>
+                                    <input type="text" matInput formControlName="gstinNo">
+                                    <mat-validation-message [control]="frmCustomer.controls.gstinNo" [message]="'GSTIN No'" [formSubmitted]="isFormSubmitted">
+                                    </mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Address Information Section -->
+                <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h5 class="mb-0">Address Information</h5>
+                        <button type="button" mat-flat-button color="primary" (click)="addCustomerDetail()">Add Address</button>
+                    </div>
+                    <div class="card-body">
+                        <div formArrayName="customerDetails">
+                            <div *ngFor="let detail of customerDetails.controls; let i=index" [formGroupName]="i" class="row mt-3">
+                                <div class="col-md-4">
+                                    <mat-form-field>
+                                        <mat-label>Location</mat-label>
+                                        <input type="text" matInput formControlName="location">
+                                        <mat-validation-message [control]="detail.get('location')" [message]="'Location'" [formSubmitted]="isFormSubmitted">
+                                        </mat-validation-message>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field>
+                                        <mat-label>Street</mat-label>
+                                        <input type="text" matInput formControlName="street">
+                                        <mat-validation-message [control]="detail.get('street')" [message]="'Street'" [formSubmitted]="isFormSubmitted">
+                                        </mat-validation-message>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field>
+                                        <mat-label>City</mat-label>
+                                        <input type="text" matInput formControlName="city">
+                                        <mat-validation-message [control]="detail.get('city')" [message]="'City'" [formSubmitted]="isFormSubmitted">
+                                        </mat-validation-message>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field>
+                                        <mat-label>Country</mat-label>
+                                        <input type="text" matInput formControlName="country">
+                                        <mat-validation-message [control]="detail.get('country')" [message]="'Country'" [formSubmitted]="isFormSubmitted">
+                                        </mat-validation-message>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field>
+                                        <mat-label>State</mat-label>
+                                        <input type="text" matInput formControlName="state">
+                                        <mat-validation-message [control]="detail.get('state')" [message]="'State'" [formSubmitted]="isFormSubmitted">
+                                        </mat-validation-message>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field>
+                                        <mat-label>Zip Code</mat-label>
+                                        <input type="text" matInput formControlName="zipCode">
+                                        <mat-validation-message [control]="detail.get('zipCode')" [message]="'Zip Code'" [formSubmitted]="isFormSubmitted">
+                                        </mat-validation-message>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field>
+                                        <mat-label>GSTIN No</mat-label>
+                                        <input type="text" matInput formControlName="gstinNo">
+                                        <mat-validation-message [control]="detail.get('gstinNo')" [message]="'GSTIN No'" [formSubmitted]="isFormSubmitted">
+                                        </mat-validation-message>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2 d-flex align-items-center">
+                                    <button type="button" mat-icon-button color="warn" (click)="addCustomerDetail()">
+                                        <mat-icon>add</mat-icon>
+                                    </button>
+                                    <button type="button" mat-icon-button color="warn" (click)="removeCustomerDetail(i)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Details Section -->
+                <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h5 class="mb-0">Contact Details</h5>
+                        <button type="button" mat-flat-button color="primary" (click)="addCustomerContactDetail()">Add Contact</button>
+                    </div>
+                    <div class="card-body">
+                        <div formArrayName="customerContactDetails">
+                            <div *ngFor="let contact of customerContactDetails.controls; let i=index" [formGroupName]="i" class="row mt-3">
+                                <div class="col-md-4">
+                                    <mat-form-field>
+                                        <mat-label>Contact Name</mat-label>
+                                        <input type="text" matInput formControlName="contactName">
+                                        <mat-validation-message [control]="contact.get('contactName')" [message]="'Contact Name'" [formSubmitted]="isFormSubmitted">
+                                        </mat-validation-message>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field>
+                                        <mat-label>Job Title</mat-label>
+                                        <input type="text" matInput formControlName="jobTitle">
+                                        <mat-validation-message [control]="contact.get('jobTitle')" [message]="'Job Title'" [formSubmitted]="isFormSubmitted">
+                                        </mat-validation-message>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field>
+                                        <mat-label>Email</mat-label>
+                                        <input type="email" matInput formControlName="email">
+                                        <mat-validation-message [control]="contact.get('email')" [message]="'Email'" [formSubmitted]="isFormSubmitted">
+                                        </mat-validation-message>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field>
+                                        <mat-label>Phone No</mat-label>
+                                        <input type="text" matInput formControlName="phoneNo">
+                                        <mat-validation-message [control]="contact.get('phoneNo')" [message]="'Phone No'" [formSubmitted]="isFormSubmitted">
+                                        </mat-validation-message>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field>
+                                        <mat-label>Mobile 1</mat-label>
+                                        <input type="text" matInput formControlName="mobile1">
+                                        <mat-validation-message [control]="contact.get('mobile1')" [message]="'Mobile 1'" [formSubmitted]="isFormSubmitted">
+                                        </mat-validation-message>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field>
+                                        <mat-label>Mobile 2</mat-label>
+                                        <input type="text" matInput formControlName="mobile2">
+                                        <mat-validation-message [control]="contact.get('mobile2')" [message]="'Mobile 2'" [formSubmitted]="isFormSubmitted">
+                                        </mat-validation-message>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field>
+                                        <mat-label>Department</mat-label>
+                                        <input type="text" matInput formControlName="department">
+                                        <mat-validation-message [control]="contact.get('department')" [message]="'Department'" [formSubmitted]="isFormSubmitted">
+                                        </mat-validation-message>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field>
+                                        <mat-label>Designation</mat-label>
+                                        <input type="text" matInput formControlName="designation">
+                                        <mat-validation-message [control]="contact.get('designation')" [message]="'Designation'" [formSubmitted]="isFormSubmitted">
+                                        </mat-validation-message>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2 d-flex align-items-center">
+                                    <button type="button" mat-icon-button color="warn" (click)="addCustomerContactDetail()">
+                                        <mat-icon>add</mat-icon>
+                                    </button>
+                                    <button type="button" mat-icon-button color="warn" (click)="removeCustomerContactDetail(i)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Assignment Details Section -->
+                <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h5 class="mb-0">User Assignment Details</h5>
+                        <button type="button" mat-flat-button color="primary" (click)="addCustomerUserAssignment()">Add User</button>
+                    </div>
+                    <div class="card-body">
+                        <div formArrayName="customerUserDetails">
+                            <div *ngFor="let user of customerUserDetails.controls; let i=index" [formGroupName]="i" class="row mt-3">
+                                <div class="col-md-6">
+                                    <mat-form-field>
+                                        <mat-label>User Name</mat-label>
+                                        <mat-select formControlName="userId">
+                                            <mat-option *ngFor="let user of users" [value]="user.id">
+                                                {{ user.firstName }} {{ user.lastName }} - {{ user.email }}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-validation-message [control]="user.get('userId')" [message]="'User Name'" [formSubmitted]="isFormSubmitted">
+                                        </mat-validation-message>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2 d-flex align-items-center">
+                                    <button type="button" mat-icon-button color="warn" (click)="addCustomerUserAssignment()">
+                                        <mat-icon>add</mat-icon>
+                                    </button>
+                                    <button type="button" mat-icon-button color="warn" (click)="removeCustomerUserAssignment(i)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Territory Assignment Section -->
+                <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h5 class="mb-0">Territory Assignment</h5>
+                        <button type="button" mat-flat-button color="primary" (click)="addCustomerTerritory()">Add Territory</button>
+                    </div>
+                    <div class="card-body">
+                        <div formArrayName="customerTerritoryDetails">
+                            <div *ngFor="let territory of customerTerritoryDetails.controls; let i=index" [formGroupName]="i" class="row mt-3">
+                                <div class="col-md-6">
+                                    <mat-form-field>
+                                        <mat-label>Territory Name</mat-label>
+                                        <mat-select formControlName="territoryId">
+                                            <mat-option *ngFor="let territory of territories" [value]="territory.id">
+                                                {{ territory.name }}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-validation-message [control]="territory.get('territoryId')" [message]="'Territory Name'" [formSubmitted]="isFormSubmitted">
+                                        </mat-validation-message>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2 d-flex align-items-center">
+                                    <button type="button" mat-icon-button color="warn" (click)="addCustomerTerritory()">
+                                        <mat-icon>add</mat-icon>
+                                    </button>
+                                    <button type="button" mat-icon-button color="warn" (click)="removeCustomerTerritory(i)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <button type="submit" mat-flat-button color="primary" class="app-button mr-1">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

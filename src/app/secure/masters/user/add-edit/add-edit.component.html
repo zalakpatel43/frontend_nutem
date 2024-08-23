@@ -1,0 +1,173 @@
+<div class="row justify-content-center">
+    <div class="col-xl-11 col-lg-12">
+        <div class="border p30 rounded">
+            <div class="row align-items-center">
+                <div class="col-lg-7 col-sm-9 col-10 d-flex align-items-end leftSideHeader">
+                    <h4 class="mb20 float-left">User Details</h4>
+                </div>
+                <div class="col-lg-5 col-sm-3 col-2 d-flex justify-content-end rightSideHeader mb10">
+                    <div *authPermission="page + '_' + permissions.list">
+                        <a mat-flat-button color="primary" class="app-button" (click)="cancel()">
+                            View List
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <form #form="ngForm" novalidate class="app-form" [formGroup]="frmUser" (submit)="save()">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <mat-form-field>
+                                <mat-label>Username</mat-label>
+                                <input type="text" matInput formControlName="userName"
+                                    (keydown)="keyDownHandler($event)" space-restrict>
+                                <mat-validation-message [control]="frmUser.controls.userName" [message]="'Username'"
+                                    [formSubmitted]="isFormSubmitted">
+                                </mat-validation-message>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-form-field>
+                                <mat-label>Password</mat-label>
+                                <input [type]="hidePassword || isEditMode ? 'password' : 'text'" matInput
+                                    formControlName="password" autocomplete="off" (keydown)="keyDownHandler($event)">
+                                <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
+                                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+                                    <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                </button>
+                                <mat-validation-message [control]="frmUser.controls.password" [message]="'Password'"
+                                    [formSubmitted]="isFormSubmitted">
+                                </mat-validation-message>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <mat-form-field>
+                                <mat-label>Email</mat-label>
+                                <input type="text" matInput formControlName="email" textlower
+                                    (keydown)="keyDownHandler($event)">
+                                <mat-validation-message [control]="frmUser.controls.email" [message]="'Email'"
+                                    [formSubmitted]="isFormSubmitted">
+                                </mat-validation-message>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-form-field>
+                                <mat-label>Confirm Password</mat-label>
+                                <input [type]="hideConfirmPassword || isEditMode ? 'password' : 'text'" matInput
+                                    formControlName="confirmPassword" autocomplete="off"
+                                    (keydown)="keyDownHandler($event)">
+                                <button type="button" mat-icon-button matSuffix
+                                    (click)="hideConfirmPassword = !hideConfirmPassword"
+                                    [attr.aria-label]="'Hide confirm password'"
+                                    [attr.aria-pressed]="hideConfirmPassword">
+                                    <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                </button>
+                                <mat-validation-message [control]="frmUser.controls.confirmPassword"
+                                    [message]="'Confirm Password'" [formSubmitted]="isFormSubmitted">
+                                </mat-validation-message>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <!-- <div class="row">
+                        <div class="col-md-6">
+                            <mat-form-field>
+                                <mat-label>First Name</mat-label>
+                                <input type="text" matInput formControlName="firstName">
+                                <mat-validation-message [control]="frmUser.controls.firstName" [message]="'First Name'"
+                                    [formSubmitted]="isFormSubmitted">
+                                </mat-validation-message>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-form-field>
+                                <mat-label>Last Name</mat-label>
+                                <input type="text" matInput formControlName="lastName">
+                                <mat-validation-message [control]="frmUser.controls.lastName" [message]="'Last Name'"
+                                    [formSubmitted]="isFormSubmitted">
+                                </mat-validation-message>
+                            </mat-form-field>
+                        </div>
+                    </div> -->
+                    <div class="row">
+                       
+                        <div class="col-md-6">
+                            <mat-form-field>
+                                <mat-label>Phone Number</mat-label>
+                                <input type="text" mask="(000) 000-0000" [dropSpecialCharacters]="false" matInput
+                                    formControlName="phoneNumber" autocomplete="nope">
+                                <div *ngIf="frmUser.controls.phoneNumber.errors" class="custom-validation">
+                                    <div *ngIf="frmUser.controls.phoneNumber.errors.minlength">
+                                        Minimum 10 Characters Required
+                                    </div>
+                                </div>
+                            </mat-form-field>
+                        </div>
+                    </div>                   
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div>
+                    <!-- <div class="row">
+                        <div class="col-md-12">
+                            <h4>Reports To *</h4>
+                        </div>
+                    </div> -->
+                    <!-- <div class="row">
+                        <div class="col-md-12">
+                            <div class="m-checkbox-inline">
+                                <label class="m-checkbox" formArrayName="reportsTo"
+                                    *ngFor="let order of frmUser.controls.reportsTo['controls']; let i = index">
+                                    <input type="checkbox" [formControlName]="i"> {{reportsToData[i].firstName}}  {{reportsToData[i].lastName}}
+                                    <span></span>
+                                </label>
+                            </div>
+                            <mat-validation-message [control]="frmUser.controls.reportsTo" [message]="'Reports To'"
+                                [formSubmitted]="isFormSubmitted">
+                            </mat-validation-message>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            &nbsp;
+                        </div>
+                    </div> -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4>Roles *</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="m-checkbox-inline">
+                                <label class="m-checkbox" formArrayName="roles"
+                                    *ngFor="let order of frmUser.controls.roles['controls']; let i = index">
+                                    <input type="checkbox" [formControlName]="i"> {{roleData[i].name}}
+                                    <span></span>
+                                </label>
+                            </div>
+                            <div *ngIf="frmUser.controls.roles.errors" class="custom-validation">
+                                <div *ngIf="frmUser.controls.roles.errors.minSelection">
+                                    Select Atleast One Role
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 text-right">
+                            <button type="submit" mat-flat-button color="primary" class="app-button mr-1">Save
+                            </button>&nbsp;&nbsp;
+                            <button type="button" mat-flat-button color="primary" (click)="cancel()"
+                                class="app-button">Cancel
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

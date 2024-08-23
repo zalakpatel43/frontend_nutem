@@ -1,0 +1,191 @@
+<div class="row justify-content-center">
+  <div class="col-xl-11 col-lg-12">
+    <div class="border p30 rounded">
+
+      <div class="row align-items-center mb-4">
+        <div class="col-lg-7 col-sm-9 col-xs-10 d-flex align-items-end">
+          <h4 class="mb-0"><i class="icon-edit"></i> Add/Edit Company Details</h4>
+        </div>
+        <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end">
+          <a *authPermission="page + '_' + permissions.list" mat-flat-button color="primary" class="app-button"
+            (click)="cancel()">
+            View List
+          </a>
+        </div>
+      </div>
+      <div>
+        <!-- Company Form -->
+        <form [formGroup]="frmCompany" (ngSubmit)="save()" novalidate>
+          <!-- Basic Details Section -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Basic Details</h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <!-- Company Name Field -->
+                <div class="col-md-6">
+                  <mat-form-field>
+                    <mat-label>Company Name *</mat-label>
+                    <input matInput formControlName="companyName">
+                    <mat-validation-message [control]="frmCompany.controls.companyName" [message]="'Company Name'"
+                      [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                  </mat-form-field>
+                </div>
+
+                <!-- Alias Field -->
+                <div class="col-md-6">
+                  <mat-form-field>
+                    <mat-label>Alias</mat-label>
+                    <input matInput formControlName="alias">
+                  </mat-form-field>
+                </div>
+              </div>
+              <!-- Address Fields -->
+              <div class="row">
+                <!-- Address Line 1 -->
+                <div class="col-md-4">
+                  <mat-form-field>
+                    <mat-label>Address Line 1</mat-label>
+                    <input matInput formControlName="address1">
+                    <mat-validation-message [control]="frmCompany.controls.address1" [message]="'Address Line 1'"
+                      [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                  </mat-form-field>
+                </div>
+
+                <!-- Address Line 2 -->
+                <div class="col-md-4">
+                  <mat-form-field>
+                    <mat-label>Address Line 2</mat-label>
+                    <input matInput formControlName="address2">
+                  </mat-form-field>
+                </div>
+
+                <!-- Address Line 3 -->
+                <div class="col-md-4">
+                  <mat-form-field>
+                    <mat-label>Address Line 3</mat-label>
+                    <input matInput formControlName="address3">
+                  </mat-form-field>
+                </div>
+              </div>
+              <!-- Pincode, City, and State Fields -->
+              <div class="row">
+                <!-- Pincode -->
+                <div class="col-md-4">
+                  <mat-form-field>
+                    <mat-label>Pincode</mat-label>
+                    <input type="text" matInput formControlName="pincode">
+                    <mat-validation-message [control]="frmCompany.controls.pincode" [message]="'Pincode'"
+                      [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                  </mat-form-field>
+                </div>
+
+                <!-- City -->
+                <div class="col-md-4">
+                  <mat-form-field>
+                    <mat-label>City</mat-label>
+                    <input type="text" matInput formControlName="city">
+                    <mat-validation-message [control]="frmCompany.controls.city" [message]="'City'"
+                      [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                  </mat-form-field>
+                </div>
+
+                <!-- State -->
+                <div class="col-md-4">
+                  <mat-form-field>
+                    <mat-label>State</mat-label>
+                    <input type="text" matInput formControlName="state">
+                    <mat-validation-message [control]="frmCompany.controls.state" [message]="'State'"
+                      [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                  </mat-form-field>
+                </div>
+              </div>
+              <!-- Country, PAN No, and GST No Fields -->
+              <div class="row">
+                <!-- Country -->
+                <div class="col-md-4">
+                  <mat-form-field>
+                    <mat-label>Country</mat-label>
+                    <input type="text" matInput formControlName="country">
+                    <mat-validation-message [control]="frmCompany.controls.country" [message]="'Country'"
+                      [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                  </mat-form-field>
+                </div>
+
+                <!-- PAN No -->
+                <div class="col-md-4">
+                  <mat-form-field>
+                    <mat-label>PAN No</mat-label>
+                    <input type="text" matInput formControlName="panNo">
+                    <mat-validation-message [control]="frmCompany.controls.panNo" [message]="'PAN No'"
+                      [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                  </mat-form-field>
+                </div>
+
+                <!-- GST No -->
+                <div class="col-md-4">
+                  <mat-form-field>
+                    <mat-label>GST No</mat-label>
+                    <input type="text" matInput formControlName="gstNo">
+                    <mat-validation-message [control]="frmCompany.controls.gstNo" [message]="'GST No'"
+                      [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                  </mat-form-field>
+                </div>
+              </div>
+              <!-- Email ID, Website, and Phone Number Fields -->
+              <div class="row">
+                <!-- Email ID -->
+                <div class="col-md-4">
+                  <mat-form-field>
+                    <mat-label>Email ID</mat-label>
+                    <input type="email" matInput formControlName="emailID">
+                    <mat-validation-message [control]="frmCompany.controls.emailID" [message]="'Email ID'"
+                      [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                  </mat-form-field>
+                </div>
+
+                <!-- Website -->
+                <div class="col-md-4">
+                  <mat-form-field>
+                    <mat-label>Website</mat-label>
+                    <input type="url" matInput formControlName="website">
+                  </mat-form-field>
+                </div>
+
+                <!-- Phone Number -->
+                <div class="col-md-4">
+                  <mat-form-field>
+                    <mat-label>Phone Number</mat-label>
+                    <input type="tel" matInput formControlName="phoneNo">
+                    <mat-validation-message [control]="frmCompany.controls.phoneNo" [message]="'Phone Number'"
+                      [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <label>Company Logo</label>
+                  <input type="hidden" formControlName="companyLogoId">
+                  <file-uploader [documents]="companyData?.companyLogo" [isEditMode]="isEditMode"
+                    [uploader]="fileUploader?.uploader" [label]="''" [hideUploader]="canHideUploader()"
+                    (removeDocument)="removeFile($event)" (selectedFile)="onSelectFile($event)">
+                  </file-uploader>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Save / Cancel Buttons -->
+          <div class="row mt-3">
+            <div class="col-md-12 text-right">
+              <button type="submit" mat-flat-button color="primary" class="app-button mr-5">Save</button>
+              <button type="button" mat-flat-button color="primary" (click)="cancel()"
+                class="app-button">Cancel</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
