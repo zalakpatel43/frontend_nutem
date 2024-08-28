@@ -1,0 +1,269 @@
+<div class="row justify-content-center">
+    <div class="col-xl-11 col-lg-12">
+        <div class="border p30 rounded">
+            <div class="row align-items-center mb-4">
+                <div class="col-lg-7 col-sm-9 col-xs-10 d-flex align-items-end">
+                    <h4 class="mb-0"><i class="icon-edit"></i> Add/Edit Attribute Check</h4>
+                </div>
+                <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end">
+                    <a *authPermission="page + '_' + permissions.list" mat-flat-button color="primary"
+                        class="app-button" (click)="cancel()">
+                        View List
+                    </a>
+                </div>
+            </div>
+            <form [formGroup]="attributeCheckForm" (submit)="save()" #form="ngForm" novalidate class="app-form">
+                <!-- Basic Details Section -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Attribute Check Header</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- AC Code -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Code</mat-label>
+                                    <input matInput formControlName="ACCode" [disabled]="true">
+                                    <mat-validation-message [control]="attributeCheckForm.controls.ACCode"
+                                        [message]="'AC Code'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- AC Date -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Date</mat-label>
+                                    <input matInput [matDatepicker]="pickerACDate" formControlName="ACDate">
+                                    <mat-datepicker-toggle matSuffix [for]="pickerACDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #pickerACDate></mat-datepicker>
+                                    <mat-validation-message [control]="attributeCheckForm.controls.ACDate"
+                                        [message]="'AC Date'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Production Order -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Production Order</mat-label>
+                                    <mat-select formControlName="ProductionOrderId" [disabled]="isEditMode">
+                                        <mat-option *ngFor="let order of productionOrderList" [value]="order.id">
+                                            {{ order.poNumber }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-validation-message [control]="attributeCheckForm.controls.ProductionOrderId"
+                                        [message]="'Production Order'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Product -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Product</mat-label>
+                                    <mat-select formControlName="ProductId" [disabled]="isEditMode">
+                                        <mat-option *ngFor="let product of productList" [value]="product.id">
+                                            {{ product.productName }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-validation-message [control]="attributeCheckForm.controls.ProductId"
+                                        [message]="'Product'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Bottle Date Code -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Bottle Date Code</mat-label>
+                                    <input matInput formControlName="BottleDateCode">
+                                    <mat-validation-message [control]="attributeCheckForm.controls.BottleDateCode"
+                                        [message]="'Bottle Date Code'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Pack Size -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Pack Size</mat-label>
+                                    <input matInput formControlName="PackSize" type="number">
+                                    <mat-validation-message [control]="attributeCheckForm.controls.PackSize"
+                                        [message]="'Pack Size'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Is Weight Range -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Is Weight Range</mat-label>
+                                    <mat-select formControlName="IsWeightRange">
+                                        <mat-option [value]="true">Yes</mat-option>
+                                        <mat-option [value]="false" selected>No</mat-option>
+                                    </mat-select>
+                                    <mat-validation-message [control]="attributeCheckForm.controls.IsWeightRange"
+                                        [message]="'Is Weight Range'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Note -->
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-12 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Note</mat-label>
+                                    <textarea matInput formControlName="Note"></textarea>
+                                    <mat-validation-message [control]="attributeCheckForm.controls.Note"
+                                        [message]="'Note'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Attribute Check Details Section -->
+                <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h5 class="mb-0">Attribute Check Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <div formArrayName="attributeCheckDetails">
+
+                            <div *ngFor="let detail of  attributeCheckDetails?.controls; let i = index"
+                                [formGroupName]="i" class="row mt-3">
+                                <div class="row">
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Date Time</mat-label>
+                                            <input matInput [ngxTimepicker]="timepicker" placeholder="Select time" formControlName="TDateTime">
+                                      <ngx-material-timepicker #timepicker></ngx-material-timepicker>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Good Condition?</mat-label>
+                                            <mat-select formControlName="IsGoodCondition">
+                                                <mat-option [value]="true">Yes</mat-option>
+                                                <mat-option [value]="false">No</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Cap Torque (Lb-In)</mat-label>
+                                            <input matInput formControlName="CapTorque">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Empty Bottle Weight (G)</mat-label>
+                                            <input matInput formControlName="EmptyBottleWeight" type="number">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Lot No. Of Liquid</mat-label>
+                                            <input matInput formControlName="LotNoOfLiquid">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Leak Test (60 Min)</mat-label>
+                                            <mat-select formControlName="LeakTest">
+                                                <mat-option [value]= 0>None</mat-option>
+                                                <mat-option [value]=1>Yes</mat-option>
+                                                <mat-option [value]=2>No</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Is Correct?</mat-label>
+                                            <mat-select formControlName="IsCorrect">
+                                                <mat-option [value]="true">Yes</mat-option>
+                                                <mat-option [value]="false">No</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Done By User IDs</mat-label>
+                                            <mat-select formControlName="DoneByUserIds" multiple>
+                                                <mat-option *ngFor="let user of usersList" [value]="user.id">
+                                                  {{ user.name }}
+                                                </mat-option>
+                                              </mat-select>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-12 col-sm-12 col-md-2 col-lg-2 mb-3 p-1 d-flex align-items-center">
+                                        <button type="button" mat-icon-button color="warn"
+                                            (click)="addFinalAttributeDetail()">
+                                            <mat-icon>add</mat-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table id="gridAttributeCheck"
+                                class="table table-hover table-bordered display mb-30 fixed-table-scroll-inner"
+                                style="overflow:scroll;width:auto">
+                                <thead class="bg-primary text-primary text-center">
+                                    <tr>
+                                        <th style="width:8%">Time</th>
+                                        <th style="width:12%">Done By</th>
+                                        <th>Good Condition?</th>
+                                        <th>Cap Torque (Lb-In)</th>
+                                        <th>Empty Bottle Weight (G)</th>
+                                        <th>Lot No. Of Liquid</th>
+                                        <th>Leak Test (60 Min)</th>
+                                        <th>Is The Date, Code Correct And Visible?</th>
+                                        <th style="width:5%"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let detail of AddedattributeCheckDetailsList; let i = index">
+                                        <td> {{ detail.TDateTime }} </td>
+                                        <td> {{ detail.Usernames }} </td>
+                                        <td> {{ detail.IsGoodCondition ? 'Yes' : 'No' }} </td>
+                                        <td> {{ detail.CapTorque }} </td>
+                                        <td> {{ detail.EmptyBottleWeight }} </td>
+                                        <td> {{ detail.LotNoOfLiquid }} </td>
+                                        <td> <ng-container *ngIf="detail.LeakTest === 0">None</ng-container>
+                                            <ng-container *ngIf="detail.LeakTest === 1">Yes</ng-container>
+                                            <ng-container *ngIf="detail.LeakTest === 2">No</ng-container> </td>
+                                        <td> {{ detail.IsCorrect ? 'Yes' : 'No' }} </td>
+                                        <td>
+                                            <button (click)="onEditDetail(detail, i)" type="button"
+                                                class="btn btn-primary btn-sm btnModifyRow">
+                                                <i class="fa fa-pencil"></i>
+                                            </button>
+                                            <!-- <button (click)="removeAttributeCheckDetail(i)" type="button" class="btn btn-danger btn-sm btnRemoveRow">
+                                        <i class="fa fa-close"></i>
+                                      </button> -->
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <button type="submit" mat-flat-button color="primary" class="app-button mr-1">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

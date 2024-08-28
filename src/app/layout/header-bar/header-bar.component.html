@@ -43,6 +43,8 @@
                 <mat-menu #ProcessMenu="matMenu">
                     <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'weight-check']"
                     >Weight Check</a>
+                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'attribute-check']"
+                    >Attribute Check</a>
                     <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'customer']"
                     *authPermission="customerPage + '_' + permissions.list">Customer</a>
                     <!-- <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'bom']"

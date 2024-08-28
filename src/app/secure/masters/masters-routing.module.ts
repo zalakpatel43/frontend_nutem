@@ -78,6 +78,12 @@ const routes: Routes = [
                 loadChildren: () => import('./weight-check/weight-check.module').then(m => m.WeightCheckModule)
             },
             {
+                path: 'attribute-check',
+                canActivate: [PageAuthGuard],
+                data: { page: ApplicationPage.attributeCheck },
+                loadChildren: () => import('./attribute-check/attribute-check.module').then(m => m.AttributeCheckModule)
+            },
+            {
                 path: 'bom',
                 canActivate: [PageAuthGuard],
                 data: { page: ApplicationPage.bom, action: PermissionType.list },
