@@ -18,37 +18,37 @@
             <div class="row">
                 <div class="col-12">
                     <user-search-panel (searchChanged)="updateSearch($event)"></user-search-panel>
-                    <ngx-datatable class="material" [rows]="userData | searchtable : searchData" [columnMode]="'force'"
-                        [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10"
-                        [loadingIndicator]="loading" [scrollbarH]="true" [rowClass]="isActiveRow"
-                        [messages]="{emptyMessage:'No Data to Display',totalMessage:'Total'}">
+                    <ngx-datatable class="material"
+                        [rows]="userData | searchtable : searchData"
+                        [columnMode]="'force'"
+                        [headerHeight]="50"
+                        [footerHeight]="50"
+                        [rowHeight]="'auto'"
+                        [limit]="pageSize"
+                        [loadingIndicator]="loading"
+                        [scrollbarH]="true"
+                        [rowClass]="isActiveRow"
+                        [messages]="{emptyMessage:'No Data to Display', totalMessage:'Total'}">
                         <ngx-datatable-column name="User Name" prop="userName"></ngx-datatable-column>
-                        <!-- <ngx-datatable-column name="First Name" prop="firstName"></ngx-datatable-column>
-                        <ngx-datatable-column name="Last Name" prop="lastName"></ngx-datatable-column> -->
                         <ngx-datatable-column name="Email" prop="email"></ngx-datatable-column>
                         <ngx-datatable-column name="Phone Number" prop="phoneNumber"></ngx-datatable-column>
-                        <!-- <ngx-datatable-column name="Roles">
-                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                                <span class="chip-content">{{getRoles(row.roles)}}</span>
-                            </ng-template>
-                        </ngx-datatable-column>                        -->
                         <ngx-datatable-column name="Registered On" prop="createdOn">
                             <ng-template let-value="value" ngx-datatable-cell-template>
                                 <span>{{value | date: 'MM/dd/yyyy hh:mm a'}}</span>
                             </ng-template>
                         </ngx-datatable-column>
                         <ngx-datatable-column name="Actions">
-                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                            <ng-template let-row="row" ngx-datatable-cell-template>
                                 <a *authPermission="page + '_' + permissions.edit" [routerLink]="['../','edit',row.id]"
                                     title="Edit" class="button-padding">
                                     <mat-icon>edit</mat-icon>
                                 </a>
                                 <ng-container *authPermission="page + '_' + permissions.active" class="ml-10">
-                                    <a href="#" *ngIf="row.isActive" (click)="toggleActivate(row.id,false)"
-                                        title="Make InActive" class="button-padding">
+                                    <a href="#" *ngIf="row.isActive" (click)="toggleActivate(row.id, false)"
+                                        title="Make Inactive" class="button-padding">
                                         <mat-icon>lock</mat-icon>
                                     </a>
-                                    <a href="#" *ngIf="!row.isActive" (click)="toggleActivate(row.id,true)"
+                                    <a href="#" *ngIf="!row.isActive" (click)="toggleActivate(row.id, true)"
                                         title="Make Active" class="button-padding">
                                         <mat-icon>lock_open</mat-icon>
                                     </a>
@@ -56,6 +56,14 @@
                             </ng-template>
                         </ngx-datatable-column>
                     </ngx-datatable>
+
+                    <!-- Pagination controls -->
+                    <mat-paginator
+                        [pageSize]="pageSize"
+                        [pageIndex]="pageIndex - 1"
+                        [length]="totalItems"
+                        (page)="onPageChange($event)">
+                    </mat-paginator>
                 </div>
             </div>
         </div>

@@ -7,9 +7,7 @@ import { UserService } from '../user.service';
 @Component({
     templateUrl: './list.component.html'
 })
-
 export class UserListComponent implements OnInit {
-
     userData: User[] = [];
     page: string = ApplicationPage.user;
     permissions = PermissionType;
@@ -18,11 +16,14 @@ export class UserListComponent implements OnInit {
 
     searchData: { [key: string]: any } = {
         isActive: false
-    }
+    };
 
-    constructor(private userService: UserService, private notificationService: ToastrService) {
+    // Pagination variables
+    pageIndex: number = 1;
+    pageSize: number = 2;
+    totalItems: number = 0;
 
-    }
+    constructor(private userService: UserService, private notificationService: ToastrService) { }
 
     ngOnInit(): void {
         this.getUserData();
@@ -31,33 +32,30 @@ export class UserListComponent implements OnInit {
     private getUserData() {
         this.loading = true;
 
-        this.userService.get()
+        this.userService.getUsers(this.pageIndex, this.pageSize)
             .subscribe((result: any) => {
                 this.loading = false;
-                this.userData = result;
+                this.userData = result.items; // Assuming the API response has an 'items' property
+                this.totalItems = result.totalCount; // Assuming the API response has a 'totalCount' property
             }, (error) => {
                 this.loading = false;
                 console.log(error);
             });
     }
 
-    getRoles(roles: any) {
-        var userRoles = "";
-        roles.forEach((item, i) => {
-            if (i == 0) {
-                userRoles = item.roleName;
-            }
-            else {
-                userRoles = userRoles + ', ' + item.roleName;
-            }
-        });
+    // Update the pageIndex and fetch data when user navigates through pages
+    onPageChange(event: any) {
+        this.pageIndex = event.pageIndex + 1; // ngx-datatable uses 0-based index
+        this.getUserData();
+    }
 
-        return userRoles;
+    getRoles(roles: any) {
+        return roles.map((item: any) => item.roleName).join(', ');
     }
 
     updateSearch(search: { [key: string]: any }) {
-        this.searchData = Object.assign({}, search);
-        console.log("search", search)
+        this.searchData = { ...search };
+        console.log("search", search);
     }
 
     isActiveRow(row) {
@@ -67,7 +65,7 @@ export class UserListComponent implements OnInit {
     }
 
     toggleActivate(townId: number, isActive: boolean) {
-        const result = confirm(`Are you sure you want to ${isActive ? `Active` : `Inactive`} ?`);
+        const result = confirm(`Are you sure you want to ${isActive ? `Activate` : `Deactivate`} ?`);
         if (result) {
             this.userService.toggleActivate(townId, isActive)
                 .subscribe((result) => {

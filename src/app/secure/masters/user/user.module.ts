@@ -4,7 +4,8 @@ import { NgxMaskDirective,NgxMaskPipe, provideEnvironmentNgxMask } from 'ngx-mas
 import { UserComponents, UserRoutingModule } from './user-routing.module';
 import { UserService } from './user.service';
 import { RoleService } from '../role/role.service';
-
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 @NgModule({
     declarations: [
         [...UserComponents]
@@ -12,7 +13,7 @@ import { RoleService } from '../role/role.service';
     imports: [
         SharedModule,
         NgxMaskDirective,NgxMaskPipe,
-        UserRoutingModule,
+        UserRoutingModule,MatTableModule,MatPaginatorModule
     ],
     providers: [
         UserService,
