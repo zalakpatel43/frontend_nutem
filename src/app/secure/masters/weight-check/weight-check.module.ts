@@ -5,11 +5,12 @@ import { WeighCheckComponents, WeightCheckRoutingModule } from './weight-check-r
 import { SharedModule } from '@app-shared';
 import { WeightCheckService } from './weight-check.service';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { provideEnvironmentNgxMask } from 'ngx-mask';
 
 
 @NgModule({
   declarations: [
-    ...WeighCheckComponents
+    [...WeighCheckComponents]
   ],
   imports: [
     CommonModule,
@@ -18,7 +19,8 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
     NgxMaterialTimepickerModule
   ],
   providers: [
-      WeightCheckService
+      WeightCheckService,
+      provideEnvironmentNgxMask(),
   ]
 })
 export class WeightCheckModule { }

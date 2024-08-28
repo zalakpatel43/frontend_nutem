@@ -27,7 +27,7 @@ export const APIConstant = {
     weightcheckAdd: `${basePath}WeightCheck/AddWeighCheck`,
     weightcheckEdit: `${basePath}WeightCheck/EditWeighCheck`,
     weightcheckGetById: `${basePath}WeightCheck/GetByIdAsync`,
-    weightcheckDelete: `${basePath}WeightCheck/Delete`,
+    weightcheckDelete: `${basePath}WeightCheck/DeleteWeightCheck`,
 
     //Nozzle
     NozzleList: `${basePath}NozzleMaster/GetAllNozzle`,  //WeightCHeck service 

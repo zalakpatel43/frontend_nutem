@@ -27,7 +27,7 @@
                                     <mat-validation-message [control]="WeightCheckForm.controls.Code" [message]="'Code'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
                                 </mat-form-field>
                             </div>
-                    
+
                             <!-- Start Date Time -->
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <mat-form-field appearance="fill" class="full-width">
@@ -39,7 +39,7 @@
                                     <mat-validation-message [control]="WeightCheckForm.controls.StartDateTime" [message]="'Start Date Time'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
                                 </mat-form-field>
                             </div>
-                    
+
                             <!-- End Date Time -->
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <mat-form-field appearance="fill" class="full-width">
@@ -51,7 +51,7 @@
                                     <mat-validation-message [control]="WeightCheckForm.controls.EndDateTime" [message]="'End Date Time'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
                                 </mat-form-field>
                             </div>
-                    
+
                             <!-- Shift -->
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <mat-form-field appearance="fill" class="full-width">
@@ -64,12 +64,12 @@
                                     <mat-validation-message [control]="WeightCheckForm.controls.ShiftId" [message]="'Shift'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
                                 </mat-form-field>
                             </div>
-                    
+
                             <!-- SAP Production Order -->
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <mat-form-field appearance="fill" class="full-width">
                                     <mat-label>SAP Production Order</mat-label>
-                                    <mat-select formControlName="SAPProductionOrderId">
+                                    <mat-select formControlName="SAPProductionOrderId" [disabled]="isEditMode">
                                         <mat-option *ngFor="let order of productionOrderList" [value]="order.id">
                                             {{ order.poNumber }}
                                         </mat-option>
@@ -77,12 +77,12 @@
                                     <mat-validation-message [control]="WeightCheckForm.controls.SAPProductionOrderId" [message]="'SAP Production Order'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
                                 </mat-form-field>
                             </div>
-                    
+
                             <!-- Product -->
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <mat-form-field appearance="fill" class="full-width">
                                     <mat-label>Product</mat-label>
-                                    <mat-select formControlName="ProductId">
+                                    <mat-select formControlName="ProductId" [disabled]="isEditMode">
                                         <mat-option *ngFor="let product of productList" [value]="product.id">
                                             {{ product.productName }}
                                         </mat-option>
@@ -90,7 +90,7 @@
                                     <mat-validation-message [control]="WeightCheckForm.controls.ProductId" [message]="'Product'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
                                 </mat-form-field>
                             </div>
-                    
+
                             <!-- Bottle Date Code -->
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <mat-form-field appearance="fill" class="full-width">
@@ -99,7 +99,7 @@
                                     <mat-validation-message [control]="WeightCheckForm.controls.BottleDateCode" [message]="'Bottle Date Code'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
                                 </mat-form-field>
                             </div>
-                    
+
                             <!-- Pack Size -->
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <mat-form-field appearance="fill" class="full-width">
@@ -108,7 +108,7 @@
                                     <mat-validation-message [control]="WeightCheckForm.controls.PackSize" [message]="'Pack Size'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
                                 </mat-form-field>
                             </div>
-                    
+
                             <!-- Standard Weight -->
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <mat-form-field appearance="fill" class="full-width">
@@ -117,7 +117,7 @@
                                     <mat-validation-message [control]="WeightCheckForm.controls.StandardWeight" [message]="'Standard Weight'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
                                 </mat-form-field>
                             </div>
-                    
+
                             <!-- Min Weight Range -->
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <mat-form-field appearance="fill" class="full-width">
@@ -126,7 +126,7 @@
                                     <mat-validation-message [control]="WeightCheckForm.controls.MinWeightRange" [message]="'Min Weight Range'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
                                 </mat-form-field>
                             </div>
-                    
+
                             <!-- Max Weight Range -->
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <mat-form-field appearance="fill" class="full-width">
@@ -135,7 +135,7 @@
                                     <mat-validation-message [control]="WeightCheckForm.controls.MaxWeightRange" [message]="'Max Weight Range'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
                                 </mat-form-field>
                             </div>
-                    
+
                             <!-- QA User -->
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <mat-form-field appearance="fill" class="full-width">
@@ -148,7 +148,7 @@
                                     <mat-validation-message [control]="WeightCheckForm.controls.QAUserId" [message]="'QA User'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
                                 </mat-form-field>
                             </div>
-                    
+
                             <!-- Note -->
                             <div class="col-12 col-sm-12 col-md-12 col-lg-12 mb-3">
                                 <mat-form-field appearance="fill" class="full-width">
@@ -159,7 +159,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
 
                 <!-- Address Information Section -->
@@ -173,33 +173,33 @@
 
                             <div *ngFor="let weight of WeightCheckDetails?.controls; let i = index" [formGroupName]="i" class="row mt-3">
                               <div class="row">
-                                  <div class="col-12 col-sm-12 col-md-1 col-lg-1 mb-3 ">
-                                    <mat-form-field>
+                                  <div class="col-12 col-sm-12 col-md-2 col-lg-2 mb-3 ">
+                                    <mat-form-field class="full-width">
                                       <mat-label>Time</mat-label>
                                       <input matInput [ngxTimepicker]="timepicker" placeholder="Select time" formControlName="Time">
                                       <ngx-material-timepicker #timepicker></ngx-material-timepicker>
                                     </mat-form-field>
                                   </div>
                                   <div *ngFor="let nozzle of NozzleList" class="col-12 col-sm-12 col-md-1 col-lg-1 mb-3 ">
-                                    <mat-form-field>
+                                    <mat-form-field class="full-width">
                                       <mat-label>{{ nozzle.nozzelName }}</mat-label>
                                       <input type="number" matInput [formControlName]="nozzle.nozzelName">
                                     </mat-form-field>
                                   </div>
 
                                   <div class="col-12 col-sm-12 col-md-4 col-lg-3 mb-3 p-1">
-                                    <mat-form-field>
+                                    <mat-form-field class="full-width">
                                       <mat-label>Done By</mat-label>
                                       <mat-select formControlName="DoneBy" multiple>
                                         <mat-option *ngFor="let user of usersList" [value]="user.id">
                                           {{ user.name }}
                                         </mat-option>
                                       </mat-select>
-                                      <mat-validation-message [control]="weight.get('DoneBy')" [message]="'Done By'" [formSubmitted]="isFormSubmitted">
-                                      </mat-validation-message>
+                                      <!-- <mat-validation-message [control]="weight.get('DoneBy')" [message]="'Done By'" [formSubmitted]="isFormSubmitted">
+                                      </mat-validation-message> -->
                                     </mat-form-field>
                                   </div>
-                              
+
                                   <div class="col-12 col-sm-12 col-md-2 col-lg-2 mb-3 p-1 d-flex align-items-center">
                                     <button type="button" mat-icon-button color="warn" (click)="addFinalWeightDetail()">
                                       <mat-icon>add</mat-icon>
@@ -208,7 +208,7 @@
                             </div>
                           </div>
                           </div>
-                          
+
                     </div>
                 </div>
 
@@ -237,9 +237,9 @@
                                         <td> {{weight.Time}} </td>
                                         <td> {{weight.DoneBy}} </td>
                                         <td *ngFor="let nozzle of NozzleList"> {{ weight[nozzle.nozzelName] || ''}} </td>
-                                        <td> {{weight.Average}} </td>
+                                        <td> {{weight.Average | number:'1.2-2'}} </td>
                                         <td> <button (click)="onEditDetail(weight,i)" type="button" class="btn btn-primary btn-sm btnModifyRow"><i class="fa fa-pencil"></i></button>
-                                            <button (click)="removeWeightDetail(i)" type="button" class="btn btn-danger btn-sm btnRemoveRow"><i class="fa fa-close"></i></button>
+                                            <!-- <button (click)="removeWeightDetail(i)" type="button" class="btn btn-danger btn-sm btnRemoveRow"><i class="fa fa-close"></i></button> -->
                                         </td>
                                     </tr>
                                 </tbody>

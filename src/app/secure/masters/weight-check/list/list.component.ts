@@ -2,64 +2,79 @@ import { Component, OnInit } from '@angular/core';
 import { ApplicationPage, PermissionType } from '@app-core';
 import { WeightCheckService } from '../weight-check.service';
 import { ToastrService } from 'ngx-toastr';
+import { WeightCheck } from 'src/app/model/WeightCheck';
 
 @Component({
-  selector: 'app-list',
-  // standalone: false,
-  // imports: [],
-  templateUrl: './list.component.html',
-  styleUrl: './list.component.scss'
+    selector: 'app-list',
+    // standalone: false,
+    // imports: [],
+    templateUrl: './list.component.html',
+    styleUrl: './list.component.scss'
 })
 export class WeightCheckListComponent implements OnInit {
 
-  weightCheckData: any[] = [];
-  page: string = ApplicationPage.weightCheck;
-  permissions = PermissionType;
-  isActive: boolean;
-  error: string;
-  loading: boolean;
+    weightCheckData: WeightCheck[] = [];
+    page: string = ApplicationPage.weightCheck;
+    permissions = PermissionType;
+    isActive: boolean;
+    error: string;
+    loading: boolean;
 
-  searchData: { [key: string]: any } = {
-      isActive: false
-  };
+    searchData: { [key: string]: any } = {
+       // isActive: false
+    };
+    showDeleteModal : boolean = false;
 
-  constructor(private weightCheeckService: WeightCheckService, private notificationService: ToastrService) {}
+    constructor(private weightCheckService: WeightCheckService,
+        private notificationService: ToastrService) { }
 
-  ngOnInit(): void {
-      this.getWeightCheckData();
-  }
+    ngOnInit(): void {
+        this.getWeightCheckData();
+    }
 
-  private getWeightCheckData() {
-      this.loading = true;
-      // this.weightCheeckService.get()
-      //     .subscribe((result: Customer[]) => {
-      //         this.customerData = result;
-      //         this.loading = false;
-      //     }, (error) => {
-      //         console.log(error);
-      //         this.loading = false;
-      //     });
-  }
+    private getWeightCheckData() {
+        this.loading = true;
 
-  activateToggleCustomer(customer: any, isActive: boolean) {
-      const result = confirm(`Are you sure you want to ${isActive ? `Activate` : `Deactivate`} this customer?`);
-      // if (result) {
-      //     this.customerService.toggleActivate(customer.id, isActive)
-      //         .subscribe(() => {
-      //             this.getCustomerData();
-      //         }, () => {
-      //             this.notificationService.error("Something went wrong.");
-      //         });
-      // }
-  }
+        this.weightCheckService.getWeightCheckList()
+            .subscribe((result: any) => {
+                // this.cancel();
+                this.weightCheckData = result;
+                console.log("Weight checl list", this.weightCheckData);
+                this.loading = false;
+            },
+                (error) => {
+                    this.error = error;
+                    this.loading = false;
+                });
+    }
 
-  updateSearch(search: { [key: string]: any }) {
-      this.searchData = Object.assign({}, search);
-  }
+    removeWeightCheck(id:number) {
+        const result = confirm(`Are you sure, you want to delete this Weight Check?`);
+        if (result) {
+            this.weightCheckService.DeleteWeightCheck(id)
+                .subscribe(() => {
+                    this.getWeightCheckData();
+                }, () => {
+                    this.notificationService.error("Something went wrong.");
+                });
+        }
+    }
 
-  isActiveRow(row) {
-      return {
-          'text-danger': !row.isActive
-      };
-  }
+    updateSearch(search: { [key: string]: any }) {
+        this.searchData = Object.assign({}, search);
+        console.log("serach data", this.searchData);
+    }
+
+    isActiveRow(row) {
+        return {
+            'text-danger': !row.isActive
+        };
+    }
+
+    // removeWeightCheck(id:number){
+    //     console.log("id for delete", id)
+    //     this.showDeleteModal = true;
+    // }
+
+   
 }
