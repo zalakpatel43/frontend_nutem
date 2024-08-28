@@ -14,6 +14,7 @@ import { PublicModule } from './public/public.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AgGridModule } from 'ag-grid-angular';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,7 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
     BrowserAnimationsModule,
     CoreModule,
     PublicModule,
-    AppRoutingModule,
+    AppRoutingModule,MatTableModule,
     // NgProgressModule,
     // NgProgressHttpModule,
     // NgProgressRouterModule,
