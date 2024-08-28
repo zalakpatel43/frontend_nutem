@@ -53,31 +53,82 @@ export class WeightCheckAddEditComponent implements OnInit, OnDestroy {
   private getRoute() {
       this.routerSub = this.activatedRoute.params.subscribe((params) => {
           this.isEditMode = !CommonUtility.isEmpty(params["id"]);
+          console.log("iseditmode", this.isEditMode)
           this.createForm();
           if (this.isEditMode) {
               this.weightCheckId = params.id//+params["id"];
-              this.getCustomerDetails();
+              this.getWeightCheckById();
           }
       });
   }
 
-  private getCustomerDetails() {
-      // this.customerService.getById(this.customerId)
-      //     .subscribe((result: Customer) => {
-      //         this.customerData = result;
-      //         this.setCustomerData();
-      //     },
-      //     (error) => {
-      //         console.log(error);
-      //     });
+  private getWeightCheckById() {
+      this.weightCheckService.getByIdWeightCheck(this.weightCheckId)
+          .subscribe((result: any) => {
+               this.weightCheckData = result;
+               this.setWeightCheckData();
+
+              console.log("get by id data", result)
+          },
+          (error) => {
+              console.log(error);
+          });
   }
 
-  private setCustomerData() {
-      // this.frmCustomer.patchValue(this.customerData);
-      // this.customerData.customerDetails.forEach(detail => this.addCustomerDetail(detail));
-      // this.customerData.customerContactDetails.forEach(contact => this.addCustomerContactDetail(contact));
-      // this.customerData.customerUserDetails.forEach(user => this.addCustomerUserAssignment(user));
-      // this.customerData.customerTerritoryDetails.forEach(territory => this.addCustomerTerritory(territory));
+  private setWeightCheckData() {
+       this.WeightCheckForm.patchValue({Code: this.weightCheckData.code,
+        StartDateTime: this.weightCheckData.startDateTime,
+        EndDateTime: this.weightCheckData.endDateTime,
+        ShiftId: this.weightCheckData.shiftId,
+        SAPProductionOrderId: this.weightCheckData.sapProductionOrderId,
+        ProductId: this.weightCheckData.productId,
+        BottleDateCode: this.weightCheckData.bottleDateCode,
+        PackSize: this.weightCheckData.packSize,
+        StandardWeight: this.weightCheckData.targetWeight,
+        MinWeightRange: this.weightCheckData.minWeightRange,
+        MaxWeightRange: this.weightCheckData.maxWeightRange,
+        QAUserId: this.weightCheckData.qaUserId,
+        Note: this.weightCheckData.note});
+        this.WeightCheckForm.get('SAPProductionOrderId').disable();
+        this.WeightCheckForm.get('ProductId').disable();
+
+        const formatTimeWithAMPM = (dateTime: string): string => {
+          const date = new Date(dateTime);
+          return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+        };
+
+        setTimeout(() => {
+          this.weightCheckData.weightCheckDetails?.forEach(element => {
+            const nozzleWeights: { [key: number]: number | string } = {};
+  
+            this.NozzleList.forEach(nozzle => {
+              const detail = element.weightCheckSubDetails.find(d => d.nozzleId === nozzle.id);
+              nozzleWeights[nozzle.id] = detail ? detail.weight ?? "" : "";
+            });
+  
+            const doneByArray: number[] = element.doneByUserIds.split(',').map(item => Number(item.trim())).filter(value => !isNaN(value));
+  
+            console.log("nozzle weight ", nozzleWeights)
+           let DetailsData  = {
+              Time : formatTimeWithAMPM(element.tDateTime),
+              DoneBy : doneByArray,
+              Average : element.avgWeight,
+              Id : element.id,
+              HeaderId : element.headerId,
+  
+            }
+  
+            Object.entries(nozzleWeights).forEach(([nozzleId, weight]) => {
+              DetailsData[nozzleId] = weight;
+            });
+  
+            this.AddedWeightCheckDetailsList.push(DetailsData);
+          });
+          console.log("added nozzle data", this.AddedWeightCheckDetailsList)
+  //         let item :any;
+        }, 500);
+      
+
   }
 
   private generateCustomerCode() {
@@ -245,10 +296,7 @@ console.log("NozzleList", this.NozzleList)
       .filter(key => key !== 'Time' && key !== 'DoneBy' && key !== 'Average') // Exclude specific fields
       .map(key => parseFloat(entry[key])) // Convert values to numbers
       .filter(value => !isNaN(value)); // Filter out non-numeric values
-  console.log("nozzle value",nozzleValues.length)
     const total = nozzleValues.reduce((sum, value) => sum + value, 0);
-    console.log("nozzle value",nozzleValues.length)
-    console.log("total", total)
     return nozzleValues.length ? total / nozzleValues.length : 0;
   }
 
@@ -348,25 +396,22 @@ console.log("NozzleList", this.NozzleList)
       this.weightCheckService.addWeightCheck(Playload)
           .subscribe(() => {
               this.cancel();
-              this.notificationService.success("Customer master created successfully.");
+              this.notificationService.success("Weight Check created successfully.");
           },
           (error) => {
               this.error = error;
           });
   }
 
-  private updateCustomer() {
-      // let customer: Customer = this.frmCustomer.getRawValue();
-      // this.customerData = Object.assign(this.customerData, this.customerData, customer);
-
-      // this.customerService.update(this.customerData.id, this.customerData)
-      //     .subscribe(() => {
-      //         this.cancel();
-      //         this.notificationService.success("Customer master details updated successfully.");
-      //     },
-      //     (error) => {
-      //         this.error = error;
-      //     });
+  private updateWeightCheck(Playload) {
+      this.weightCheckService.updateWeightCheck(Playload)
+      .subscribe(() => {
+          this.cancel();
+          this.notificationService.success("Weight Check updated successfully.");
+      },
+      (error) => {
+          this.error = error;
+      });
   }
 
   save() {
@@ -384,7 +429,7 @@ console.log("NozzleList", this.NozzleList)
       console.log("json stringyfy",JSON.stringify(Playload, null, 2))
 
       if (this.isEditMode) {
-          this.updateCustomer();
+          this.updateWeightCheck(Playload);
       } else {
           this.createWeightCheck(Playload);
       }
@@ -455,24 +500,24 @@ console.log("NozzleList", this.NozzleList)
     : Object.values(originalData.WeightCheckDetails || {});
 
     const result = {
-      Id: 0,
-      Code:"",
+      Id: this.isEditMode? this.weightCheckData.id : 0,
+      Code:this.isEditMode? this.weightCheckData.code : "",
       StartDateTime: formatToDateTime(originalData.StartDateTime),
       EndDateTime: formatToDateTime(originalData.EndDateTime),
-      SAPProductionOrderId: originalData.SAPProductionOrderId,
-      ProductId: originalData.ProductId,
+      SAPProductionOrderId: this.isEditMode? this.weightCheckData.sapProductionOrderId :  originalData.SAPProductionOrderId,
+      ProductId: this.isEditMode? this.weightCheckData.productId : originalData.ProductId,
       ShiftId: originalData.ShiftId,
       BottleDateCode: originalData.BottleDateCode.toString(), // Adjust if needed
       PackSize: originalData.PackSize.toString(), // Static value, update if needed
       TargetWeight: originalData.StandardWeight.toString(), // Static value, update if needed
       MinWeightRange: originalData.MinWeightRange,
       MaxWeightRange: originalData.MaxWeightRange,
-      QAUserId: 4, // Static value, update if needed
+      QAUserId: originalData.QAUserId, // Static value, update if needed
       Note: originalData.Note, // Capitalize first letter
   
       WeightCheckDetails: Array.isArray(detailsArray) ? detailsArray.map((details, index) => ({
        
-          Id: index,
+          Id: 0,
           HeaderId: 0, // Static value, update if needed
           TDateTime: formatToTime(details.Time), // Assuming Time is the timestamp
           AvgWeight: details.Average,

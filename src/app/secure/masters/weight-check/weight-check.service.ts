@@ -38,4 +38,16 @@ export class WeightCheckService {
     addWeightCheck(playload){
       return this.http.post(`${APIConstant.weightcheckAdd}`,playload);
     }
+
+    updateWeightCheck(playload){
+      return this.http.post(`${APIConstant.weightcheckEdit}`,playload);
+    }
+
+    getByIdWeightCheck(id : number){
+      return this.http.get(`${APIConstant.weightcheckGetById}` + "?id=" + id);
+    }
+
+    DeleteWeightCheck(id : number){
+      return this.http.get(`${APIConstant.weightcheckDelete}` + "?id=" + id);
+    }
 }

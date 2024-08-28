@@ -10,7 +10,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 export class WeightCheckSearchPanelComponent {
   @Output() searchChanged = new EventEmitter();
   searchData: { [key: string]: any } = {};
-  searchKey = "customerCode,customerName,customerCategory,industry,customerType,phoneNo";
+  searchKey = "startDateTime , endDateTime, shiftName";
 
   updateSearchTerms(key: string, value: any) {
       this.searchData[key] = value;
