@@ -89,21 +89,21 @@ export class DowntimeTrackingAddEditComponent implements OnInit, OnDestroy {
       .subscribe((result: any) => {
         this.causeList = result;
       });
-      this.downtimeTrackingService.getUserList()
+    this.downtimeTrackingService.getUserList()
       .subscribe((result: any) => {
         this.usersList = result;
       });
-      this.downtimeTrackingService.getMaster()
+    this.downtimeTrackingService.getMaster()
       .subscribe((result: any) => {
         this.fillingLineList = this.filterFillingLines(result);
       });
-    
-   
-      
+
+
+
     this.downtimeTrackingService.getShiftList()
-    .subscribe((result: any) => {
-      this.shiftList = result;
-    });
+      .subscribe((result: any) => {
+        this.shiftList = result;
+      });
 
   }
   filterFillingLines(data: any[]): any[] {
@@ -113,32 +113,33 @@ export class DowntimeTrackingAddEditComponent implements OnInit, OnDestroy {
   }
   removedowntimeTrackingDetails(index: number) {
     this.downtimeTrackingDetails.removeAt(index);
-}
-get downtimeTrackingDetails(): FormArray {
-  return this.downtimeTrackingForm.get('downtimeTrackingDetails') as FormArray;
-}
-createForm() {
-  this.downtimeTrackingForm = this.formBuilder.group({
-    DowntimeDate: ['', [Validators.required]],
-    ProductionOrderId: ['', [Validators.required]],
-    FillingLineId: ['', Validators.required],
-    ProductId: ['', [Validators.required]],
-    downtimeTrackingDetails: this.formBuilder.array([])
-  });
-}
+  }
+  get downtimeTrackingDetails(): FormArray {
+    return this.downtimeTrackingForm.get('downtimeTrackingDetails') as FormArray;
+  }
+  createForm() {
+    this.downtimeTrackingForm = this.formBuilder.group({
+      DowntimeDate: ['', [Validators.required]],
+      ProductionOrderId: ['', [Validators.required]],
+      FillingLineId: ['', Validators.required],
+      ProductId: ['', [Validators.required]],
+      downtimeTrackingDetails: this.formBuilder.array([])
+    });
+  }
 
-addDowntimeDetail() {
-  const downtimeDetailGroup = this.formBuilder.group({
-    StartTime: ['', [Validators.required]],
-    EndTime: ['', [Validators.required]],
-    Cause: [''],
-    Notes: [''],
-    DoneByUserIds: [[]], // Ensure this is defined
-    ShiftId: [''] // Ensure this is defined
-  });
+  addDowntimeDetail() {
+    const downtimeDetailGroup = this.formBuilder.group({
+      startDate: ['', [Validators.required]],
+      EndTime: ['', [Validators.required]],
+      Cause: [''],
+      Notes: [''],
+      DoneByUserIds: [[]], // Ensure this is defined
+      ShiftId: [''] // Ensure this is defined
+    });
 
-  this.downtimeTrackingDetails.push(downtimeDetailGroup);
-}
+    this.downtimeTrackingDetails.push(downtimeDetailGroup);
+  }
+
 
 
   populateFormArray(details: any[]) {
@@ -147,31 +148,37 @@ addDowntimeDetail() {
 
     details.forEach(detail => {
       const group = this.formBuilder.group({
-        StartTime: [detail.StartTime || ''],
+        startDate: [detail.startDate || ''],
         EndTime: [detail.EndTime || ''],
         Cause: [detail.Cause || ''],
-        Notes: [detail.Notes || '']
+        ActionTaken: [detail.ActionTaken || ''], // Ensure ActionTaken is added
+        ActionTakenId: [detail.ActionTakenId || ''], // Ensure ActionTakenId is added
+        DoneByUserIds: [detail.DoneByUserIds || []], // Ensure DoneByUserIds is added
+        ShiftId: [detail.ShiftId || ''] // Ensure ShiftId is added
       });
 
       formArray.push(group);
     });
   }
 
+
+
   addFinalDowntimeDetail() {
     const downtimeDetail = this.downtimeTrackingDetails.at(0).value;
 
-    if (!downtimeDetail.StartTime || !downtimeDetail.EndTime) {
+    if (!downtimeDetail.startDate || !downtimeDetail.EndTime) {
       this.notificationService.error("Start Time and End Time are required");
     } else {
       if (this.EditDetailsId >= 0) {
         this.AddedDowntimeTrackingDetailsList[this.EditDetailsId] = downtimeDetail;
-        this.addDowntimeDetail();
+        this.populateFormArray(this.AddedDowntimeTrackingDetailsList); // Update form array
       } else {
         this.AddedDowntimeTrackingDetailsList.push(downtimeDetail);
-        this.addDowntimeDetail();
+        this.populateFormArray(this.AddedDowntimeTrackingDetailsList); // Update form array
       }
     }
   }
+
 
   onEditDetail(detail: any, index: number) {
     this.populateFormArray([detail]);
@@ -184,13 +191,18 @@ addDowntimeDetail() {
 
   private createDowntimeTracking(payload) {
     this.downtimeTrackingService.addDowntimeTracking(payload)
-      .subscribe(() => {
-        this.cancel();
-        this.notificationService.success("Downtime Tracking created successfully.");
-      },
-        (error) => {
-          this.error = error;
-        });
+  .subscribe(
+    () => {
+      this.cancel();
+      this.notificationService.success("Downtime Tracking created successfully.");
+    },
+    (error) => {
+      console.error("Error creating downtime tracking:", error);
+      this.error = error;
+      this.notificationService.error("Failed to create Downtime Tracking.");
+    }
+  );
+
   }
 
   private updateDowntimeTracking(payload) {
@@ -207,76 +219,85 @@ addDowntimeDetail() {
   save() {
     this.isFormSubmitted = true;
 
+    // Check if form is valid
     if (this.downtimeTrackingForm.invalid) {
-        return;
+      return;
     }
-    else if (this.AddedDowntimeTrackingDetailsList.length < 1) {
-        this.notificationService.error("At least one downtime detail is required");
-        return;
+
+    // Check if at least one downtime detail is present
+    if (this.downtimeTrackingDetails.length < 1) {
+      this.notificationService.error("At least one downtime detail is required");
+      return;
     }
-    else {
-        let formValue = this.downtimeTrackingForm.value;
-        formValue.downtimeTrackingDetails = this.AddedDowntimeTrackingDetailsList;
 
-        console.log("Form value before transformation:", formValue);
+    // Transform the form data
+    let formValue = this.downtimeTrackingForm.value;
+    formValue.downtimeTrackingDetails = this.downtimeTrackingDetails.value; // Get value from form array
 
-        let payload = this.transformData(formValue);
-        console.log("Payload for API:", payload);
+    console.log("Form value before transformation:", formValue);
 
-        if (this.isEditMode) {
-            this.updateDowntimeTracking(payload);
-        } else {
-            this.createDowntimeTracking(payload);
+    let payload = this.transformData(formValue);
+    console.log("Payload for API:", payload);
+
+    // Save or update data based on edit mode
+    if (this.isEditMode) {
+      this.updateDowntimeTracking(payload);
+    } else {
+      this.createDowntimeTracking(payload);
+    }
+  }
+
+
+
+  transformData(originalData: any): any {
+    const detailsArray = Array.isArray(originalData.downtimeTrackingDetails)
+      ? originalData.downtimeTrackingDetails
+      : [];
+  
+    return {
+      id: this.isEditMode ? this.downtimeTrackingData.id : 0,
+      code: 'string', 
+      productionDateTime: originalData.DowntimeDate,
+      productId: originalData.ProductId,
+      productName: 'string', 
+      productLineId: originalData.FillingLineId,
+      productLineName: 'string', 
+      isActive: true, 
+      sapProductionOrderId: originalData.ProductionOrderId,
+      downtimeTrackingDetails: detailsArray.map(detail => {
+        const startDate = new Date(detail.startDate);
+        const endDate = new Date(detail.EndTime);
+  
+        if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+          console.error("Invalid date values:", detail.startDate, detail.EndTime);
+          return null; // or handle the invalid dates as needed
         }
-    }
-}
-
-transformData(originalData: any): any {
-  const detailsArray = Array.isArray(originalData.downtimeTrackingDetails)
-    ? originalData.downtimeTrackingDetails
-    : [];
-
-  return {
-    id: this.isEditMode ? this.downtimeTrackingData.id : 0,
-    code: 'string', // Set as per your requirement or fetch from form if needed
-    productionDateTime: originalData.DowntimeDate,
-    productId: originalData.ProductId,
-    productName: 'string', // Set as per your requirement or fetch from form if needed
-    productLineId: originalData.FillingLineId,
-    productLineName: 'string', // Set as per your requirement or fetch from form if needed
-    isActive: true, // Assuming default active status
-    sapProductionOrderId: originalData.ProductionOrderId,
-    downtimeTrackingDetails: detailsArray.map(detail => {
-      const startDate = new Date(detail.StartTime);
-      const endDate = new Date(detail.EndTime);
-
-      if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
-        console.error("Invalid date values:", detail.StartTime, detail.EndTime);
-        return null; // or handle the invalid dates as needed
-      }
-
-      return {
-        id: 0, // or fetch from form if necessary
-        headerId: this.isEditMode ? this.downtimeTrackingData.id : 0,
-        startDate: startDate.toISOString(),
-        endDate: endDate.toISOString(),
-        durations: this.calculateDuration(startDate, endDate),
-        cause: detail.Cause,
-        actionTaken: detail.ActionTaken || '',
-        actionTakenId: detail.ActionTakenId || 0,
-        isActive: true // Assuming default active status
-      };
-    }).filter(detail => detail !== null) // Remove any invalid details
-  };
-}
-
-calculateDuration(startDate: Date, endDate: Date): string {
-  if (!startDate || !endDate) return '0';
   
-  const duration = (endDate.getTime() - startDate.getTime()) / (1000 * 60); // Duration in minutes
+        return {
+          id: detail.id || 0, // Use detail.id if available
+          headerId: this.isEditMode ? this.downtimeTrackingData.id : 0,
+          startDate: startDate.toISOString(),
+          endDate: endDate.toISOString(),
+          durations: this.calculateDuration(startDate, endDate),
+          cause: detail.Cause || 0, // Ensure cause is properly set
+          actionTaken: detail.ActionTaken || '',
+          actionTakenId: detail.ActionTakenId || 0,
+          isActive: true // Assuming default active status
+        };
+      }).filter(detail => detail !== null) // Remove any invalid details
+    };
+  }
   
-  return duration.toString();
-}
+  
+
+
+  calculateDuration(startDate: Date, endDate: Date): string {
+    if (!startDate || !endDate) return '0';
+
+    const duration = (endDate.getTime() - startDate.getTime()) / (1000 * 60); // Duration in minutes
+
+    return duration.toString();
+  }
 
 
   cancel() {
