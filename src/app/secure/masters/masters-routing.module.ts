@@ -84,6 +84,12 @@ const routes: Routes = [
                 loadChildren: () => import('./attribute-check/attribute-check.module').then(m => m.AttributeCheckModule)
             },
             {
+                path: 'downtimeTracking',
+                canActivate: [PageAuthGuard],
+                data: { page: ApplicationPage.downtimeTracking },
+                loadChildren: () => import('./downtime/downtime.module').then(m => m.DowntimeTrackingModule)
+            },
+            {
                 path: 'bom',
                 canActivate: [PageAuthGuard],
                 data: { page: ApplicationPage.bom, action: PermissionType.list },

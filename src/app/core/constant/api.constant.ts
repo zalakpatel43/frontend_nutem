@@ -36,6 +36,14 @@ export const APIConstant = {
      attributecheckGetById: `${basePath}AttributeCheck/GetByIdAsync`,
      attributecheckDelete: `${basePath}AttributeCheck/Delete`,
 
+     // DowntimeTracking
+downtimeTrackingList: `${basePath}DowntimeTracking/GetAllDowntimeTracking`,
+downtimeTrackingAdd: `${basePath}DowntimeTracking/AddDowntimeTracking`,
+downtimeTrackingEdit: `${basePath}DowntimeTracking/EditDowntimeTracking`,
+downtimeTrackingGetById: `${basePath}DowntimeTracking/GetByIdAsync`,
+downtimeTrackingDelete: `${basePath}DowntimeTracking/Delete`,
+
+
     //Nozzle
     NozzleList: `${basePath}NozzleMaster/GetAllNozzle`,  //WeightCHeck service 
 
@@ -50,6 +58,8 @@ export const APIConstant = {
 
      //Shift
      ShiftList: `${basePath}ShiftMaster/GetAllShift`,  //WeightCHeck service 
+      CauseList : `${basePath}CauseMaster/GetAllCauses`,
+      MasterList : `${apiPath}Masters/GetAllMasters`,
 
     //Pages
     company: `${apiPath}company`,

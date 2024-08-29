@@ -1,0 +1,200 @@
+<div class="row justify-content-center">
+    <div class="col-xl-11 col-lg-12">
+        <div class="border p30 rounded">
+            <div class="row align-items-center mb-4">
+                <div class="col-lg-7 col-sm-9 col-xs-10 d-flex align-items-end">
+                    <h4 class="mb-0"><i class="icon-edit"></i> Add/Edit Downtime Tracking</h4>
+                </div>
+                <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end">
+                    <a *authPermission="page + '_' + permissions.list" mat-flat-button color="primary"
+                        class="app-button" (click)="cancel()">
+                        View List
+                    </a>
+                </div>
+            </div>
+            <form [formGroup]="downtimeTrackingForm" (ngSubmit)="save()" novalidate class="app-form">
+                <!-- Basic Details Section -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Downtime Tracking Header</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Downtime Date -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Date</mat-label>
+                                    <input matInput [matDatepicker]="pickerDowntimeDate" formControlName="DowntimeDate">
+                                    <mat-datepicker-toggle matSuffix [for]="pickerDowntimeDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #pickerDowntimeDate></mat-datepicker>
+                                    <mat-error *ngIf="downtimeTrackingForm.get('DowntimeDate').invalid && isFormSubmitted">
+                                        Downtime Date is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Product -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Product</mat-label>
+                                    <mat-select formControlName="ProductId" [disabled]="isEditMode">
+                                        <mat-option *ngFor="let product of productList" [value]="product.id">
+                                            {{ product.productName }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="downtimeTrackingForm.get('ProductId').invalid && isFormSubmitted">
+                                        Product is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Production Order -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Production Order</mat-label>
+                                    <mat-select formControlName="ProductionOrderId" [disabled]="isEditMode">
+                                        <mat-option *ngFor="let order of productionOrderList" [value]="order.id">
+                                            {{ order.poNumber }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="downtimeTrackingForm.get('ProductionOrderId').invalid && isFormSubmitted">
+                                        Production Order is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                               <!-- Filling Line -->
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                <mat-form-field appearance="fill" class="full-width">
+                    <mat-label>Filling Line</mat-label>
+                    <mat-select formControlName="FillingLineId" [disabled]="isEditMode">
+                        <mat-option *ngFor="let line of fillingLineList" [value]="line.id">
+                            {{ line.name }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="downtimeTrackingForm.get('FillingLineId').invalid && isFormSubmitted">
+                        Filling Line is required
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Downtime Tracking Details Section -->
+            <!-- Downtime Tracking Details Section -->
+<div class="card mb-4">
+    <div class="card-header d-flex align-items-center justify-content-between">
+        <h5 class="mb-0">Downtime Tracking Details</h5>
+    </div>
+    <div class="card-body">
+        <div formArrayName="downtimeTrackingDetails">
+            <div *ngFor="let detail of downtimeTrackingDetails.controls; let i = index" [formGroupName]="i" class="row mt-3">
+                <div class="row">
+                    <!-- Start Time -->
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                        <mat-form-field appearance="fill" class="full-width">
+                            <mat-label>Start Time</mat-label>
+                            <input matInput [ngxTimepicker]="startTimepicker" placeholder="Select time" formControlName="StartTime">
+                            <ngx-material-timepicker #startTimepicker></ngx-material-timepicker>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- End Time -->
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                        <mat-form-field appearance="fill" class="full-width">
+                            <mat-label>End Time</mat-label>
+                            <input matInput [ngxTimepicker]="endTimepicker" placeholder="Select time" formControlName="EndTime">
+                            <ngx-material-timepicker #endTimepicker></ngx-material-timepicker>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Cause -->
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                        <mat-form-field appearance="fill" class="full-width">
+                            <mat-label>Cause</mat-label>
+                            <mat-select formControlName="Cause">
+                                <mat-option *ngFor="let cause of causeList" [value]="cause.id">
+                                    {{ cause.code }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Shift -->
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                        <mat-form-field appearance="fill" class="full-width">
+                            <mat-label>Shift</mat-label>
+                            <mat-select formControlName="ShiftId">
+                              <mat-option *ngFor="let shift of shiftList" [value]="shift.id">
+                                {{ shift.shiftName }}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                    </div>
+
+                    <!-- Action Taken -->
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                        <mat-form-field appearance="fill" class="full-width">
+                            <mat-label>Action Taken</mat-label>
+                            <input matInput formControlName="ActionTaken">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                        <mat-form-field appearance="fill" class="full-width">
+                            <mat-label>Done By User IDs</mat-label>
+                            <mat-select formControlName="DoneByUserIds" multiple>
+                              <mat-option *ngFor="let user of usersList" [value]="user.id">
+                                {{ user.name }}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                    </div>
+
+                    <!-- Add Button -->
+                    <div class="col-12 col-sm-12 col-md-2 col-lg-2 mb-3 p-1 d-flex align-items-center">
+                        <button type="button" mat-icon-button color="warn" (click)="addFinalDowntimeDetail()">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Downtime Reporting Instructions -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="mb-0">Downtime Reporting Instructions</h5>
+    </div>
+    <div class="card-body">
+        <ul>
+            <li>
+                Downtime (D/T) to be documented whenever the FILLER is NOT running. Operator to record the Duration and Cause as well as the Actions Taken to correct the issue.
+            </li>
+            <li>
+                A Breakdown (B/D) is any single stop which is greater than 10 minutes. All other downtime to be registered as accumulated. When a B/D occurs notify the Shift Supervisor/Production Manager and record under Action Taken.
+            </li>
+            <li>
+                If a Quality issue is the cause, notify the Shift Supervisor/Production Manager and QA and record under Action Taken.
+            </li>
+        </ul>
+    </div>
+</div>
+
+                <!-- Save Button -->
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <button type="submit" mat-flat-button color="primary" class="app-button mr-1">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
