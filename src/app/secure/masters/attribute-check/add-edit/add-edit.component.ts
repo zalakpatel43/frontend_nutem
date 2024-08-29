@@ -75,56 +75,45 @@ export class AttributeCheckAddEditComponent implements OnInit, OnDestroy {
     this.attributeCheckForm.patchValue({
       ACCode: this.attributeCheckData.code,
       ACDate: this.attributeCheckData.acDate,
-      EndDateTime: this.attributeCheckData.endDateTime,
-      ShiftId: this.attributeCheckData.shiftId,
-      SAPProductionOrderId: this.attributeCheckData.sapProductionOrderId,
+      ProductionOrderId: this.attributeCheckData.productionOrderId,
       ProductId: this.attributeCheckData.productId,
       BottleDateCode: this.attributeCheckData.bottleDateCode,
-      // PackSize: this.weightCheckData.packSize,
-      // StandardWeight: this.weightCheckData.targetWeight,
-      // MinWeightRange: this.weightCheckData.minWeightRange,
-      // MaxWeightRange: this.weightCheckData.maxWeightRange,
-      // QAUserId: this.weightCheckData.qaUserId,
-      // Note: this.weightCheckData.note
+      PackSize: this.attributeCheckData.packSize,
+      IsWeightRange: this.attributeCheckData.isWeightRange,
+      Note: this.attributeCheckData.note
     });
-    // this.WeightCheckForm.get('SAPProductionOrderId').disable();
-    // this.WeightCheckForm.get('ProductId').disable();
+    this.attributeCheckForm.get('ProductionOrderId').disable();
+    this.attributeCheckForm.get('ProductId').disable();
 
-    // const formatTimeWithAMPM = (dateTime: string): string => {
-    //   const date = new Date(dateTime);
-    //   return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
-    // };
+    const formatTimeWithAMPM = (dateTime: string): string => {
+      const date = new Date(dateTime);
+      return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+    };
 
-    // setTimeout(() => {
-    //   this.weightCheckData.weightCheckDetails?.forEach(element => {
-    //     const nozzleWeights: { [key: number]: number | string } = {};
+    setTimeout(() => {
+      this.attributeCheckData.attributeCheckDetails?.forEach(element => {
 
-    //     this.NozzleList.forEach(nozzle => {
-    //       const detail = element.weightCheckSubDetails.find(d => d.nozzleId === nozzle.id);
-    //       nozzleWeights[nozzle.id] = detail ? detail.weight ?? "" : "";
-    //     });
+        const doneByArray: number[] = element.doneByUserIds.split(',').map(item => Number(item.trim())).filter(value => !isNaN(value));
+console.log("done by array", doneByArray);
+        let DetailsData = {
+          TDateTime: formatTimeWithAMPM(element.tDateTime),
+          IsGoodCondition: element.isGoodCondition,
+          CapTorque: element.capTorque,
+          Id: element.id,
+          EmptyBottleWeight: element.emptyBottleWeight,
+          LotNoOfLiquid: element.lotNoOfLiquid,
+          IsCorrect: element.isCorrect,
+          LeakTest: element.leakTest,
+          DoneByUserIds: element.doneByUserIds,
+        }
 
-    //     const doneByArray: number[] = element.doneByUserIds.split(',').map(item => Number(item.trim())).filter(value => !isNaN(value));
+       
 
-    //     console.log("nozzle weight ", nozzleWeights)
-    //     let DetailsData = {
-    //       Time: formatTimeWithAMPM(element.tDateTime),
-    //       DoneBy: doneByArray,
-    //       Average: element.avgWeight,
-    //       Id: element.id,
-    //       HeaderId: element.headerId,
-
-    //     }
-
-    //     Object.entries(nozzleWeights).forEach(([nozzleId, weight]) => {
-    //       DetailsData[nozzleId] = weight;
-    //     });
-
-    //     this.AddedWeightCheckDetailsList.push(DetailsData);
-    //   });
-    //   console.log("added nozzle data", this.AddedWeightCheckDetailsList)
-    //   //         let item :any;
-    // }, 500);
+        this.AddedattributeCheckDetailsList.push(DetailsData);
+      });
+      console.log("added nozzle data", this.AddedattributeCheckDetailsList)
+      //         let item :any;
+    }, 500);
 
 
   }
@@ -249,16 +238,17 @@ export class AttributeCheckAddEditComponent implements OnInit, OnDestroy {
     // Populate each FormGroup in the FormArray
     dataArray.forEach(dataItem => {
       const item = this.formBuilder.group({});
+      const doneByArray: number[] = dataItem.DoneByUserIds.split(',').map(item => Number(item.trim())).filter(value => !isNaN(value));
 
       // Add static controls with data
       item.addControl('TDateTime', this.formBuilder.control(dataItem.TDateTime || ''));
       item.addControl('IsGoodCondition', this.formBuilder.control(dataItem.IsGoodCondition || ''));
-      item.addControl('CapTorque', this.formBuilder.control(dataItem.IsGoodCondition || ''));
-      item.addControl('EmptyBottleWeight', this.formBuilder.control(dataItem.IsGoodCondition || ''));
-      item.addControl('LotNoOfLiquid', this.formBuilder.control(dataItem.IsGoodCondition || ''));
-      item.addControl('IsCorrect', this.formBuilder.control(dataItem.IsGoodCondition || ''));
-      item.addControl('LeakTest', this.formBuilder.control(dataItem.IsGoodCondition || ''));
-      item.addControl('DoneByUserIds', this.formBuilder.control(dataItem.IsGoodCondition || ''));
+      item.addControl('CapTorque', this.formBuilder.control(dataItem.CapTorque || ''));
+      item.addControl('EmptyBottleWeight', this.formBuilder.control(dataItem.EmptyBottleWeight || ''));
+      item.addControl('LotNoOfLiquid', this.formBuilder.control(dataItem.LotNoOfLiquid || ''));
+      item.addControl('IsCorrect', this.formBuilder.control(dataItem.IsCorrect || ''));
+      item.addControl('LeakTest', this.formBuilder.control(dataItem.LeakTest || ''));
+      item.addControl('DoneByUserIds', this.formBuilder.control(doneByArray || ''));
 
       // Push the populated FormGroup into the FormArray
       this.attributeCheckDetails.push(item);

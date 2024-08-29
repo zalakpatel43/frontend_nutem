@@ -20,7 +20,7 @@ export class UserListComponent implements OnInit {
 
     // Pagination variables
     pageIndex: number = 1;
-    pageSize: number = 2;
+    pageSize: number = 10;
     totalItems: number = 0;
 
     constructor(private userService: UserService, private notificationService: ToastrService) { }
