@@ -111,12 +111,12 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
             userName: [{ value: '', disabled: this.isEditMode }, [Validators.required, Validators.maxLength(50)]],
             password: [{ value: '', disabled: this.isEditMode }, [Validators.required, Validators.min(6), Validators.maxLength(20), ValidationService.passwordValidator]],
             confirmPassword: [{ value: '', disabled: this.isEditMode }, [Validators.required, ValidationService.comparePassword]],
-            firstName: ['', [Validators.required, Validators.maxLength(50)]],
-            lastName: ['', [Validators.required, Validators.maxLength(50)]],
+           // firstName: ['', [Validators.required, Validators.maxLength(50)]],
+           // lastName: ['', [Validators.required, Validators.maxLength(50)]],
             email: ['', [Validators.required, ValidationService.emailValidator, ValidationService.multipleemailrestrictValidator, Validators.maxLength(50)]],
             phoneNumber: ['', [Validators.maxLength(15)]],
-            reportsTo: new UntypedFormArray([], ValidationService.minSelectedCheckboxes(0)),
-            roles: new UntypedFormArray([], ValidationService.minSelectedCheckboxes(1)),
+           // reportsTo: new UntypedFormArray([], ValidationService.minSelectedCheckboxes(0)),
+           // roles: new UntypedFormArray([], ValidationService.minSelectedCheckboxes(1)),
         });
     }
 
@@ -129,40 +129,43 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
     }
 
     private createRolesControl() {
-        const rolesArray = <UntypedFormArray>this.frmUser.controls['roles'];
-        rolesArray.controls = [];
-        this.roleData.forEach(item => {
-            rolesArray.push(new UntypedFormControl((this.userData.roles || []).some(x => x.roleId === item.id)));
-        });
+        // const rolesArray = <UntypedFormArray>this.frmUser.controls['roles'];
+        // rolesArray.controls = [];
+        // this.roleData.forEach(item => {
+        //     rolesArray.push(new UntypedFormControl((this.userData.roles || []).some(x => x.roleId === item.id)));
+        // });
     }
 
     private createUser() {
-        let reportsTo: Array<{ reportToId: number }> = []
-        const reportsToList = CommonUtility.getSelectedCheckboxList(this.frmUser.value.reportsTo, this.reportsToData);
-        if (CommonUtility.isNotEmpty(reportsToList)) {
-            reportsToList.forEach((item: List) => {
-                reportsTo.push({ reportToId: item.id });
-            });
-        }
+        // let reportsTo: Array<{ reportToId: number }> = []
+        // const reportsToList = CommonUtility.getSelectedCheckboxList(this.frmUser.value.reportsTo, this.reportsToData);
+        // if (CommonUtility.isNotEmpty(reportsToList)) {
+        //     reportsToList.forEach((item: List) => {
+        //         reportsTo.push({ reportToId: item.id });
+        //     });
+        // }
 
-        let roles: Array<{ id: number }> = [];
-        const rolesList = CommonUtility.getSelectedCheckboxList(this.frmUser.value.roles, this.roleData);
-        if (CommonUtility.isNotEmpty(rolesList)) {
-            rolesList.forEach((item: List) => {
-                roles.push({ id: item.id });
-            });
-        }
+        // let roles: Array<{ id: number }> = [];
+        // const rolesList = CommonUtility.getSelectedCheckboxList(this.frmUser.value.roles, this.roleData);
+        // if (CommonUtility.isNotEmpty(rolesList)) {
+        //     rolesList.forEach((item: List) => {
+        //         roles.push({ id: item.id });
+        //     });
+        // }
 
-        let user: User = Object.assign({}, this.frmUser.value, {
-            reportsTo: reportsTo,
-            roles: roles
-        });
+        let user: User = Object.assign({}, this.frmUser.value
+        //     , {
+        //     reportsTo: reportsTo,
+        //     roles: roles
+        // }
+    );
 
         this.userService.add(user)
             .subscribe((result: any) => {
-                if (result.isSuccess) {
+                if (result) {
                     this.cancel();
                     this.notificationService.success("User saved successfully.");
+                 //   this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
                 }
                 else {
                     this.notificationService.warning(result.message);
@@ -179,32 +182,35 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
     private updateUser() {
         let user: User = this.frmUser.value;
 
-        let reportsTo: Array<{ reportToId: number }> = []
-        const reportsToList = CommonUtility.getSelectedCheckboxList(this.frmUser.value.reportsTo, this.reportsToData);
-        if (CommonUtility.isNotEmpty(reportsToList)) {
-            reportsToList.forEach((item: List) => {
-                reportsTo.push({ reportToId: item.id });
-            });
-        }
+        // let reportsTo: Array<{ reportToId: number }> = []
+        // const reportsToList = CommonUtility.getSelectedCheckboxList(this.frmUser.value.reportsTo, this.reportsToData);
+        // if (CommonUtility.isNotEmpty(reportsToList)) {
+        //     reportsToList.forEach((item: List) => {
+        //         reportsTo.push({ reportToId: item.id });
+        //     });
+        // }
 
-        let roles: Array<{ id: number }> = [];
-        const rolesList = CommonUtility.getSelectedCheckboxList(this.frmUser.value.roles, this.roleData);
-        if (CommonUtility.isNotEmpty(rolesList)) {
-            rolesList.forEach((item: List) => {
-                roles.push({ id: item.id });
-            });
-        }
+        // let roles: Array<{ id: number }> = [];
+        // const rolesList = CommonUtility.getSelectedCheckboxList(this.frmUser.value.roles, this.roleData);
+        // if (CommonUtility.isNotEmpty(rolesList)) {
+        //     rolesList.forEach((item: List) => {
+        //         roles.push({ id: item.id });
+        //     });
+        // }
 
-        this.userData = Object.assign(this.userData, user, {
-            reportsTo: reportsTo,
-            roles: roles
-        });
+        this.userData = Object.assign(this.userData, user
+        //     , {
+        //     reportsTo: reportsTo,
+        //     roles: roles
+        // }
+    );
 
         this.userService.update(this.userData.id, this.userData)
             .subscribe((result: any) => {
                 if (result.isSuccess) {
                     this.cancel();
                     this.notificationService.success("User updated successfully.");
+                    this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
                 }
                 else {
                     this.notificationService.warning(result.message);
@@ -220,7 +226,7 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
 
     save() {
         this.isFormSubmitted = true;
-        this.setValidators();
+       // this.setValidators();
 
         if (this.frmUser.invalid) {
             return;

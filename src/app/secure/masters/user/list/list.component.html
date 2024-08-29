@@ -32,7 +32,7 @@
                         <ngx-datatable-column name="User Name" prop="userName"></ngx-datatable-column>
                         <ngx-datatable-column name="Email" prop="email"></ngx-datatable-column>
                         <ngx-datatable-column name="Phone Number" prop="phoneNumber"></ngx-datatable-column>
-                        <ngx-datatable-column name="Registered On" prop="createdOn">
+                        <ngx-datatable-column name="Registered On" prop="createdDate">
                             <ng-template let-value="value" ngx-datatable-cell-template>
                                 <span>{{value | date: 'MM/dd/yyyy hh:mm a'}}</span>
                             </ng-template>
