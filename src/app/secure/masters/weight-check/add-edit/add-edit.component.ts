@@ -134,7 +134,7 @@ export class WeightCheckAddEditComponent implements OnInit, OnDestroy {
 
     this.weightCheckService.getNozzleList()
       .subscribe((result: any) => {
-        this.NozzleList = result;
+        this.NozzleList = result.items;
         this.addWeightDetail();
       });
 

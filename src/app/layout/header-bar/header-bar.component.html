@@ -21,8 +21,8 @@
                         *authPermission="rolePage + '_' + permissions.list">Role</a>
                     <!-- <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'permissions']"
                         *authPermission="permissionPage + '_' + permissions.list">Permission</a> -->
-                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'company']"
-                        *authPermission="companyPage + '_' + permissions.list">Company</a>
+                    <!-- <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'company']"
+                        *authPermission="companyPage + '_' + permissions.list">Company</a> -->
                     <!-- <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'location']"
                         *authPermission="locationPage + '_' + permissions.list">Locations</a>
                     <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'module']"
@@ -49,6 +49,8 @@
                     >DownTime Tracking</a>
                     <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'customer']"
                     *authPermission="customerPage + '_' + permissions.list">Customer</a>
+                    <!-- <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'customer']"
+                    *authPermission="customerPage + '_' + permissions.list">Customer</a> -->
                     <!-- <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'bom']"
                         *authPermission="bomPage + '_' + permissions.list">BOM</a>
                     <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'group-code']"
@@ -106,7 +108,7 @@
                 <mat-icon>arrow_drop_down</mat-icon>
             </button>
             <mat-menu #profileMenu="matMenu">
-                <a mat-menu-item href="javascript:void(0);" (click)="changePassword()">Change Password</a>
+                <!-- <a mat-menu-item href="javascript:void(0);" (click)="changePassword()">Change Password</a> -->
                 <a mat-menu-item [routerLink]="['', 'logout']">Logout</a>
             </mat-menu>
 
@@ -128,9 +130,9 @@
                 <a routerLinkActive="active" mat-list-item (click)="sidenav.toggle()"
                     *authPermission="rolePage + '_' + permissions.list"
                     [routerLink]="['/secure/masters','role']">Role</a>
-                <a routerLinkActive="active" mat-list-item (click)="sidenav.toggle()"
+                <!-- <a routerLinkActive="active" mat-list-item (click)="sidenav.toggle()"
                     [routerLink]="['/secure/masters','permissions']"
-                    *authPermission="permissionPage + '_' + permissions.edit">Permission</a>
+                    *authPermission="permissionPage + '_' + permissions.edit">Permission</a> -->
             </mat-nav-list>
         </mat-sidenav>
         <mat-sidenav-content fxFlexFill>

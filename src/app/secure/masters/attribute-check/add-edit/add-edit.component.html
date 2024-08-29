@@ -227,13 +227,13 @@
                                         <th>Lot No. Of Liquid</th>
                                         <th>Leak Test (60 Min)</th>
                                         <th>Is The Date, Code Correct And Visible?</th>
-                                        <th style="width:5%"></th>
+                                        <th style="width:5%">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let detail of AddedattributeCheckDetailsList; let i = index">
                                         <td> {{ detail.TDateTime }} </td>
-                                        <td> {{ detail.Usernames }} </td>
+                                        <td> {{ detail.DoneByUserIds }} </td>
                                         <td> {{ detail.IsGoodCondition ? 'Yes' : 'No' }} </td>
                                         <td> {{ detail.CapTorque }} </td>
                                         <td> {{ detail.EmptyBottleWeight }} </td>

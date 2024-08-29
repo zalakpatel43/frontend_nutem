@@ -52,8 +52,9 @@ export class HeaderBarComponent implements OnInit, OnDestroy {
     private getUser() {
         const user: any = this.userAuthService.getUser();
         if (user) {
-            this.userName = (CommonUtility.isNotEmpty(user.firstName) ? user.firstName : '') + ' '
-                + (CommonUtility.isNotEmpty(user.lastName) ? user.lastName : '');
+            this.userName = (CommonUtility.isNotEmpty(user.userName) ? user.userName : '');
+            // (CommonUtility.isNotEmpty(user.firstName) ? user.firstName : '') + ' '
+            //     + (CommonUtility.isNotEmpty(user.lastName) ? user.lastName : '');
         }
 
     }
