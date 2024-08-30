@@ -53,7 +53,7 @@
               <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                 <mat-form-field appearance="fill" class="full-width">
                   <mat-label>Filling Line</mat-label>
-                  <mat-select formControlName="FillingLineId" [disabled]="isEditMode">
+                  <mat-select formControlName="productLineId" [disabled]="isEditMode">
                     <mat-option *ngFor="let line of fillingLineList" [value]="line.id">
                       {{ line.name }}
                     </mat-option>
@@ -68,7 +68,7 @@
                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                 <mat-form-field appearance="fill" class="full-width">
                     <mat-label>Production Order</mat-label>
-                    <mat-select formControlName="ProductionOrderId" [disabled]="isEditMode">
+                    <mat-select formControlName="SAPProductionOrderId" [disabled]="isEditMode">
                         <mat-option *ngFor="let order of productionOrderList" [value]="order.id">
                             {{ order.poNumber }}
                         </mat-option>
@@ -90,8 +90,7 @@
           </div>
           <div class="card-body">
             <div formArrayName="downtimeTrackingDetails">
-              <div *ngFor="let detail of downtimeTrackingDetails?.controls; let i = index" [formGroupName]="i"
-                class="row mt-3">
+              <div *ngFor="let detail of downtimeTrackingDetails.controls; let i = index" [formGroupName]="i" class="row mt-3">
                 <div class="row">
                   <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                     <mat-form-field appearance="fill" class="full-width">
@@ -190,22 +189,22 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let detail of downtimeTrackingDetailsList; let i = index">
+                  <tr *ngFor="let detail of addedDowntimeTrackingDetailsList; let i = index">
                     <td>{{ detail.StartDate }}</td>
                     <td>{{ detail.EndDate }}</td>
                     <td>{{ detail.Durations }}</td>
-                    <td>{{ getShiftName(detail.ShiftId) }}</td>
-                    <td>{{ getCauseName(detail.CauseId) }}</td>
+                    <td>{{detail.ShiftId }}</td>
+                    <td>{{ detail.CauseId }}</td>
                     <td>{{ detail.ActionTaken }}</td>
-
                     <td>{{ detail.IsActive ? 'Yes' : 'No' }}</td>
                     <td>
-                      <button (click)="onEditDetail(detail, i)" type="button"
-                        class="btn btn-primary btn-sm btnModifyRow">
-                        <i class="fa fa-pencil"></i>
+                      <button type="button" mat-icon-button color="warn" (click)="addFinalDowntimeDetail()">
+                        <mat-icon>add</mat-icon>
                       </button>
+                      
                     </td>
                   </tr>
+                  
                 </tbody>
               </table>
             </div>

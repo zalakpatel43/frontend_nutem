@@ -41,7 +41,7 @@ downtimeTrackingList: `${basePath}DowntimeTracking/GetAllDowntimeTrackings`,
 downtimeTrackingAdd: `${basePath}DowntimeTracking/AddDowntimeTracking`,
 downtimeTrackingEdit: `${basePath}DowntimeTracking/EditDowntimeTracking`,
 downtimeTrackingGetById: `${basePath}DowntimeTracking/GetByIdAsync`,
-downtimeTrackingDelete: `${basePath}DowntimeTracking/Delete`,
+downtimeTrackingDelete: `${basePath}DowntimeTracking/DeleteDowntimeTracking`,
 
 
     //Nozzle
