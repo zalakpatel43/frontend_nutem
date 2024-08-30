@@ -37,7 +37,7 @@ export const APIConstant = {
      attributecheckDelete: `${basePath}AttributeCheck/Delete`,
 
      // DowntimeTracking
-downtimeTrackingList: `${basePath}DowntimeTracking/GetAllDowntimeTracking`,
+downtimeTrackingList: `${basePath}DowntimeTracking/GetAllDowntimeTrackings`,
 downtimeTrackingAdd: `${basePath}DowntimeTracking/AddDowntimeTracking`,
 downtimeTrackingEdit: `${basePath}DowntimeTracking/EditDowntimeTracking`,
 downtimeTrackingGetById: `${basePath}DowntimeTracking/GetByIdAsync`,
