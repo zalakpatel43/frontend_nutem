@@ -107,17 +107,13 @@ console.log("done by array", doneByArray);
           DoneByUserIds: element.doneByUserIds,
         }
 
-       
-
         this.AddedattributeCheckDetailsList.push(DetailsData);
       });
       console.log("added nozzle data", this.AddedattributeCheckDetailsList)
       //         let item :any;
     }, 500);
 
-
   }
-
 
   private loadDropdowns() {
 
@@ -265,8 +261,6 @@ console.log("done by array", doneByArray);
     this.AddedattributeCheckDetailsList.splice(i, 1);
     console.log("control", this.AddedattributeCheckDetailsList)
   }
-
-
 
   private createAttributeCheck(Playload) {
 
