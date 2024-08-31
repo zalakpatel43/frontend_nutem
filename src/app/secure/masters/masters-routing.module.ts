@@ -173,6 +173,12 @@ const routes: Routes = [
                 data: { page: ApplicationPage.location, action: PermissionType.list },
                 loadChildren: () => import('./location/location.module').then(m => m.LocationModule)
             },
+            {
+                path: 'pre-check',
+                canActivate: [PageAuthGuard],
+                data: { page: ApplicationPage.preCheck },
+                loadChildren: () => import('./pre-check/pre-check.module').then(m => m.PreCheckModule)
+            },
         ]
     }
 ];

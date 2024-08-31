@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators,UntypedFormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationPage, CommonUtility, PermissionType } from '@app-core';
 import { Subscription } from 'rxjs';
@@ -7,15 +7,18 @@ import { DowntimeTrackingService } from '../downtime.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-add-edit',
+  selector: 'app-down-time',
   templateUrl: './add-edit.component.html',
   styleUrls: ['./add-edit.component.scss']
 })
 export class DowntimeTrackingAddEditComponent implements OnInit, OnDestroy {
+getCauseName(arg0: any) {
+throw new Error('Method not implemented.');
+}
   downtimeTrackingData: any;
   downtimeTrackingId: number;
   isEditMode: boolean;
-  downtimeTrackingForm: UntypedFormGroup;
+  downtimeTrackingForm: FormGroup;
   routerSub: Subscription;
   isFormSubmitted: boolean;
   page: string = ApplicationPage.downtimeTracking;
@@ -23,17 +26,19 @@ export class DowntimeTrackingAddEditComponent implements OnInit, OnDestroy {
   error: string;
   productionOrderList: any[] = [];
   productList: any[] = [];
-  AddedDowntimeTrackingDetailsList: any[] = [];
-  EditDetailsId: number = -1;
   causeList: any[] = [];
-  actionTakenByList: any;
-  Master: any[] = [];
-  shiftList: any;
-  fillingLineList: any;
-  usersList: any[] = [];
+  downtimeTrackingDetails: FormArray;
+  addedDowntimeTrackingDetailsList: any[] = [];
+  editDetailsId: number = -1;
+  fillingLineList: any[] = []; // List of filling lines
+  shiftList: any[] = []; // List of shifts
+  usersList: any[] = []; // List of users
+downtimeTrackingDetailsList: any;
+
+
   constructor(private activatedRoute: ActivatedRoute, private router: Router,
-    private formBuilder: UntypedFormBuilder, private downtimeTrackingService: DowntimeTrackingService,
-    private notificationService: ToastrService) { }
+    private formBuilder: FormBuilder, private downtimeTrackingService: DowntimeTrackingService,
+    private notificationService: ToastrService) {}
 
   ngOnInit(): void {
     this.getRoute();
@@ -65,14 +70,34 @@ export class DowntimeTrackingAddEditComponent implements OnInit, OnDestroy {
 
   private setDowntimeTrackingData() {
     this.downtimeTrackingForm.patchValue({
-      DowntimeDate: this.downtimeTrackingData.downtimeDate,
-      ProductionOrderId: this.downtimeTrackingData.productionOrderId,
-      ProductId: this.downtimeTrackingData.productName,
+      Code: this.downtimeTrackingData.code,
+      ProductionDateTime: this.downtimeTrackingData.productionDateTime,
+      ProductId: this.downtimeTrackingData.productId,
+      ProductLineId: this.downtimeTrackingData.productLineId,
+      IsActive: this.downtimeTrackingData.isActive,
+      SAPProductionOrderId: this.downtimeTrackingData.sapProductionOrderId
     });
 
-    // Populate the form array with existing details
-    this.AddedDowntimeTrackingDetailsList = this.downtimeTrackingData.downtimeTrackingDetails || [];
-    this.populateFormArray(this.AddedDowntimeTrackingDetailsList);
+    const formatDate = (dateTime: string): string => {
+      const date = new Date(dateTime);
+      return date.toISOString().split('T')[0]; // Only date part
+    };
+
+    setTimeout(() => {
+      this.downtimeTrackingData.downtimeTrackingDetails?.forEach(element => {
+        let DetailsData = {
+          StartDate: formatDate(element.startDate),
+          EndDate: formatDate(element.endDate),
+          Durations: element.durations,
+          CauseId: element.cause,
+          ActionTaken: element.actionTaken,
+          ActionTakenId: element.actionTakenId,
+          IsActive: element.isActive
+        };
+
+        this.addedDowntimeTrackingDetailsList.push(DetailsData);
+      });
+    }, 500);
   }
 
   private loadDropdowns() {
@@ -85,230 +110,189 @@ export class DowntimeTrackingAddEditComponent implements OnInit, OnDestroy {
       .subscribe((result: any) => {
         this.productList = result;
       });
+
     this.downtimeTrackingService.getCauseList()
       .subscribe((result: any) => {
         this.causeList = result;
       });
-    this.downtimeTrackingService.getUserList()
-      .subscribe((result: any) => {
-        this.usersList = result;
-      });
-    this.downtimeTrackingService.getMaster()
-      .subscribe((result: any) => {
-        this.fillingLineList = this.filterFillingLines(result);
-      });
-
-
-
-    this.downtimeTrackingService.getShiftList()
-      .subscribe((result: any) => {
-        this.shiftList = result;
-      });
-
   }
-  filterFillingLines(data: any[]): any[] {
-    return data.filter((item) =>
-      item.categoryName && item.categoryName.toLowerCase().indexOf('fill') !== -1
-    );
-  }
-  removedowntimeTrackingDetails(index: number) {
-    this.downtimeTrackingDetails.removeAt(index);
-  }
-  get downtimeTrackingDetails(): FormArray {
-    return this.downtimeTrackingForm.get('downtimeTrackingDetails') as FormArray;
-  }
+
   createForm() {
     this.downtimeTrackingForm = this.formBuilder.group({
-      DowntimeDate: ['', [Validators.required]],
-      ProductionOrderId: ['', [Validators.required]],
-      FillingLineId: ['', Validators.required],
-      ProductId: ['', [Validators.required]],
+      Code: [{ value: '', disabled: true }, Validators.required],
+      ProductionDateTime: ['', Validators.required],
+      ProductId: ['', Validators.required],
+      ProductLineId: ['', Validators.required],
+      IsActive: [false],
+      SAPProductionOrderId: [''],
       downtimeTrackingDetails: this.formBuilder.array([])
     });
+    this.downtimeTrackingForm.controls["ProductionDateTime"].setValue(new Date().toISOString().split('T')[0]);
   }
 
   addDowntimeDetail() {
-    const downtimeDetailGroup = this.formBuilder.group({
-      startDate: ['', [Validators.required]],
-      EndTime: ['', [Validators.required]],
-      Cause: [''],
-      Notes: [''],
-      DoneByUserIds: [[]], // Ensure this is defined
-      ShiftId: [''] // Ensure this is defined
-    });
+    this.downtimeTrackingDetails?.clear();
+    this.editDetailsId = -1;
 
-    this.downtimeTrackingDetails.push(downtimeDetailGroup);
+    const downtimeTrackingItem = this.formBuilder.group({});
+
+    downtimeTrackingItem.addControl('StartDate', this.formBuilder.control(''));
+    downtimeTrackingItem.addControl('EndDate', this.formBuilder.control(''));
+    downtimeTrackingItem.addControl('Durations', this.formBuilder.control(''));
+    downtimeTrackingItem.addControl('CauseId', this.formBuilder.control(''));
+    downtimeTrackingItem.addControl('ActionTaken', this.formBuilder.control(''));
+    downtimeTrackingItem.addControl('ActionTakenId', this.formBuilder.control(''));
+    downtimeTrackingItem.addControl('IsActive', this.formBuilder.control(true));
+    
+    this.downtimeTrackingDetails = this.downtimeTrackingForm?.get('downtimeTrackingDetails') as FormArray;
+    
+    this.downtimeTrackingDetails.push(downtimeTrackingItem);
   }
-
-
-
-  populateFormArray(details: any[]) {
-    const formArray = this.downtimeTrackingDetails;
-    formArray.clear();
-
-    details.forEach(detail => {
-      const group = this.formBuilder.group({
-        startDate: [detail.startDate || ''],
-        EndTime: [detail.EndTime || ''],
-        Cause: [detail.Cause || ''],
-        ActionTaken: [detail.ActionTaken || ''], // Ensure ActionTaken is added
-        ActionTakenId: [detail.ActionTakenId || ''], // Ensure ActionTakenId is added
-        DoneByUserIds: [detail.DoneByUserIds || []], // Ensure DoneByUserIds is added
-        ShiftId: [detail.ShiftId || ''] // Ensure ShiftId is added
-      });
-
-      formArray.push(group);
-    });
-  }
-
-
 
   addFinalDowntimeDetail() {
-    const downtimeDetail = this.downtimeTrackingDetails.at(0).value;
+    const detail = this.downtimeTrackingDetails.at(0).value;
 
-    if (!downtimeDetail.startDate || !downtimeDetail.EndTime) {
-      this.notificationService.error("Start Time and End Time are required");
+    if (!detail.StartDate) {
+      this.notificationService.error("Please select start date");
+    } else if (!detail.EndDate) {
+      this.notificationService.error("Please select end date");
     } else {
-      if (this.EditDetailsId >= 0) {
-        this.AddedDowntimeTrackingDetailsList[this.EditDetailsId] = downtimeDetail;
-        this.populateFormArray(this.AddedDowntimeTrackingDetailsList); // Update form array
+      if (this.editDetailsId >= 0) {
+        this.addedDowntimeTrackingDetailsList[this.editDetailsId] = detail;
+        this.addDowntimeDetail();
       } else {
-        this.AddedDowntimeTrackingDetailsList.push(downtimeDetail);
-        this.populateFormArray(this.AddedDowntimeTrackingDetailsList); // Update form array
+        this.addedDowntimeTrackingDetailsList.push(detail);
+        this.addDowntimeDetail();
       }
     }
   }
 
-
-  onEditDetail(detail: any, index: number) {
-    this.populateFormArray([detail]);
-    this.EditDetailsId = index;
+  onEditDetail(detail, i) {
+    this.populateFormWithValues(this.addedDowntimeTrackingDetailsList[i]);
+    this.editDetailsId = i;
   }
 
-  removeDowntimeDetail(index: number) {
-    this.AddedDowntimeTrackingDetailsList.splice(index, 1);
+  populateFormWithValues(data: any) {
+    const dataArray = Array.isArray(data) ? data : [data];
+
+    this.downtimeTrackingDetails = this.downtimeTrackingForm.get('downtimeTrackingDetails') as FormArray;
+    this.downtimeTrackingDetails.clear();
+
+    dataArray.forEach(dataItem => {
+      const item = this.formBuilder.group({});
+      
+      item.addControl('StartDate', this.formBuilder.control(dataItem.StartDate || ''));
+      item.addControl('EndDate', this.formBuilder.control(dataItem.EndDate || ''));
+      item.addControl('Durations', this.formBuilder.control(dataItem.Durations || ''));
+      item.addControl('CauseId', this.formBuilder.control(dataItem.CauseId || ''));
+      item.addControl('ActionTaken', this.formBuilder.control(dataItem.ActionTaken || ''));
+      item.addControl('ActionTakenId', this.formBuilder.control(dataItem.ActionTakenId || ''));
+      item.addControl('IsActive', this.formBuilder.control(dataItem.IsActive || true));
+      
+      this.downtimeTrackingDetails.push(item);
+    });
   }
 
-  private createDowntimeTracking(payload) {
-    this.downtimeTrackingService.addDowntimeTracking(payload)
-  .subscribe(
-    () => {
-      this.cancel();
-      this.notificationService.success("Downtime Tracking created successfully.");
-    },
-    (error) => {
-      console.error("Error creating downtime tracking:", error);
-      this.error = error;
-      this.notificationService.error("Failed to create Downtime Tracking.");
-    }
-  );
-
-  }
-
-  private updateDowntimeTracking(payload) {
-    this.downtimeTrackingService.updateDowntimeTracking(payload)
-      .subscribe(() => {
-        this.cancel();
-        this.notificationService.success("Downtime Tracking updated successfully.");
-      },
-        (error) => {
-          this.error = error;
-        });
+  removeDowntimeDetail(i: number) {
+    this.addedDowntimeTrackingDetailsList.splice(i, 1);
   }
 
   save() {
     this.isFormSubmitted = true;
 
-    // Check if form is valid
     if (this.downtimeTrackingForm.invalid) {
       return;
-    }
-
-    // Check if at least one downtime detail is present
-    if (this.downtimeTrackingDetails.length < 1) {
+    } else if (this.addedDowntimeTrackingDetailsList.length < 0) {
       this.notificationService.error("At least one downtime detail is required");
       return;
-    }
-
-    // Transform the form data
-    let formValue = this.downtimeTrackingForm.value;
-    formValue.downtimeTrackingDetails = this.downtimeTrackingDetails.value; // Get value from form array
-
-    console.log("Form value before transformation:", formValue);
-
-    let payload = this.transformData(formValue);
-    console.log("Payload for API:", payload);
-
-    // Save or update data based on edit mode
-    if (this.isEditMode) {
-      this.updateDowntimeTracking(payload);
     } else {
-      this.createDowntimeTracking(payload);
+      let formValue = this.downtimeTrackingForm.value;
+      formValue.downtimeTrackingDetails = this.addedDowntimeTrackingDetailsList;
+
+      let payload = this.transformData(formValue);
+
+      if (this.isEditMode) {
+        this.updateDowntimeTracking(payload);
+      } else {
+        this.createDowntimeTracking(payload);
+      }
     }
   }
 
+  transformData(originalData) {
+    function formatToDateTime(dateStr) {
+      const date = new Date(dateStr);
+      if (isNaN(date.getTime())) {
+        throw new Error("Invalid date string provided");
+      }
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      return `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
 
-
-  transformData(originalData: any): any {
     const detailsArray = Array.isArray(originalData.downtimeTrackingDetails)
       ? originalData.downtimeTrackingDetails
-      : [];
-  
-    return {
+      : Object.values(originalData.downtimeTrackingDetails || {});
+
+    const result = {
       id: this.isEditMode ? this.downtimeTrackingData.id : 0,
-      code: 'string', 
-      productionDateTime: originalData.DowntimeDate,
-      productId: originalData.ProductId,
-      productName: 'string', 
-      productLineId: originalData.FillingLineId,
-      productLineName: 'string', 
-      isActive: true, 
-      sapProductionOrderId: originalData.ProductionOrderId,
-      downtimeTrackingDetails: detailsArray.map(detail => {
-        const startDate = new Date(detail.startDate);
-        const endDate = new Date(detail.EndTime);
-  
-        if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
-          console.error("Invalid date values:", detail.startDate, detail.EndTime);
-          return null; // or handle the invalid dates as needed
-        }
-  
-        return {
-          id: detail.id || 0, // Use detail.id if available
-          headerId: this.isEditMode ? this.downtimeTrackingData.id : 0,
-          startDate: startDate.toISOString(),
-          endDate: endDate.toISOString(),
-          durations: this.calculateDuration(startDate, endDate),
-          cause: detail.Cause || 0, // Ensure cause is properly set
-          actionTaken: detail.ActionTaken || '',
-          actionTakenId: detail.ActionTakenId || 0,
-          isActive: true // Assuming default active status
-        };
-      }).filter(detail => detail !== null) // Remove any invalid details
+      code: this.isEditMode ? this.downtimeTrackingData.code : "",
+      productionDateTime: formatToDateTime(originalData.ProductionDateTime),
+      productId: this.isEditMode ? this.downtimeTrackingData.productId : originalData.ProductId,
+      productLineId: this.isEditMode ? this.downtimeTrackingData.productLineId : originalData.ProductLineId,
+      isActive: originalData.IsActive,
+      sapProductionOrderId: originalData.SAPProductionOrderId,
+      downtimeTrackingDetails: detailsArray.map(detail => ({
+        id: detail.id || 0,
+        headerId: detail.headerId || 0,
+        startDate: formatToDateTime(detail.StartDate),
+        endDate: formatToDateTime(detail.EndDate),
+        durations: detail.Durations,
+        cause: detail.CauseId,
+        actionTaken: detail.ActionTaken,
+        actionTakenId: detail.ActionTakenId,
+        isActive: detail.IsActive
+      }))
     };
-  }
-  
-  
 
-
-  calculateDuration(startDate: Date, endDate: Date): string {
-    if (!startDate || !endDate) return '0';
-
-    const duration = (endDate.getTime() - startDate.getTime()) / (1000 * 60); // Duration in minutes
-
-    return duration.toString();
+    return result;
   }
 
+  createDowntimeTracking(payload) {
+    this.downtimeTrackingService.addDowntimeTracking(payload)
+      .subscribe((result) => {
+        this.notificationService.success("Downtime tracking added successfully");
+        this.router.navigate(['/', ApplicationPage.downtimeTracking]);
+      },
+        (error) => {
+          console.log(error);
+        });
+  }
 
+  updateDowntimeTracking(payload) {
+    this.downtimeTrackingService.updateDowntimeTracking(payload)
+      .subscribe((result) => {
+        this.notificationService.success("Downtime tracking updated successfully");
+        this.router.navigate(['/', ApplicationPage.downtimeTracking]);
+      },
+        (error) => {
+          console.log(error);
+        });
+  }
+
+  ngOnDestroy(): void {
+    if (this.routerSub) {
+      this.routerSub.unsubscribe();
+    }
+  }
   cancel() {
     if (this.isEditMode) {
       this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
     } else {
       this.router.navigate(['..', 'list'], { relativeTo: this.activatedRoute });
     }
-  }
-
-  ngOnDestroy(): void {
-    this.routerSub.unsubscribe();
   }
 }

@@ -13,6 +13,7 @@ export const ApplicationPage = {
     weightCheck : 'adm_weight_check',
     attributeCheck : 'adm_attribute_check',
     downtimeTracking: 'adm_downtime',
+    preCheck:'adm_PreCheckList',
     bom: 'adm_bom',
     moduleGroup: 'adm_module_group',
     termsAndConditions: 'adm_terms_conditions',

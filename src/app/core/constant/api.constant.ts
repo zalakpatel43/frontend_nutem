@@ -29,19 +29,19 @@ export const APIConstant = {
     weightcheckGetById: `${basePath}WeightCheck/GetByIdAsync`,
     weightcheckDelete: `${basePath}WeightCheck/DeleteWeightCheck`,
 
-     //AttributeCheck
-     attributecheckList: `${basePath}AttributeCheck/GetAllAttributeCheck`,
-     attributecheckAdd: `${basePath}AttributeCheck/AddAttributeCheck`,
-     attributecheckEdit: `${basePath}AttributeCheck/EditAttributeCheck`,
-     attributecheckGetById: `${basePath}AttributeCheck/GetByIdAsync`,
-     attributecheckDelete: `${basePath}AttributeCheck/Delete`,
+    //AttributeCheck
+    attributecheckList: `${basePath}AttributeCheck/GetAllAttributeCheck`,
+    attributecheckAdd: `${basePath}AttributeCheck/AddAttributeCheck`,
+    attributecheckEdit: `${basePath}AttributeCheck/EditAttributeCheck`,
+    attributecheckGetById: `${basePath}AttributeCheck/GetByIdAsync`,
+    attributecheckDelete: `${basePath}AttributeCheck/Delete`,
 
-     // DowntimeTracking
-downtimeTrackingList: `${basePath}DowntimeTracking/GetAllDowntimeTracking`,
-downtimeTrackingAdd: `${basePath}DowntimeTracking/AddDowntimeTracking`,
-downtimeTrackingEdit: `${basePath}DowntimeTracking/EditDowntimeTracking`,
-downtimeTrackingGetById: `${basePath}DowntimeTracking/GetByIdAsync`,
-downtimeTrackingDelete: `${basePath}DowntimeTracking/Delete`,
+    // DowntimeTracking
+    downtimeTrackingList: `${basePath}DowntimeTracking/GetAllDowntimeTracking`,
+    downtimeTrackingAdd: `${basePath}DowntimeTracking/AddDowntimeTracking`,
+    downtimeTrackingEdit: `${basePath}DowntimeTracking/EditDowntimeTracking`,
+    downtimeTrackingGetById: `${basePath}DowntimeTracking/GetByIdAsync`,
+    downtimeTrackingDelete: `${basePath}DowntimeTracking/Delete`,
 
 
     //Nozzle
@@ -50,16 +50,26 @@ downtimeTrackingDelete: `${basePath}DowntimeTracking/Delete`,
     //ProductionOrder
     ProductionOrderList: `${basePath}ProductionOrder/GetAllProductionOrder`,  //WeightCHeck service 
 
-     //Product
-     ProductList: `${basePath}ProductMaster/GetAllProduct`,  //WeightCHeck service 
+    //Product
+    ProductList: `${basePath}ProductMaster/GetAllProduct`,  //WeightCHeck service 
 
-     //User
-     UserList: `${basePath}users`,  //WeightCHeck service 
+    //User
+    UserList: `${basePath}users`,  //WeightCHeck service 
 
-     //Shift
-     ShiftList: `${basePath}ShiftMaster/GetAllShift`,  //WeightCHeck service 
-      CauseList : `${basePath}CauseMaster/GetAllCauses`,
-      MasterList : `${apiPath}Masters/GetAllMasters`,
+    //Shift
+    ShiftList: `${basePath}ShiftMaster/GetAllShift`,  //WeightCHeck service 
+    CauseList: `${basePath}CauseMaster/GetAllCauses`,
+    MasterList: `${apiPath}Masters/GetAllMasters`,
+
+    // Pre-Check 
+    preCheckList: `${basePath}PreCheckList/GetAllPreCheckList`,
+    preCheckAdd: `${basePath}PreCheckList/AddPreCheckList`,
+    preCheckEdit: `${basePath}PreCheckList/EditPreCheckList`,
+    preCheckGetById: `${basePath}PreCheckList/GetByIdAsync`,
+    preCheckDelete: `${basePath}PreCheckList/Delete`,
+
+    // PrePostQuestion
+    PrePostQuestion:`${basePath}PrePostQuestion/GetAllPrePostQuestions`,
 
     //Pages
     company: `${apiPath}company`,
@@ -67,7 +77,7 @@ downtimeTrackingDelete: `${basePath}DowntimeTracking/Delete`,
     country: `${apiPath}country`,
     state: `${apiPath}state`,
     module: `${apiPath}module`,
-    student:`${apiPath}Student`,
+    student: `${apiPath}Student`,
     bom: `${basePath}bommaster`,
     customer: `${basePath}customer`,
     product: `${basePath}product`,
