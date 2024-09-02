@@ -1,0 +1,11 @@
+.full-width {
+    width: 100%;
+  }
+  
+  .readonly-input {
+    color: black; /* Ensure text color is black */
+    background-color: #f5f5f5; /* Light grey background */
+    cursor: not-allowed; /* Optional: Change cursor to indicate read-only state */
+    border: 1px solid #dcdcdc; /* Optional: Add border to differentiate from editable fields */
+  }
+  

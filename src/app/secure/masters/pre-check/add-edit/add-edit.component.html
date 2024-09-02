@@ -1,0 +1,174 @@
+<div class="row justify-content-center">
+    <div class="col-xl-11 col-lg-12">
+        <div class="border p30 rounded">
+            <div class="row align-items-center mb-4">
+                <div class="col-lg-7 col-sm-9 col-xs-10 d-flex align-items-end">
+                    <h4 class="mb-0"><i class="icon-edit"></i> Add/Edit Pre Check</h4>
+                </div>
+                <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end">
+                    <a mat-flat-button color="primary" class="app-button" (click)="cancel()">
+                        View List
+                    </a>
+                </div>
+            </div>
+            <form [formGroup]="preCheckForm" (ngSubmit)="save()" #form="ngForm" novalidate class="app-form">
+                <!-- Basic Details Section -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Pre Check Header</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Start Date -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Start Date</mat-label>
+                                    <input matInput [matDatepicker]="pickerStartDate" formControlName="StartDate">
+                                    <mat-datepicker-toggle matSuffix [for]="pickerStartDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #pickerStartDate></mat-datepicker>
+                                    <mat-validation-message [control]="preCheckForm.controls.StartDate"
+                                        [message]="'Start Date'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Production Order -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Production Order</mat-label>
+                                    <mat-select formControlName="ProductionOrderId">
+                                        <mat-option *ngFor="let order of productionOrderList" [value]="order.id">
+                                            {{ order.poNumber }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-validation-message [control]="preCheckForm.controls.ProductionOrderId"
+                                        [message]="'Production Order'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Shift -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Shift</mat-label>
+                                    <mat-select formControlName="ShiftId">
+                                        <mat-option *ngFor="let shift of shiftList" [value]="shift.id">
+                                            {{ shift.shiftName }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-validation-message [control]="preCheckForm.controls.ShiftId"
+                                        [message]="'Shift'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Filling Line -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Filling Line</mat-label>
+                                    <mat-select formControlName="FillingLineId">
+                                        <mat-option *ngFor="let line of fillingLineList" [value]="line.id">
+                                            {{ line.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-validation-message [control]="preCheckForm.controls.FillingLineId"
+                                        [message]="'Filling Line'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Product -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Product</mat-label>
+                                    <mat-select formControlName="ProductId">
+                                        <mat-option *ngFor="let product of productList" [value]="product.id">
+                                            {{ product.productName }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-validation-message [control]="preCheckForm.controls.ProductId"
+                                        [message]="'Product'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Filler Operator -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Filler Operator</mat-label>
+                                    <mat-select formControlName="FillerOperatorIds" multiple>
+                                        <mat-option *ngFor="let operator of fillerOperatorList" [value]="operator.id">
+                                            {{ operator.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-validation-message [control]="preCheckForm.controls.FillerOperatorIds"
+                                        [message]="'Filler Operator'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Comments -->
+                            <div class="col-12 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Comments</mat-label>
+                                    <textarea matInput formControlName="Comments"></textarea>
+                                    <mat-validation-message [control]="preCheckForm.controls.Comments"
+                                        [message]="'Comments'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pre Check Details Section -->
+                <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h5 class="mb-0">Pre Check Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <div formArrayName="preCheckListDetails">
+                            <div *ngFor="let detail of preCheckDetails.controls; let i = index" [formGroupName]="i"
+                                class="row mt-3">
+                                <div class="col-12 mb-3">
+                                    <!-- Question -->
+                                    <mat-form-field appearance="fill" class="full-width">
+                                        <mat-label>Question</mat-label>
+                                        <input matInput [value]="questionList[i]?.question" readonly class="readonly-input">
+                                    </mat-form-field>
+                                </div>
+
+                                <!-- Answer -->
+                                <div class="col-12 mb-3">
+                                    <mat-radio-group formControlName="answer" (change)="onAnswerChange(i)">
+                                      <mat-radio-button [value]="1">Yes</mat-radio-button>
+                                      <mat-radio-button [value]="0">No</mat-radio-button>
+                                    </mat-radio-group>
+                                  </div>
+                                  
+
+                                <!-- Reason -->
+                                <div class="col-12" *ngIf="preCheckDetails.at(i).get('answer').value === 0">
+                                    <mat-form-field appearance="fill" class="full-width">
+                                        <mat-label>Reason</mat-label>
+                                        <input matInput formControlName="reason">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <!-- Submit & Cancel Buttons -->
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-end">
+                        <button mat-flat-button color="primary" type="submit">Save</button>
+                        <button mat-flat-button color="warn" type="button" (click)="cancel()">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

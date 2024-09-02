@@ -29,20 +29,33 @@ export const APIConstant = {
     weightcheckGetById: `${basePath}WeightCheck/GetByIdAsync`,
     weightcheckDelete: `${basePath}WeightCheck/DeleteWeightCheck`,
 
-     //AttributeCheck
-     attributecheckList: `${basePath}AttributeCheck/GetAllAttributeCheck`,
-     attributecheckAdd: `${basePath}AttributeCheck/AddAttributeCheck`,
-     attributecheckEdit: `${basePath}AttributeCheck/EditAttributeCheck`,
-     attributecheckGetById: `${basePath}AttributeCheck/GetByIdAsync`,
-     attributecheckDelete: `${basePath}AttributeCheck/Delete`,
+    //AttributeCheck
+    attributecheckList: `${basePath}AttributeCheck/GetAllAttributeCheck`,
+    attributecheckAdd: `${basePath}AttributeCheck/AddAttributeCheck`,
+    attributecheckEdit: `${basePath}AttributeCheck/EditAttributeCheck`,
+    attributecheckGetById: `${basePath}AttributeCheck/GetByIdAsync`,
+    attributecheckDelete: `${basePath}AttributeCheck/Delete`,
 
-     // DowntimeTracking
-downtimeTrackingList: `${basePath}DowntimeTracking/GetAllDowntimeTrackings`,
-downtimeTrackingAdd: `${basePath}DowntimeTracking/AddDowntimeTracking`,
-downtimeTrackingEdit: `${basePath}DowntimeTracking/EditDowntimeTracking`,
-downtimeTrackingGetById: `${basePath}DowntimeTracking/GetByIdAsync`,
-downtimeTrackingDelete: `${basePath}DowntimeTracking/DeleteDowntimeTracking`,
+    // DowntimeTracking
+    downtimeTrackingList: `${basePath}DowntimeTracking/GetAllDowntimeTrackings`,
+    downtimeTrackingAdd: `${basePath}DowntimeTracking/AddDowntimeTracking`,
+    downtimeTrackingEdit: `${basePath}DowntimeTracking/EditDowntimeTracking`,
+    downtimeTrackingGetById: `${basePath}DowntimeTracking/GetByIdAsync`,
+    downtimeTrackingDelete: `${basePath}DowntimeTracking/Delete`,
 
+
+     //Trailer Inspection
+     TrailerInspectionList: `${basePath}TrailerInspection/GetAllTrailerInspection`,
+     TrailerInspectionAdd: `${basePath}TrailerInspection/AddTrailerInspection`,
+     TrailerInspectionEdit: `${basePath}TrailerInspection/EditTrailerInspection`,
+     TrailerInspectionGetById: `${basePath}TrailerInspection/GetByIdAsync`,
+     TrailerInspectionDelete: `${basePath}TrailerInspection/DeleteTrailerInspection`,
+
+     //Company
+     CompanyMasterList: `${basePath}CompanyMaster/GetAllCompany`,  //TrailerInspection service 
+
+     //Masters
+     VehicleTypeMasterList: `${basePath}Masters/vehicle-types`,  //TrailerInspection service 
 
     //Nozzle
     NozzleList: `${basePath}NozzleMaster/GetAllNozzle`,  //WeightCHeck service 
@@ -50,16 +63,26 @@ downtimeTrackingDelete: `${basePath}DowntimeTracking/DeleteDowntimeTracking`,
     //ProductionOrder
     ProductionOrderList: `${basePath}ProductionOrder/GetAllProductionOrder`,  //WeightCHeck service 
 
-     //Product
-     ProductList: `${basePath}ProductMaster/GetAllProduct`,  //WeightCHeck service 
+    //Product
+    ProductList: `${basePath}ProductMaster/GetAllProduct`,  //WeightCHeck service 
 
-     //User
-     UserList: `${basePath}users`,  //WeightCHeck service 
+    //User
+    UserList: `${basePath}users`,  //WeightCHeck service 
 
-     //Shift
-     ShiftList: `${basePath}ShiftMaster/GetAllShift`,  //WeightCHeck service 
-      CauseList : `${basePath}CauseMaster/GetAllCauses`,
-      MasterList : `${apiPath}Masters/GetAllMasters`,
+    //Shift
+    ShiftList: `${basePath}ShiftMaster/GetAllShift`,  //WeightCHeck service 
+    CauseList: `${basePath}CauseMaster/GetAllCauses`,
+    MasterList: `${apiPath}Masters/GetAllMasters`,
+
+    // Pre-Check 
+    preCheckList: `${basePath}PreCheckList/GetAllPreCheckList`,
+    preCheckAdd: `${basePath}PreCheckList/AddPreCheckList`,
+    preCheckEdit: `${basePath}PreCheckList/EditPreCheckList`,
+    preCheckGetById: `${basePath}PreCheckList/GetByIdAsync`,
+    preCheckDelete: `${basePath}PreCheckList/Delete`,
+
+    // PrePostQuestion
+    PrePostQuestion:`${basePath}PrePostQuestion/GetAllPrePostQuestions`,
 
     //Pages
     company: `${apiPath}company`,
@@ -67,7 +90,7 @@ downtimeTrackingDelete: `${basePath}DowntimeTracking/DeleteDowntimeTracking`,
     country: `${apiPath}country`,
     state: `${apiPath}state`,
     module: `${apiPath}module`,
-    student:`${apiPath}Student`,
+    student: `${apiPath}Student`,
     bom: `${basePath}bommaster`,
     customer: `${basePath}customer`,
     product: `${basePath}product`,
