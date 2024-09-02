@@ -90,6 +90,12 @@ const routes: Routes = [
                 loadChildren: () => import('./trailer-inspection/trailer-inspection.module').then(m => m.TrailerInspectionModule)
             },
             {
+                path: 'downtimeTracking',
+                canActivate: [PageAuthGuard],
+                data: { page: ApplicationPage.downtimeTracking },
+                loadChildren: () => import('./downtime/downtime.module').then(m => m.DowntimeTrackingModule)
+            },
+            {
                 path: 'bom',
                 canActivate: [PageAuthGuard],
                 data: { page: ApplicationPage.bom, action: PermissionType.list },
@@ -172,6 +178,12 @@ const routes: Routes = [
                 canActivate: [PageAuthGuard],
                 data: { page: ApplicationPage.location, action: PermissionType.list },
                 loadChildren: () => import('./location/location.module').then(m => m.LocationModule)
+            },
+            {
+                path: 'pre-check',
+                canActivate: [PageAuthGuard],
+                data: { page: ApplicationPage.preCheck },
+                loadChildren: () => import('./pre-check/pre-check.module').then(m => m.PreCheckModule)
             },
         ]
     }
