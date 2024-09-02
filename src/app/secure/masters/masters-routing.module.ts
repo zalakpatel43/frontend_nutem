@@ -84,6 +84,12 @@ const routes: Routes = [
                 loadChildren: () => import('./attribute-check/attribute-check.module').then(m => m.AttributeCheckModule)
             },
             {
+                path: 'trailer-inspection',
+                canActivate: [PageAuthGuard],
+                data: { page: ApplicationPage.trailerInspection },
+                loadChildren: () => import('./trailer-inspection/trailer-inspection.module').then(m => m.TrailerInspectionModule)
+            },
+            {
                 path: 'downtimeTracking',
                 canActivate: [PageAuthGuard],
                 data: { page: ApplicationPage.downtimeTracking },
