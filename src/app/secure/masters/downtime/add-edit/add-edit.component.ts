@@ -93,9 +93,10 @@ private setDowntimeTrackingData() {
         StartDate: formatDate(element.startDate),
         EndDate: formatDate(element.endDate),
         Durations: element.durations,
-        CauseId: element.cause,
+        CauseId: element.CauseId,
+        ShiftId: element.ShiftId,
         ActionTaken: element.actionTaken,
-        ActionTakenId: element.actionTakenId,
+        DoneByUserIds: element.DoneByUserIds,
         IsActive: element.isActive
       };
 
@@ -216,8 +217,9 @@ private setDowntimeTrackingData() {
       item.addControl('EndDate', this.formBuilder.control(dataItem.EndDate || ''));
       item.addControl('Durations', this.formBuilder.control(dataItem.Durations || ''));
       item.addControl('CauseId', this.formBuilder.control(dataItem.CauseId || ''));
+      item.addControl('ShiftId', this.formBuilder.control(dataItem.ShiftId || ''));
       item.addControl('ActionTaken', this.formBuilder.control(dataItem.ActionTaken || ''));
-      item.addControl('ActionTakenId', this.formBuilder.control(dataItem.ActionTakenId || ''));
+      item.addControl('DoneByUserIds', this.formBuilder.control(dataItem.DoneByUserIds || ''));
       item.addControl('IsActive', this.formBuilder.control(dataItem.IsActive || true));
       
       this.downtimeTrackingDetails.push(item);
@@ -296,9 +298,10 @@ private setDowntimeTrackingData() {
         endDate: formatToDateTime(detail.EndDate),
         durations: detail.Durations,
         cause: detail.CauseId,
+       shift:detail.ShiftId,
         actionTaken: detail.ActionTaken,
-        actionTakenId: detail.ActionTakenId || 0,
-        isActive: detail.IsActive || true
+        DoneByUserIds: detail.DoneByUserIds,
+      
       }))
     };
   
