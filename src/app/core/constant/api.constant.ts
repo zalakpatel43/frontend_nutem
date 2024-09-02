@@ -36,6 +36,19 @@ export const APIConstant = {
      attributecheckGetById: `${basePath}AttributeCheck/GetByIdAsync`,
      attributecheckDelete: `${basePath}AttributeCheck/Delete`,
 
+     //Trailer Inspection
+     TrailerInspectionList: `${basePath}TrailerInspection/GetAllTrailerInspection`,
+     TrailerInspectionAdd: `${basePath}TrailerInspection/AddTrailerInspection`,
+     TrailerInspectionEdit: `${basePath}TrailerInspection/EditTrailerInspection`,
+     TrailerInspectionGetById: `${basePath}TrailerInspection/GetByIdAsync`,
+     TrailerInspectionDelete: `${basePath}TrailerInspection/DeleteTrailerInspection`,
+
+     //Company
+     CompanyMasterList: `${basePath}CompanyMaster/GetAllCompany`,  //TrailerInspection service 
+
+     //Masters
+     VehicleTypeMasterList: `${basePath}Masters/vehicle-types`,  //TrailerInspection service 
+
     //Nozzle
     NozzleList: `${basePath}NozzleMaster/GetAllNozzle`,  //WeightCHeck service 
 

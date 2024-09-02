@@ -17,10 +17,10 @@ import { provideEnvironmentNgxMask } from 'ngx-mask';
     WeightCheckRoutingModule,
     SharedModule,
     NgxMaterialTimepickerModule
-  ],
-  providers: [
-      WeightCheckService,
-      provideEnvironmentNgxMask(),
-  ]
+    ],
+    providers: [
+        WeightCheckService,
+        provideEnvironmentNgxMask(),
+    ]
 })
 export class WeightCheckModule { }
