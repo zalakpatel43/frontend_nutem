@@ -8,4 +8,11 @@
     cursor: not-allowed; /* Optional: Change cursor to indicate read-only state */
     border: 1px solid #dcdcdc; /* Optional: Add border to differentiate from editable fields */
   }
+  ::ng-deep .mat-calendar {
+    background-color: lightgray; // or any other color you prefer
+  }
+  
+  ::ng-deep .time-container{
+    background-color: lightgray; // Ensure the calendar itself has a background
+  }
   
