@@ -1,0 +1,386 @@
+<div class="row justify-content-center">
+    <div class="col-xl-11 col-lg-12">
+        <div class="border p30 rounded">
+            <div class="row align-items-center mb-4">
+                <div class="col-lg-7 col-sm-9 col-xs-10 d-flex align-items-end">
+                    <h4 class="mb-0"><i class="icon-edit"></i> Add/Edit Trailer Inspection</h4>
+                </div>
+                <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end">
+                    <a *authPermission="page + '_' + permissions.list" mat-flat-button color="primary"
+                        class="app-button" (click)="cancel()">
+                        View List
+                    </a>
+                </div>
+            </div>
+            <form [formGroup]="trailerInspectionForm" (submit)="save()" #form="ngForm" novalidate class="app-form">
+                <!-- Basic Details Section -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Header Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Code</mat-label>
+                                    <input matInput formControlName="Code" [disabled]="true">
+                                    <mat-validation-message [control]="trailerInspectionForm.controls.Code"
+                                        [message]="'Code'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                            <!-- Date Time -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Date</mat-label>
+                                    <input matInput [matDatepicker]="pickerStart" [min]="getToday()"
+                                        formControlName="Date">
+                                    <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+                                    <mat-datepicker #pickerStart></mat-datepicker>
+                                    <mat-validation-message [control]="trailerInspectionForm.controls.Date"
+                                        [message]="'Date Time'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Company -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Company</mat-label>
+                                    <mat-select formControlName="CompanyId">
+                                        <mat-option *ngFor="let company of companyList" [value]="company.id">
+                                            {{ company.companyName }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-validation-message [control]="trailerInspectionForm.controls.CompanyId"
+                                        [message]="'Company Id'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Inspected By -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Inspected By</mat-label>
+                                    <mat-select formControlName="InspectedById">
+                                        <mat-option *ngFor="let user of usersList" [value]="user.id">
+                                            {{ user.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-validation-message [control]="trailerInspectionForm.controls.InspectedById"
+                                        [message]="'Inspected By Id'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Time In and Out -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Time In</mat-label>
+                                    <input matInput [ngxTimepicker]="timepicker" placeholder="Select time"
+                                        formControlName="TimeIn">
+                                    <ngx-material-timepicker #timepicker></ngx-material-timepicker>
+                                    <mat-error *ngIf="trailerInspectionForm.get('TimeIn').hasError('required')">
+                                        Time In is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Time Out</mat-label>
+                                    <input matInput [ngxTimepicker]="timeOutPicker" placeholder="Select time"
+                                        formControlName="TimeOut" (ngModelChange)="OnTimeOut($event)"  >
+                                    <ngx-material-timepicker #timeOutPicker></ngx-material-timepicker>
+                                    <mat-error *ngIf="trailerInspectionForm.get('TimeOut').hasError('required')">
+                                        Time Out is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Total Time at Dock -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Total Time at Dock</mat-label>
+                                    <input matInput formControlName="TotalTime" readonly>
+                                </mat-form-field>
+                            </div>
+
+
+                            <!-- Date Time -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>TimeOfInspection</mat-label>
+                                    <input matInput [ngxTimepicker]="InspectionPicker" placeholder="Select time"
+                                        formControlName="TimeOfInspection" (ngModelChange)="OnInspectionTime($event)"  >
+                                    <ngx-material-timepicker #InspectionPicker></ngx-material-timepicker>
+                                    <mat-error *ngIf="trailerInspectionForm.get('TimeOfInspection').hasError('required')">
+                                        Time Of Inspection is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Select Mode -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-label>Mode</mat-label>
+                                <mat-radio-group formControlName="Mode" class="d-flex">
+                                    <mat-radio-button value="Outgoing">Outgoing</mat-radio-button>
+                                    <mat-radio-button value="Incoming">Incoming</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Driver Name</mat-label>
+                                    <input matInput formControlName="DriverName">
+                                    <mat-validation-message [control]="trailerInspectionForm.controls.DriverName"
+                                        [message]="'Driver Name'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- VehicleTypeId -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Vehicle Type</mat-label>
+                                    <mat-select formControlName="VehicleTypeId">
+                                        <mat-option *ngFor="let vehicle of vehicleTypeList" [value]="vehicle.id">
+                                            {{ vehicle.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-validation-message [control]="trailerInspectionForm.controls.VehicleTypeId"
+                                        [message]="'Vehicle Type'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>License Plate No</mat-label>
+                                    <input matInput formControlName="LicensePlateNo">
+                                    <mat-validation-message [control]="trailerInspectionForm.controls.LicensePlateNo"
+                                        [message]="'License Plate No'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Trailer No</mat-label>
+                                    <input matInput formControlName="TrailerNo">
+                                    <mat-validation-message [control]="trailerInspectionForm.controls.TrailerNo"
+                                        [message]="'Trailer No'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Truck No</mat-label>
+                                    <input matInput formControlName="TruckNo">
+                                    <mat-validation-message [control]="trailerInspectionForm.controls.TruckNo"
+                                        [message]="'Truck No'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-label>Vehicle Accepted or Rejected?</mat-label>
+                                <mat-radio-group formControlName="VehicleStatus" class="d-flex">
+                                    <mat-radio-button value="Accepted">Accepted</mat-radio-button>
+                                    <mat-radio-button value="Rejected">Rejected</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+
+                           <div  *ngIf="trailerInspectionForm.get('VehicleStatus').value === 'Rejected'" class="col-12 col-sm-12 col-md-12 col-lg-12 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Reason for Rejection</mat-label>
+                                    <textarea matInput formControlName="RejectionReason"></textarea>
+                                    <mat-validation-message [control]="trailerInspectionForm.controls.RejectionReason" [message]="'RejectionReason'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+ <!-- Specifications -->
+                <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h5 class="mb-0">Specifications</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-5 col-lg-5 mb-3">
+                                <p>Is the interior and exterior of the vehicle clean and free of debris?</p>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-2 col-lg-2 mb-3">
+                                <mat-radio-group formControlName="VehicleCleanAns">
+                                    <mat-radio-button value="Pass">Pass</mat-radio-button>
+                                    <mat-radio-button value="Fail">Fail</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-5 col-lg-5 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Notes</mat-label>
+                                    <input matInput formControlName="VehicleCleanNotes">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-5 col-lg-5 mb-3">
+                                <p>Are there any foreign orders coming from the trailer?</p>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-2 col-lg-2 mb-3">
+                                <mat-radio-group formControlName="ComingOrderFromForeignAns">
+                                    <mat-radio-button value="Pass">Pass</mat-radio-button>
+                                    <mat-radio-button value="Fail">Fail</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-5 col-lg-5 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Notes</mat-label>
+                                    <input matInput formControlName="ComingOrderFromForeignNotes">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-5 col-lg-5 mb-3">
+                                <p>Are the doors able to lock and close properly?</p>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-2 col-lg-2 mb-3">
+                                <mat-radio-group formControlName="DoorCloseProperlyAns">
+                                    <mat-radio-button value="Pass">Pass</mat-radio-button>
+                                    <mat-radio-button value="Fail">Fail</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-5 col-lg-5 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Notes</mat-label>
+                                    <input matInput formControlName="DoorCloseProperlyNotes">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-5 col-lg-5 mb-3">
+                                <p>Has the load been transported or is going to be transported in a way which could have impacted its quality safety or overall integrity?</p>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-2 col-lg-2 mb-3">
+                                <mat-radio-group formControlName="OverallIntegrityAns">
+                                    <mat-radio-button value="Pass">Pass</mat-radio-button>
+                                    <mat-radio-button value="Fail">Fail</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-5 col-lg-5 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Notes</mat-label>
+                                    <input matInput formControlName="OverallIntegrityNotes">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-5 col-lg-5 mb-3">
+                                <p>Are the floors in good condition?</p>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-2 col-lg-2 mb-3">
+                                <mat-radio-group formControlName="FloorInGoodConditionAns">
+                                    <mat-radio-button value="Pass">Pass</mat-radio-button>
+                                    <mat-radio-button value="Fail">Fail</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-5 col-lg-5 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Notes</mat-label>
+                                    <input matInput formControlName="FloorInGoodConditionNotes">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-5 col-lg-5 mb-3">
+                                <p>Are any major holes or openings present on the trailer?</p>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-2 col-lg-2 mb-3">
+                                <mat-radio-group formControlName="PresentOnTrailerAns">
+                                    <mat-radio-button value="Pass">Pass</mat-radio-button>
+                                    <mat-radio-button value="Fail">Fail</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-5 col-lg-5 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Notes</mat-label>
+                                    <input matInput formControlName="PresentOnTrailerNotes">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-5 col-lg-5 mb-3">
+                                <p>Is the overall structure of the vehicle and trailer intact and in safe working order?</p>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-2 col-lg-2 mb-3">
+                                <mat-radio-group formControlName="SafeWorkingOrderAns">
+                                    <mat-radio-button value="Pass">Pass</mat-radio-button>
+                                    <mat-radio-button value="Fail">Fail</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-5 col-lg-5 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Notes</mat-label>
+                                    <input matInput formControlName="SafeWorkingOrderNotes">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-5 col-lg-5 mb-3">
+                                <p>Is there any major water damage or rust present?</p>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-2 col-lg-2 mb-3">
+                                <mat-radio-group formControlName="IsRustPresentAns">
+                                    <mat-radio-button value="Pass">Pass</mat-radio-button>
+                                    <mat-radio-button value="Fail">Fail</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-5 col-lg-5 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Notes</mat-label>
+                                    <input matInput formControlName="IsRustPresentNotes">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-5 col-lg-5 mb-3">
+                                <p>(If applicable) was/is the correct temperature setting used for transporting the load?</p>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-2 col-lg-2 mb-3">
+                                <mat-radio-group formControlName="TemperatureSettingUsedAns">
+                                    <mat-radio-button value="Pass">Pass</mat-radio-button>
+                                    <mat-radio-button value="Fail">Fail</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-5 col-lg-5 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Notes</mat-label>
+                                    <input matInput formControlName="TemperatureSettingUsedNotes">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <button type="submit" mat-flat-button color="primary" class="app-button mr-1">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -68,43 +68,48 @@ downtimeTrackingDetailsList: any;
         });
   }
 
-private setDowntimeTrackingData() {
-  this.downtimeTrackingForm.patchValue({
-    Code: this.downtimeTrackingData.code,
-    ProductionDateTime: this.downtimeTrackingData.productionDateTime,
-    ProductId: this.downtimeTrackingData.productId,
-    ProductionOrderId: this.downtimeTrackingData.ProductionOrderId,
-    FillingLineId: this.downtimeTrackingData.FillingLineId    ,
-    SAPProductionOrderId: this.downtimeTrackingData.sapProductionOrderId,
-    productLineId:this.downtimeTrackingData.productLineId,
-  });
-
-  this.downtimeTrackingForm.get('ProductionOrderId').disable();
-  this.downtimeTrackingForm.get('SAPProductionOrderId').disable();
-  this.downtimeTrackingForm.get('productLineId').disable();
-  const formatDate = (dateTime: string): string => {
-    const date = new Date(dateTime);
-    return date.toISOString().split('T')[0]; // Only date part
-  };
-
-  setTimeout(() => {
-    this.downtimeTrackingData.downtimeTrackingDetails?.forEach(element => {
-      let DetailsData = {
-        StartDate: formatDate(element.startDate),
-        EndDate: formatDate(element.endDate),
-        Durations: element.durations,
-        CauseId: element.cause,
-        ActionTaken: element.actionTaken,
-        ActionTakenId: element.actionTakenId,
-        IsActive: element.isActive
-      };
-
-      this.addedDowntimeTrackingDetailsList.push(DetailsData);
+  private setDowntimeTrackingData() {
+    this.downtimeTrackingForm.patchValue({
+      Code: this.downtimeTrackingData.code,
+      ProductionDateTime: this.downtimeTrackingData.productionDateTime,
+      ProductId: this.downtimeTrackingData.productId,
+      ProductionOrderId: this.downtimeTrackingData.ProductionOrderId,
+      FillingLineId: this.downtimeTrackingData.FillingLineId,
+      SAPProductionOrderId: this.downtimeTrackingData.sapProductionOrderId,
+      productLineId: this.downtimeTrackingData.productLineId,
     });
-  }, 500);
-}
-
-
+  
+    this.downtimeTrackingForm.get('ProductionOrderId').disable();
+    this.downtimeTrackingForm.get('SAPProductionOrderId').disable();
+    this.downtimeTrackingForm.get('productLineId').disable();
+  
+    const formatDate = (dateTime: string): string => {
+      const date = new Date(dateTime);
+      return date.toISOString().split('T')[0]; // Only date part
+    };
+  
+    setTimeout(() => {
+      this.downtimeTrackingData.downtimeTrackingDetails?.forEach(element => {
+        // Convert DoneByUserIds from comma-separated string to an array of numbers
+        const doneByArray: number[] = element.doneByUserIds.split(',').map(item => Number(item.trim())).filter(value => !isNaN(value));
+  
+        let DetailsData = {
+          StartDate: formatDate(element.startDate),
+          EndDate: formatDate(element.endDate),
+          Durations: element.durations,
+          CauseId: element.causeId,
+          ShiftId: element.shiftId,
+          ActionTaken: element.actionTaken, // Ensure ActionTaken is correctly mapped
+          DoneByUserIds: doneByArray, // Set DoneByUserIds as an array
+          IsActive: element.isActive
+        };
+  
+        this.addedDowntimeTrackingDetailsList.push(DetailsData);
+      });
+    }, 500);
+  }
+  
+  
   private loadDropdowns() {
     this.downtimeTrackingService.getProductionOrderList()
       .subscribe((result: any) => {
@@ -157,26 +162,24 @@ private setDowntimeTrackingData() {
   });
 }
 
+addDowntimeDetail() {
+  this.downtimeTrackingDetails?.clear();
+  this.editDetailsId = -1;
 
-  addDowntimeDetail() {
-    this.downtimeTrackingDetails?.clear();
-    this.editDetailsId = -1;
+  const downtimeTrackingItem = this.formBuilder.group({
+    StartDate: [''],
+    EndDate: [''],
+    Durations: [''],
+    CauseId: [''],
+    ActionTaken: [''],
+    DoneByUserIds: [''],
+    ShiftId: ['']
+  });
 
-    const downtimeTrackingItem = this.formBuilder.group({});
+  this.downtimeTrackingDetails = this.downtimeTrackingForm?.get('downtimeTrackingDetails') as FormArray;
+  this.downtimeTrackingDetails.push(downtimeTrackingItem);
+}
 
-    downtimeTrackingItem.addControl('StartDate', this.formBuilder.control(''));
-    downtimeTrackingItem.addControl('EndDate', this.formBuilder.control(''));
-    downtimeTrackingItem.addControl('Durations', this.formBuilder.control(''));
-    downtimeTrackingItem.addControl('CauseId', this.formBuilder.control(''));
-    downtimeTrackingItem.addControl('ActionTaken', this.formBuilder.control(''));
-    downtimeTrackingItem.addControl('DoneByUserIds', this.formBuilder.control(''));
-    downtimeTrackingItem.addControl('ShiftId', this.formBuilder.control(''));
-    
-    this.downtimeTrackingDetails = this.downtimeTrackingForm?.get('downtimeTrackingDetails') as FormArray;
-    
-    this.downtimeTrackingDetails.push(downtimeTrackingItem);
-    
-  }
   addFinalDowntimeDetail() {
     const detail = this.downtimeTrackingDetails.at(0).value;
   
@@ -216,8 +219,9 @@ private setDowntimeTrackingData() {
       item.addControl('EndDate', this.formBuilder.control(dataItem.EndDate || ''));
       item.addControl('Durations', this.formBuilder.control(dataItem.Durations || ''));
       item.addControl('CauseId', this.formBuilder.control(dataItem.CauseId || ''));
+      item.addControl('ShiftId', this.formBuilder.control(dataItem.ShiftId || ''));
       item.addControl('ActionTaken', this.formBuilder.control(dataItem.ActionTaken || ''));
-      item.addControl('ActionTakenId', this.formBuilder.control(dataItem.ActionTakenId || ''));
+      item.addControl('DoneByUserIds', this.formBuilder.control(dataItem.DoneByUserIds || ''));
       item.addControl('IsActive', this.formBuilder.control(dataItem.IsActive || true));
       
       this.downtimeTrackingDetails.push(item);
@@ -296,13 +300,14 @@ private setDowntimeTrackingData() {
         endDate: formatToDateTime(detail.EndDate),
         durations: detail.Durations,
         cause: detail.CauseId,
+       shift:detail.ShiftId,
+       user: detail.DoneByUserIds,
         actionTaken: detail.ActionTaken,
-        actionTakenId: detail.ActionTakenId || 0,
-        isActive: detail.IsActive || true
+  
+      
       }))
     };
   
-    console.log('Transformed Data:', result);
     return result;
   }
 

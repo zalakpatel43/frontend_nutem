@@ -45,19 +45,19 @@
                     >Weight Check</a>
                     <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'attribute-check']"
                     >Attribute Check</a>
+                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'trailer-inspection']"
+                    >Trailer Inspection</a>
                     <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'downtimeTracking']"
                     >DownTime Tracking</a>
-                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'customer']"
-                    *authPermission="customerPage + '_' + permissions.list">Customer</a>
-                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'pre-check']">
-                        Pre Check
-                      </a>
-                      <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'post-check']">
+                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'post-check']">
                         Post Check
                       </a>
-                    <!-- <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'customer']"
-                    *authPermission="customerPage + '_' + permissions.list">Customer</a> -->
-                    <!-- <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'bom']"
+                    <!-- <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'pre-check']">
+                        Pre Check
+                      </a>
+                     
+                   
+                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'bom']"
                         *authPermission="bomPage + '_' + permissions.list">BOM</a>
                     <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'group-code']"
                         *authPermission="groupCodePage + '_' + permissions.list">Group Code</a>

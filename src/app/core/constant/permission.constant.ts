@@ -12,6 +12,7 @@ export const ApplicationPage = {
     jobcard:'adm_JobCard',
     weightCheck : 'adm_weight_check',
     attributeCheck : 'adm_attribute_check',
+    trailerInspection : 'adm_trailer_inspection',
     downtimeTracking: 'adm_downtime',
     preCheck:'adm_PreCheckList',
     postCheck:'adm_PostCheckList',
