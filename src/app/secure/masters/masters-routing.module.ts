@@ -179,6 +179,12 @@ const routes: Routes = [
                 data: { page: ApplicationPage.preCheck },
                 loadChildren: () => import('./pre-check/pre-check.module').then(m => m.PreCheckModule)
             },
+            {
+                path: 'post-check',
+                canActivate: [PageAuthGuard],
+                data: { page: ApplicationPage.postCheck },
+                loadChildren: () => import('./post-check/post-check.module').then(m => m.PostCheckModule)
+            },
         ]
     }
 ];

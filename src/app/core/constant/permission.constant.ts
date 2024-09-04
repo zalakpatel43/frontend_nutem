@@ -14,6 +14,7 @@ export const ApplicationPage = {
     attributeCheck : 'adm_attribute_check',
     downtimeTracking: 'adm_downtime',
     preCheck:'adm_PreCheckList',
+    postCheck:'adm_PostCheckList',
     bom: 'adm_bom',
     moduleGroup: 'adm_module_group',
     termsAndConditions: 'adm_terms_conditions',
