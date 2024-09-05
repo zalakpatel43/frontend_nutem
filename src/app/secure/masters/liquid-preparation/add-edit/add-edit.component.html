@@ -1,0 +1,473 @@
+<div class="row justify-content-center">
+    <div class="col-xl-11 col-lg-12">
+        <div class="border p30 rounded">
+            <div class="row align-items-center mb-4">
+                <div class="col-lg-7 col-sm-9 col-xs-10 d-flex align-items-end">
+                    <h4 class="mb-0"><i class="icon-edit"></i> Add/Edit Liquid Preparation</h4>
+                </div>
+                <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end">
+                    <a *authPermission="page + '_' + permissions.list" mat-flat-button color="primary"
+                        class="app-button" (click)="cancel()">
+                        View List
+                    </a>
+                </div>
+            </div>
+            <div class="tab-group-container">
+                <mat-tab-group [(selectedIndex)]="selectedIndex" class="tab-group-bordered">
+                    <mat-tab label="Basic">
+                        <ng-template matTabContent>
+                            <form [formGroup]="basicForm" #form="ngForm" novalidate class="app-form">
+                                <!-- Basic Details Section -->
+                                <div class="card mb-4">
+                                    <!-- <div class="card-header">
+                                        <h5 class="mb-0">Attribute Check Header</h5>
+                                    </div> -->
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                                <mat-form-field appearance="fill" class="full-width">
+                                                    <mat-label>Start Date</mat-label>
+                                                    <input matInput [matDatepicker]="pickerStartDate"
+                                                        formControlName="StartDateTime">
+                                                    <mat-datepicker-toggle matSuffix
+                                                        [for]="pickerStartDate"></mat-datepicker-toggle>
+                                                    <mat-datepicker #pickerStartDate></mat-datepicker>
+                                                    <mat-validation-message [control]="basicForm.controls.StartDateTime"
+                                                        [message]="'Start Date Time'"
+                                                        [formSubmitted]="isBasicFormSubmitted"></mat-validation-message>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                                <mat-form-field appearance="fill" class="full-width">
+                                                    <mat-label>End Date</mat-label>
+                                                    <input matInput [matDatepicker]="pickerEndDate"
+                                                        (dateChange)="onEndDateChange()" formControlName="EndDateTime">
+                                                    <mat-datepicker-toggle matSuffix
+                                                        [for]="pickerEndDate"></mat-datepicker-toggle>
+                                                    <mat-datepicker #pickerEndDate></mat-datepicker>
+                                                    <mat-validation-message [control]="basicForm.controls.EndDateTime"
+                                                        [message]="'End DateTime'"
+                                                        [formSubmitted]="isBasicFormSubmitted"></mat-validation-message>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                                <mat-form-field appearance="fill" class="full-width">
+                                                    <mat-label>Production Order</mat-label>
+                                                    <mat-select formControlName="SAPProductionOrderId"
+                                                        [disabled]="isEditMode">
+                                                        <mat-option *ngFor="let order of productionOrderList"
+                                                            [value]="order.id">
+                                                            {{ order.poNumber }}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                    <mat-validation-message
+                                                        [control]="basicForm.get('SAPProductionOrderId')"
+                                                        [message]="'Production Order'"
+                                                        [formSubmitted]="isBasicFormSubmitted"></mat-validation-message>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                                <mat-form-field appearance="fill" class="full-width">
+                                                    <mat-label>Product</mat-label>
+                                                    <mat-select formControlName="ProductId" [disabled]="isEditMode">
+                                                        <mat-option *ngFor="let product of productList"
+                                                            [value]="product.id">
+                                                            {{ product.productName }}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                    <mat-validation-message [control]="basicForm.controls.ProductId"
+                                                        [message]="'Product'"
+                                                        [formSubmitted]="isBasicFormSubmitted"></mat-validation-message>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                                <mat-form-field appearance="fill" class="full-width">
+                                                    <mat-label>Shift</mat-label>
+                                                    <mat-select formControlName="ShiftId">
+                                                        <mat-option *ngFor="let shift of shiftList" [value]="shift.id">
+                                                            {{ shift.shiftName }}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                    <mat-validation-message [control]="basicForm.controls.ShiftId"
+                                                        [message]="'Shift'"
+                                                        [formSubmitted]="isBasicFormSubmitted"></mat-validation-message>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                                <mat-form-field appearance="fill" class="full-width">
+                                                    <mat-label>Batch Lot Number</mat-label>
+                                                    <input matInput formControlName="BatchLotNumber" type="number">
+                                                    <mat-validation-message
+                                                        [control]="basicForm.controls.BatchLotNumber"
+                                                        [message]="'Batch Lot Number'"
+                                                        [formSubmitted]="isBasicFormSubmitted"></mat-validation-message>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                                <mat-form-field appearance="fill" class="full-width">
+                                                    <mat-label>Tank</mat-label>
+                                                    <mat-select formControlName="TankId">
+                                                        <mat-option *ngFor="let tank of tankList" [value]="tank.id">
+                                                            {{ tank.tankName }}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                    <mat-validation-message [control]="basicForm.controls.TankId"
+                                                        [message]="'Tank'"
+                                                        [formSubmitted]="isBasicFormSubmitted"></mat-validation-message>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                                <mat-form-field appearance="fill" class="full-width">
+                                                    <mat-label>Compounder</mat-label>
+                                                    <mat-select formControlName="CompounderUserId">
+                                                        <mat-option *ngFor="let user of usersList" [value]="user.id">
+                                                            {{ user.name }}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                    <mat-validation-message
+                                                        [control]="basicForm.controls.CompounderUserId"
+                                                        [message]="'Compounder'"
+                                                        [formSubmitted]="isBasicFormSubmitted"></mat-validation-message>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                                <mat-form-field appearance="fill" class="full-width">
+                                                    <mat-label>Standard Batch Weight</mat-label>
+                                                    <input matInput formControlName="StandardBatchWeight" type="number">
+                                                    <mat-validation-message
+                                                        [control]="basicForm.controls.StandardBatchWeight"
+                                                        [message]="'Standard Batch Weight'"
+                                                        [formSubmitted]="isBasicFormSubmitted"></mat-validation-message>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="row">
+                                    <div class="col-lg-12 text-center">
+                                        <button type="submit" mat-flat-button color="primary" class="app-button mr-1">Save</button>
+                                    </div>
+                                </div> -->
+                            </form>
+                        </ng-template>
+                    </mat-tab>
+                    <mat-tab label="Start Checklist" [disabled]="isstartChecklistDisable">
+                        <ng-template matTabContent>
+                            <form [formGroup]="StartCheckListForm" #form="ngForm" novalidate class="app-form">
+                                <div class="card mb-4">
+                                    <!-- <div class="card-header">
+                                         <h5 class="mb-0">Attribute Check Header</h5>
+                                    </div> -->
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div formArrayName="questions">
+                                                <div *ngFor="let questionGroup of questionsArray.controls; let i = index"
+                                                    [formGroupName]="i" class="mb-3">
+                                                    <div class="row">
+                                                        <div class="col-12 col-sm-12 col-md-5 col-lg-5 mb-3">
+                                                            <mat-label>{{ questionGroup.get('question').value
+                                                                }}</mat-label>
+                                                        </div>
+                                                        <div class="col-12 col-sm-12 col-md-3 col-lg-3 mb-3">
+                                                            <mat-radio-group formControlName="answer"
+                                                                (change)="onAnswerChange($event,i)">
+                                                                <mat-radio-button value="Yes">Yes</mat-radio-button>
+                                                                <mat-radio-button value="No"
+                                                                    disabled="true">No</mat-radio-button>
+                                                                <mat-radio-button value="NA">NA</mat-radio-button>
+                                                            </mat-radio-group>
+                                                        </div>
+                                                        <div class="col-12 col-sm-12 col-md-4 col-lg-4 mb-3">
+                                                            <mat-form-field appearance="fill" class="full-width"
+                                                                *ngIf="questionGroup.get('answer').value === 'NA'">
+                                                                <mat-label>Reason</mat-label>
+                                                                <input matInput formControlName="reason">
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <!-- The mat-radio-group control -->
+
+                                                    <!--                                             
+                                                      <mat-form-field appearance="fill" class="full-width mt-2">
+                                                        <mat-label>Tank Number</mat-label>
+                                                        <input matInput formControlName="tankNo">
+                                                      </mat-form-field>
+                                            
+                                                      <mat-form-field appearance="fill" class="full-width mt-2">
+                                                        <mat-label>Tank ID</mat-label>
+                                                        <input matInput formControlName="tankId">
+                                                      </mat-form-field> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </ng-template>
+                    </mat-tab>
+                    <mat-tab label="Instructions" [disabled]="isInstructionsDisable">
+                        <ng-template matTabContent>
+                            <form [formGroup]="InstructionForm" #form="ngForm" novalidate class="app-form">
+                                <!-- Basic Details Section -->
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Instruction Details</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                                <mat-form-field appearance="fill" class="full-width">
+                                                    <mat-label>Instruction</mat-label>
+                                                    <mat-select formControlName="InstructionId"
+                                                        (selectionChange)="onInstructionChange($event)">
+                                                        <mat-option *ngFor="let ins of productInstructionDetailsList"
+                                                            [value]="ins.id">
+                                                            {{ ins.instruction }}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                    <mat-validation-message
+                                                        [control]="InstructionForm.controls.InstructionId"
+                                                        [message]="'Instruction'"
+                                                        [formSubmitted]="isInstructionFormSubmitted">
+                                                    </mat-validation-message>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                                <mat-form-field appearance="fill" class="full-width">
+                                                    <mat-label>Material</mat-label>
+                                                    <mat-select formControlName="MaterialId">
+                                                        <mat-option *ngFor="let mat of materialMasterList"
+                                                            [value]="mat.id">
+                                                            {{ mat.materialName }}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                    <mat-validation-message
+                                                        [control]="InstructionForm.controls.MaterialId"
+                                                        [message]="'Material'"
+                                                        [formSubmitted]="isInstructionFormSubmitted"></mat-validation-message>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                                <mat-form-field appearance="fill" class="full-width">
+                                                    <mat-label>Lot Number</mat-label>
+                                                    <input matInput formControlName="LotNumber">
+                                                    <mat-validation-message
+                                                        [control]="InstructionForm.controls.LotNumber"
+                                                        [message]="'Lot Number'"
+                                                        [formSubmitted]="isInstructionFormSubmitted"></mat-validation-message>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                                <mat-form-field appearance="fill" class="full-width">
+                                                    <mat-label>Weight</mat-label>
+                                                    <input matInput formControlName="Weight" type="number"
+                                                        [disabled]="true">
+                                                    <mat-validation-message [control]="InstructionForm.controls.Weight"
+                                                        [message]="'Weight'"
+                                                        [formSubmitted]="isInstructionFormSubmitted"></mat-validation-message>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                                <mat-form-field appearance="fill" class="full-width">
+                                                    <mat-label>Weight Added</mat-label>
+                                                    <input matInput formControlName="WeightAdded" type="number">
+                                                    <mat-validation-message
+                                                        [control]="InstructionForm.controls.WeightAdded"
+                                                        [message]="'Weight Added'"
+                                                        [formSubmitted]="isInstructionFormSubmitted"></mat-validation-message>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                                <mat-form-field appearance="fill" class="full-width">
+                                                    <mat-label>Done By</mat-label>
+                                                    <mat-select formControlName="DoneByIds" multiple>
+                                                        <mat-option *ngFor="let user of usersList" [value]="user.id">
+                                                            {{ user.name }}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                    <mat-validation-message
+                                                        [control]="InstructionForm.controls.DoneByIds"
+                                                        [message]="'Done By'"
+                                                        [formSubmitted]="isInstructionFormSubmitted"></mat-validation-message>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                                <mat-form-field appearance="fill" class="full-width">
+                                                    <mat-label>Added Time</mat-label>
+                                                    <input matInput formControlName="AddedTime" [disabled]="true">
+                                                    <mat-validation-message
+                                                        [control]="InstructionForm.controls.AddedTime"
+                                                        [message]="'Added Time'"
+                                                        [formSubmitted]="isInstructionFormSubmitted"></mat-validation-message>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div
+                                                class="col-12 col-sm-12 col-md-1 col-lg-1 mb-3 p-1 d-flex align-items-center">
+                                                <button type="button" mat-icon-button color="warn"
+                                                    (click)="addInstruction()">
+                                                    <mat-icon>add</mat-icon>
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table id="gridNozzlewiseWeight"
+                                                class="table table-hover table-bordered display mb-30 fixed-table-scroll-inner"
+                                                style="overflow:scroll;width:auto">
+                                                <thead class="bg-primary text-primary text-center">
+                                                    <tr>
+                                                        <th style="width:20%">Instruction</th>
+                                                        <th>Material & Part Code</th>
+                                                        <th>Lot Number </th>
+                                                        <th>Weight (kg)</th>
+                                                        <th>Weight Added (kg)</th>
+                                                        <th>Done By</th>
+                                                        <th> Added Time </th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let ins of AddedInstructionList; let i = index">
+                                                        <td> {{ins.InstructionName}} </td>
+                                                        <td> {{ins.MaterialName}} </td>
+                                                        <td> {{ins.LotNumber}} </td>
+                                                        <td> {{ins.Weight}} </td>
+                                                        <td> {{ins.WeightAdded}} </td>
+                                                        <td> {{ins.DoneByNames}} </td>
+                                                        <td> {{ins.AddedTime}} </td>
+                                                        <td>
+                                                            <button (click)="onEditDetail(ins,i)" type="button"
+                                                                class="btn btn-primary btn-sm btnModifyRow"><i
+                                                                    class="fa fa-pencil"></i></button>
+                                                            <button (click)="removeDetail(i)" type="button"
+                                                                class="btn btn-danger btn-sm btnRemoveRow"><i
+                                                                    class="fa fa-close"></i></button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="3" class="text-center"><strong>Total</strong></td>
+                                                        <td><strong>{{ totalWeight }}</strong></td>
+                                                        <td><strong>{{ totalWeightAdded }}</strong></td>
+                                                        <td colspan="3"></td> <!-- Empty cells to match column count -->
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </ng-template>
+                    </mat-tab>
+                    <mat-tab label="End Checklist" [disabled]="isEndChecklistDisable">
+                        <ng-template matTabContent>
+                            <form [formGroup]="EndCheckListForm" #form="ngForm" novalidate class="app-form">
+                                <div class="card mb-4">
+                                    <!-- <div class="card-header">
+                                         <h5 class="mb-0">Attribute Check Header</h5>
+                                    </div> -->
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div formArrayName="questions">
+                                                <div *ngFor="let questionGroup of EndquestionsArray.controls; let i = index"
+                                                    [formGroupName]="i" class="mb-3">
+                                                    <div class="row">
+                                                        <div class="col-12 col-sm-12 col-md-5 col-lg-5 mb-3">
+                                                            <mat-label>{{ questionGroup.get('question').value
+                                                                }}</mat-label>
+                                                        </div>
+                                                        <div class="col-12 col-sm-12 col-md-3 col-lg-3 mb-3">
+                                                            <mat-radio-group formControlName="answer"
+                                                                (change)="onAnswerChange($event,i)">
+                                                                <mat-radio-button value="Yes">Yes</mat-radio-button>
+                                                                <mat-radio-button value="No"
+                                                                    disabled="true">No</mat-radio-button>
+                                                                <mat-radio-button value="NA">NA</mat-radio-button>
+                                                            </mat-radio-group>
+                                                        </div>
+                                                        <div class="col-12 col-sm-12 col-md-4 col-lg-4 mb-3">
+                                                            <mat-form-field appearance="fill" class="full-width"
+                                                                *ngIf="questionGroup.get('answer').value === 'NA'">
+                                                                <mat-label>Reason</mat-label>
+                                                                <input matInput formControlName="reason">
+                                                            </mat-form-field>
+                                                            <mat-form-field appearance="fill" class="full-width"
+                                                                *ngIf="questionGroup.get('id').value == 27 && questionGroup.get('answer').value === 'Yes'">
+                                                                <mat-label>Tank</mat-label>
+                                                                <mat-select formControlName="tankId">
+                                                                    <mat-option *ngFor="let tank of tankList"
+                                                                        [value]="tank.id">
+                                                                        {{ tank.tankName }}
+                                                                    </mat-option>
+                                                                </mat-select>
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <!-- The mat-radio-group control -->
+
+                                                    <!--                                             
+                                                      <mat-form-field appearance="fill" class="full-width mt-2">
+                                                        <mat-label>Tank Number</mat-label>
+                                                        <input matInput formControlName="tankNo">
+                                                      </mat-form-field>
+                                            
+                                                      <mat-form-field appearance="fill" class="full-width mt-2">
+                                                        <mat-label>Tank ID</mat-label>
+                                                        <input matInput formControlName="tankId">
+                                                      </mat-form-field> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </ng-template>
+                    </mat-tab>
+                    <mat-tab label="Quality" [disabled]="isQualityDisable">
+                        <ng-template matTabContent>
+                            <p>This is the content of Tab 3.</p>
+                        </ng-template>
+                    </mat-tab>
+                    <mat-tab label="Adjustment" [disabled]="isAdjustmentDisable">
+                        <ng-template matTabContent>
+                            <p>This is the content of Tab 3.</p>
+                        </ng-template>
+                    </mat-tab>
+                </mat-tab-group>
+                <!-- Navigation Buttons -->
+                <div style="margin-top: 20px;" class="d-flex justify-content-end">
+                    <button mat-raised-button color="primary" (click)="goToPreviousTab()"
+                        [disabled]="selectedIndex === 0">Previous</button>
+                    <button mat-raised-button color="primary" class="ms-4" (click)="goToNextTab()"
+                        [disabled]="selectedIndex === tabCount - 1">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

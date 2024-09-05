@@ -96,6 +96,12 @@ const routes: Routes = [
                 loadChildren: () => import('./downtime/downtime.module').then(m => m.DowntimeTrackingModule)
             },
             {
+                path: 'liquid-preparation',
+                canActivate: [PageAuthGuard],
+                data: { page: ApplicationPage.liquidPreparation },
+                loadChildren: () => import('./liquid-preparation/liquid-preparation.module').then(m => m.LiquidPreparationModule)
+            },
+            {
                 path: 'bom',
                 canActivate: [PageAuthGuard],
                 data: { page: ApplicationPage.bom, action: PermissionType.list },
