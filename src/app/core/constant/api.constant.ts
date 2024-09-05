@@ -84,6 +84,20 @@ export const APIConstant = {
     // PrePostQuestion
     PrePostQuestion:`${basePath}PrePostQuestion/GetAllPrePostQuestions`,
 
+    //Masters 
+    StartEndBatchChecklist:`${basePath}StartEndBatchChecklist/GetAllStartEndBatchChecklist`,
+    GetAllProductInstructionDetails:`${basePath}ProductInstructionDetails/GetAllProductInstructionDetails`,
+    GetAllMaterialMaster:`${basePath}MaterialMaster/GetAllMaterialMaster`,
+    GetAllTankMaster:`${basePath}TankMaster/GetAllTankMaster`,
+    GetAllQCTSpecificationMaster:`${basePath}QCTSpecificationMaster/GetAllQCTSpecificationMaster`,
+
+     //LiquidPreparation
+     LiquidPreparationList: `${basePath}LiquidPreparation/GetAllLiquidPreparation`,
+     LiquidPreparationAdd: `${basePath}LiquidPreparation/AddLiquidPreparation`,
+     LiquidPreparationEdit: `${basePath}LiquidPreparation/EditLiquidPreparation`,
+     LiquidPreparationGetById: `${basePath}LiquidPreparation/GetByIdAsync`,
+     LiquidPreparationDelete: `${basePath}LiquidPreparation/DeleteLiquidPreparation`,
+    
     //Pages
     company: `${apiPath}company`,
     user: `${apiPath}users`,
