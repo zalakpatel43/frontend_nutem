@@ -1,10 +1,10 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { PreCheckComponents, PreCheckRoutingModule } from './pre-check-routing.module';
-import { PreCheckComponent } from './pre-check/pre-check.component';
+import { PostCheckComponents, PostCheckRoutingModule } from './post-check-routing.module';
+import { PostCheckComponent } from './post-check/post-check.component';
 import { SharedModule } from '@app-shared';
-import { PreCheckService } from './pre-check.service';
+import { PostCheckService } from './post-check.service';
 import { provideEnvironmentNgxMask } from 'ngx-mask';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
@@ -14,27 +14,23 @@ import { NgxMatMomentModule } from '@angular-material-components/moment-adapter'
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
+
 @NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
-    [...PreCheckComponents]
+    [...PostCheckComponents]
   ],
   imports: [
-    CommonModule,
-    PreCheckRoutingModule,
+    CommonModule,MatFormFieldModule,
+    PostCheckRoutingModule,MatInputModule,
     SharedModule,NgxDatatableModule,
-    NgxMaterialTimepickerModule,
-    NgxMatDatetimePickerModule,
-    NgxMatNativeDateModule,
-    NgxMatTimepickerModule,
-    MatNativeDateModule,
-    MatMomentDateModule,
-    NgxMatMomentModule,
-    MatFormFieldModule,
-    MatInputModule
+    NgxMaterialTimepickerModule,NgxMatDatetimePickerModule,NgxMatTimepickerModule
+    ,MatNativeDateModule,MatMomentDateModule,NgxMatMomentModule
+    
   ],
   providers: [
-    PreCheckService,
+    PostCheckService,NgxMatNativeDateModule,
     provideEnvironmentNgxMask(),
   ]
 })
-export class PreCheckModule { }
+export class PostCheckModule { }

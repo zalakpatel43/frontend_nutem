@@ -41,7 +41,7 @@ export const APIConstant = {
     downtimeTrackingAdd: `${basePath}DowntimeTracking/AddDowntimeTracking`,
     downtimeTrackingEdit: `${basePath}DowntimeTracking/EditDowntimeTracking`,
     downtimeTrackingGetById: `${basePath}DowntimeTracking/GetByIdAsync`,
-    downtimeTrackingDelete: `${basePath}DowntimeTracking/Delete`,
+    downtimeTrackingDelete: `${basePath}DowntimeTracking/DeleteDowntimeTracking`,
 
 
      //Trailer Inspection
@@ -80,6 +80,14 @@ export const APIConstant = {
     preCheckEdit: `${basePath}PreCheckList/EditPreCheckList`,
     preCheckGetById: `${basePath}PreCheckList/GetByIdAsync`,
     preCheckDelete: `${basePath}PreCheckList/Delete`,
+
+    // Post-Check 
+    postCheckList: `${basePath}PostCheckList/GetAllPostCheckList`,
+    postCheckAdd: `${basePath}PostCheckList/AddPostCheckList`,
+    postCheckEdit: `${basePath}PostCheckList/EditPostCheckList`,
+    postCheckGetById: `${basePath}PostCheckList/GetByIdAsync`,
+    postCheckDelete: `${basePath}PostCheckList/Delete`,
+
 
     // PrePostQuestion
     PrePostQuestion:`${basePath}PrePostQuestion/GetAllPrePostQuestions`,

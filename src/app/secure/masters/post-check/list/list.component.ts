@@ -1,36 +1,37 @@
 import { Component, OnInit } from '@angular/core';
 import { ApplicationPage, PermissionType } from '@app-core';
-import { PreCheckService } from '../pre-check.service';
+import { PostCheckService } from '../post-check.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'pre-check-list',
+  selector: 'post-check-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class PreCheckListComponent implements OnInit {
+export class PostCheckListComponent implements OnInit {
 
-  preCheckData: any[] = [];
-  page: string = ApplicationPage.preCheck;
+  postCheckData: any[] = [];
+  page: string = ApplicationPage.postCheck;
   permissions = PermissionType;
   error: string;
   loading: boolean;
 
   searchData: { [key: string]: any } = {};
 
-  constructor(private preCheckService: PreCheckService,
+  constructor(private postCheckService: PostCheckService,
               private notificationService: ToastrService) { }
 
   ngOnInit(): void {
-    this.getPreCheckData();
+    this.getPostCheckData();
   }
 
-  private getPreCheckData() {
+  private getPostCheckData() {
     this.loading = true;
 
-    this.preCheckService.getPreCheckList()
+    this.postCheckService.getPostCheckList()
       .subscribe((result: any) => {
-        this.preCheckData = result.filter((list: any) => list.isActive === true);
+        this.postCheckData = result.filter((list: any) => list.isActive === true);
+        
         this.loading = false;
       },
       (error) => {
@@ -39,12 +40,12 @@ export class PreCheckListComponent implements OnInit {
       });
   }
 
-  removePreCheck(id: number) {
-    const result = confirm(`Are you sure you want to delete this Pre-Check?`);
+  removePostCheck(id: number) {
+    const result = confirm(`Are you sure you want to delete this Post-Check?`);
     if (result) {
-      this.preCheckService.deletePreCheck(id)
+      this.postCheckService.deletePostCheck(id)
         .subscribe(() => {
-          this.getPreCheckData();
+          this.getPostCheckData();
         }, () => {
           this.notificationService.error("Something went wrong.");
         });
