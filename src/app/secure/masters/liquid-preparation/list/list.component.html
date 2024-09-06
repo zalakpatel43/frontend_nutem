@@ -6,7 +6,7 @@
                     <h4 class="mb20 float-left">Liquid Preparation List</h4>
                 </div>
                 <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end rightSideHeader mb10">
-                    <a  mat-flat-button color="primary"
+                    <a  mat-flat-button color="primary" 
                         class="app-button" [routerLink]="['../','add']">
                         <span>Add New</span>
                         <i class="icon-plus"></i>
@@ -26,17 +26,17 @@
                         [loadingIndicator]="loading" [scrollbarH]="true" 
                         [messages]="{emptyMessage:'No Data to Display',totalMessage:'Total'}">
                        
-                        <ngx-datatable-column name="StartDate" prop="acDate">
+                        <ngx-datatable-column name="StartDate" prop="startDateTime">
                             <ng-template let-value="value" ngx-datatable-cell-template>
                                 <span>{{value | date: 'MM/dd/yyyy hh:mm a'}}</span>
                             </ng-template>
                         </ngx-datatable-column>
-                        <ngx-datatable-column name="End Date" prop="productName">
+                        <ngx-datatable-column name="End Date" prop="endDateTime">
                             <ng-template let-value="value" ngx-datatable-cell-template>
                                 <span>{{value | date: 'MM/dd/yyyy hh:mm a'}}</span>
                             </ng-template>
                         </ngx-datatable-column>
-                        <ngx-datatable-column name="Shift" prop="bottleDateCode">
+                        <ngx-datatable-column name="Shift" prop="shiftName">
                             <ng-template let-value="value" ngx-datatable-cell-template>
                                 <span>{{value }}</span>
                             </ng-template>

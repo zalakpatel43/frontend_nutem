@@ -1,11 +1,12 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationPage, CommonUtility, PermissionType } from '@app-core';
 import { Subscription } from 'rxjs';
 import { LiquidPreparationService } from '../liquid-preparation.service';
 import { WeightCheckService } from '../../weight-check/weight-check.service';
 import { ToastrService } from 'ngx-toastr';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-add-edit',
@@ -32,7 +33,7 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
 
   isBasicFormSubmitted: boolean;
   basicForm: UntypedFormGroup;
-  isEndDateOk: boolean = false;
+  isEndDateOk: boolean = true;
   draftBasicFormValue: any;
 
   isStartCheckListFormSubmitted: boolean;
@@ -90,7 +91,7 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
       //this.addAttributeDetail();
       if (this.isEditMode) {
         this.liquidPreparationId = params.id//+params["id"];
-        // this.getAttributeCheckById();
+        this.getLiquidPreparationById();
       }
     });
   }
@@ -134,11 +135,18 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
         return;
       }
       else {
-         // this.draftStartCheckListFormValue = this.StartCheckListForm.value;
-          this.isEndChecklistDisable = false;
-          if (this.selectedIndex < this.tabCount - 1) {
-            this.selectedIndex++;
+        // this.draftStartCheckListFormValue = this.StartCheckListForm.value;
+        this.DiffWghInstructionList = [];
+        this.AddedInstructionList.forEach(element => {
+          if (element.diffWeight > 0 || element.diffWeight < 0) {
+            this.DiffWghInstructionList.push(element);
           }
+        });
+
+        this.isEndChecklistDisable = false;
+        if (this.selectedIndex < this.tabCount - 1) {
+          this.selectedIndex++;
+        }
       }
 
     }
@@ -154,9 +162,24 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
         }
       }
     }
-    if (this.selectedIndex < this.tabCount - 1) {
-      this.selectedIndex++;
+    else if (this.selectedIndex === 4) {
+      if (this.AddedQualityList.length <= 0) {
+        this.notificationService.error("select at least one Quality");
+        return;
+      }
+      else {
+        this.isAdjustmentDisable = false;
+        if (this.selectedIndex < this.tabCount - 1) {
+          this.selectedIndex++;
+        }
+      }
     }
+    else if (this.selectedIndex === 5) {
+      console.log("added adjustment", this.DiffWghInstructionList);
+    }
+    // if (this.selectedIndex < this.tabCount - 1) {
+    //   this.selectedIndex++;
+    // }
   }
 
   onEndDateChange() {
@@ -175,60 +198,133 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getAttributeCheckById() {
-    // this.attributeCheckService.getByIdAttributeCheck(this.attributeCheckId)
-    //   .subscribe((result: any) => {
-    //     this.attributeCheckData = result;
-    //     this.setAttirbuteCheckData();
+  private getLiquidPreparationById() {
+    this.liquidPreparationService.getByIdLiquidPreparation(this.liquidPreparationId)
+      .subscribe((result: any) => {
+        this.liquidPreparationData = result;
+        this.setLiquidPreparationkData();
 
-    //     console.log("get by id data", result)
-    //   },
-    //     (error) => {
-    //       console.log(error);
-    //     });
+        console.log("get by id data", result)
+      },
+        (error) => {
+          console.log(error);
+        });
   }
 
-  private setAttirbuteCheckData() {
-    //     this.attributeCheckForm.patchValue({
-    //       ACCode: this.attributeCheckData.code,
-    //       ACDate: this.attributeCheckData.acDate,
-    //       ProductionOrderId: this.attributeCheckData.productionOrderId,
-    //       ProductId: this.attributeCheckData.productId,
-    //       BottleDateCode: this.attributeCheckData.bottleDateCode,
-    //       PackSize: this.attributeCheckData.packSize,
-    //       IsWeightRange: this.attributeCheckData.isWeightRange,
-    //       Note: this.attributeCheckData.note
-    //     });
-    //     this.attributeCheckForm.get('ProductionOrderId').disable();
-    //     this.attributeCheckForm.get('ProductId').disable();
+  private setLiquidPreparationkData() {
+    this.basicForm.patchValue({
+      StartDateTime: this.liquidPreparationData.startDateTime,
+      EndDateTime: this.liquidPreparationData.endDateTime,
+      SAPProductionOrderId: this.liquidPreparationData.sapProductionOrderId,
+      ProductId: this.liquidPreparationData.productId,
+      ShiftId: this.liquidPreparationData.shiftId,
+      BatchLotNumber: parseInt(this.liquidPreparationData.batchLotNumber),
+      TankId: this.liquidPreparationData.tankId,
+      CompounderUserId: this.liquidPreparationData.compounderUserId,
+      StandardBatchWeight: parseInt(this.liquidPreparationData.standardBatchWeight),
+    });
+    this.basicForm.get('SAPProductionOrderId').disable();
+    this.basicForm.get('ProductId').disable();
 
-    //     const formatTimeWithAMPM = (dateTime: string): string => {
-    //       const date = new Date(dateTime);
-    //       return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
-    //     };
 
-    //     setTimeout(() => {
-    //       this.attributeCheckData.attributeCheckDetails?.forEach(element => {
+    setTimeout(() => {
+      // Start checklist
+      let EditPrechecklistData = [];
+      let EditEndchecklistData = [];
 
-    //         const doneByArray: number[] = element.doneByUserIds.split(',').map(item => Number(item.trim())).filter(value => !isNaN(value));
-    // console.log("done by array", doneByArray);
-    //         let DetailsData = {
-    //           TDateTime: formatTimeWithAMPM(element.tDateTime),
-    //           IsGoodCondition: element.isGoodCondition,
-    //           CapTorque: element.capTorque,
-    //           Id: element.id,
-    //           EmptyBottleWeight: element.emptyBottleWeight,
-    //           LotNoOfLiquid: element.lotNoOfLiquid,
-    //           IsCorrect: element.isCorrect,
-    //           LeakTest: element.leakTest,
-    //           DoneByUserIds: element.doneByUserIds,
-    //         }
+      this.liquidPreparationData.liquidPreparationChecklistDetails.forEach(element => {
+        if (element.type === "1") {
+          EditPrechecklistData.push(element);
+        }
+        else {
+          EditEndchecklistData.push(element);
+        }
+      });
 
-    //         this.AddedattributeCheckDetailsList.push(DetailsData);
-    //       });
-    //       console.log("added nozzle data", this.AddedattributeCheckDetailsList)
-    //       //         let item :any;
-    //     }, 500);
+      EditPrechecklistData.forEach(data => {
+        const formGroup = this.StartCheckListForm.get('questions')?.value.find((group: any) => group.id === data.questionId);
+        if (formGroup) {
+          const index = this.StartCheckListForm.get('questions')?.value.indexOf(formGroup);
+          if (index !== -1) {
+            (this.StartCheckListForm.get('questions') as FormArray).at(index).patchValue({
+              answer: data.answer,
+              tankId: data.tankId ? data.tankId : '',
+              tankNo: data.tankNo ? data.tankNo : '',
+              reason: data.reason,
+            });
+          }
+        }
+      });
+
+      EditEndchecklistData.forEach(data => {
+        const formGroup = this.EndCheckListForm.get('questions')?.value.find((group: any) => group.id === data.questionId);
+        if (formGroup) {
+          const index = this.EndCheckListForm.get('questions')?.value.indexOf(formGroup);
+          if (index !== -1) {
+            (this.EndCheckListForm.get('questions') as FormArray).at(index).patchValue({
+              answer: data.answer,
+              tankId: data.tankId ? data.tankId : '',
+              tankNo: data.tankNo ? data.tankNo : '',
+              reason: data.reason,
+            });
+          }
+        }
+      });
+
+      // Instruction 
+      this.liquidPreparationData.liquidPreparationInstructionDetails.forEach(element => {
+        let diff = element.weight - element.weightAdded;
+        let DoneByNames = this.usersList.filter(item => element.doneByIds?.includes(item.id)).map(item => item.name)
+          .join(', ');
+
+        let data = {
+          InstructionId: element.instructionId,
+          MaterialId: element.materialId,
+          LotNumber: parseInt(element.lotNumber),
+          Weight: element.weight,
+          WeightAdded: element.weightAdded,
+          DoneByIds: element.doneByIds.split(',').map(id => parseInt(id, 10)),
+          AddedTime: element.addedTime,
+          diffWeight: diff ? diff : 0,
+          DoneByNames: DoneByNames,
+          InstructionName: this.productInstructionDetailsList.find(x => x.id == element.instructionId)?.instruction,
+          MaterialName: this.materialMasterList.find(x => x.id == element.materialId)?.materialName
+        }
+
+        this.AddedInstructionList.push(data);
+      });
+
+
+      //Quality 
+
+      this.liquidPreparationData.liquidPreparationSpecificationDetails.forEach(element => {
+        let diff = element.weight - element.weightAdded;
+        let DoneByNames = this.usersList.filter(item => element.analysisDoneByIds?.includes(item.id)).map(item => item.name)
+          .join(', ');
+
+        let data = {
+          TestingDateTime: element.testingDateTime,
+          AnalysisDoneByIds: element.analysisDoneByIds.split(',').map(id => parseInt(id, 10)),
+          SampleReceivedTime: element.sampleReceivedTime,
+          SampleTestedTime: element.sampleTestedTime,
+          SpecificationLimitId: element.specificationLimitId,
+          Test1: element.test1,
+          Test2: element.test2,
+          DoneByNames: DoneByNames,
+          SpecificationLimitName: this.qCTSpecificationMasterList.find(x => x.id == element.specificationLimitId)?.specificationName,
+        }
+
+        this.AddedQualityList.push(data);
+      });
+
+
+      console.log("EditPrechecklistData", EditPrechecklistData)
+      //console.log("formArray",formArray);
+
+    }, 1000);
+
+
+
 
   }
 
@@ -342,15 +438,15 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
     this.EditQualityId = -1;
 
     this.QualityForm = this.formBuilder.group({
-      InstructionId: ['', [Validators.required]],
-      MaterialId: ['', [Validators.required]], // Required
-      LotNumber: ['', [Validators.required]], // Required
-      Weight: ['', [Validators.required]], // Required and numeric
-      WeightAdded: ['', [Validators.required]], // Required and numeric
-      DoneByIds: ['', [Validators.required]], // Required and numeric
-      AddedTime: ['', [Validators.required]],
+      TestingDateTime: ['', [Validators.required]],
+      AnalysisDoneByIds: ['', [Validators.required]], // Required
+      SampleReceivedTime: ['', [Validators.required]], // Required
+      SampleTestedTime: ['', [Validators.required]], // Required and numeric
+      SpecificationLimitId: ['', [Validators.required]], // Required and numeric
+      Test1: [''], // Required and numeric
+      Test2: [''],
     });
-    const currentDateTime = new Date(); // Get current date and time
+    // const TestingDateTime = new Date(); // Get current date and time
   }
 
   createQuestionControls(): FormGroup[] {
@@ -464,14 +560,14 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
 
       const answer = questionGroup.get('answer')?.value;
       const reason = questionGroup.get('reason')?.value;
-      const id =  questionGroup.get('id')?.value;
-      const tankId =  questionGroup.get('tankId')?.value;
+      const id = questionGroup.get('id')?.value;
+      const tankId = questionGroup.get('tankId')?.value;
 
       if (answer === 'NA' && (!reason || reason.trim().length === 0)) {
         this.notificationService.error("Reason is mandatory when answer is 'NA'.");
         isValid = false;
       }
-      if (answer === 'Yes' && id == 27 &&  !tankId ) {
+      if (answer === 'Yes' && id == 27 && !tankId) {
         this.notificationService.error("Tank is mandatory when Storage tank available 'Yes' .");
         isValid = false;
       }
@@ -487,8 +583,11 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
     console.log("inst change", event);
 
     let weight = this.productInstructionDetailsList.find(x => x.id == event.value).weight;
+    //  this.InstructionForm.get('Weight').disable();
     this.InstructionForm.controls['Weight'].setValue(weight);
-    this.InstructionForm.get('AddedTime')?.setValue(new Date().toLocaleString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }));
+    const now = new Date();
+    const string = now.toISOString();
+    this.InstructionForm.get('AddedTime')?.setValue(new Date());
   }
 
   addInstruction() {
@@ -510,6 +609,9 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
       formvalue["DoneByNames"] = DoneByNames;
       formvalue["InstructionName"] = this.productInstructionDetailsList.find(x => x.id == formvalue.InstructionId).instruction;
       formvalue["MaterialName"] = this.materialMasterList.find(x => x.id == formvalue.MaterialId).materialName;
+      const now = new Date();
+      formvalue.AddedTime = now.toISOString(); 
+      console.log("Instruction form value", formvalue)
 
       if (this.EditInstructionId >= 0) {
         this.AddedInstructionList[this.EditInstructionId] = formvalue;
@@ -517,6 +619,7 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
         this.InstructionForm.reset();
         this.isInstructionFormSubmitted = false;
         this.CreateInstructionForm();
+
       }
       else {
         this.AddedInstructionList.push(formvalue);
@@ -524,11 +627,11 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
         this.InstructionForm.reset();
         this.isInstructionFormSubmitted = false;
         this.CreateInstructionForm();
-
       }
     }
     console.log("AddedInstructionList", this.AddedInstructionList)
   }
+
 
   calculateTotals() {
     this.totalWeight = this.AddedInstructionList
@@ -561,6 +664,59 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
     console.log("AddedInstructionList", this.AddedInstructionList);
   }
 
+
+  addQuality() {
+    this.isQualityFormSubmitted = true;
+
+    if (this.QualityForm.valid) {
+      let formvalue = this.QualityForm.value;
+      console.log("quality formvalue", formvalue)
+      let DoneByNames = this.usersList
+        .filter(item => formvalue.AnalysisDoneByIds.includes(item.id))
+        .map(item => item.name)
+        .join(', ');
+      formvalue["DoneByNames"] = DoneByNames;
+      formvalue["SpecificationLimitName"] = this.qCTSpecificationMasterList.find(x => x.id == formvalue.SpecificationLimitId).specificationName;
+
+      if (this.EditQualityId >= 0) {
+        this.AddedQualityList[this.EditQualityId] = formvalue;
+        this.QualityForm.reset();
+        this.isQualityFormSubmitted = false;
+        this.CreateQualityForm();
+      }
+      else {
+        this.AddedQualityList.push(formvalue);
+        this.QualityForm.reset();
+        this.isQualityFormSubmitted = false;
+        this.CreateQualityForm();
+      }
+    }
+    console.log("AddedQualityList", this.AddedQualityList)
+  }
+
+  onEditQualityDetail(Quality, i) {
+    console.log("Quaitydetails selected for edit", this.AddedQualityList[i]);
+
+    let value = this.AddedQualityList[i]
+
+    this.QualityForm.patchValue({
+      TestingDateTime: value.TestingDateTime,
+      AnalysisDoneByIds: value.AnalysisDoneByIds, // Required
+      SampleReceivedTime: value.SampleReceivedTime, // Required
+      SampleTestedTime: value.SampleTestedTime, // Required and numeric
+      SpecificationLimitId: value.SpecificationLimitId, // Required and numeric
+      Test1: value.Test1, // Required and numeric
+      Test2: value.Test2,
+    });
+
+    this.EditQualityId = i;
+  }
+
+  removeQualityDetail(i: number) {
+    this.AddedQualityList.splice(i, 1);
+    console.log("AddedQualityList", this.AddedQualityList);
+  }
+
   getToday() {
     return new Date().toISOString().split('T')[0];
   }
@@ -589,131 +745,105 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
         });
   }
 
-  save() {
-    //this.isFormSubmitted = true;
-    // const endDate = this.attributeCheckForm.get('EndDateTime')?.value;
-    // const startDate = this.WeightCheckForm.get('StartDateTime')?.value;
+  Submit() {
 
-    // if (this.attributeCheckForm.invalid) {
-    //   return;
-    // }
-    // else if(new Date(endDate) <= new Date(startDate)){
-    //   this.notificationService.error("End date should be greated than Start date")
-    //   return;
-    // }
-    // else if (this.AddedattributeCheckDetailsList.length < 1) {
-    //   this.notificationService.error("at lease one Attribute check deatils required");
-    //   return;
-    // }
-    // else {
-    //   let formvalue = this.attributeCheckForm.value;
-    //   formvalue.attributeCheckDetails = this.AddedattributeCheckDetailsList;
-    //   console.log("formvalue", formvalue)
-    //   let Playload = this.transformData(formvalue);
-    //   console.log("Playload", Playload)
+    console.log("draftBasicFormValue", this.draftBasicFormValue);
+    console.log("draftStartCheckListFormValue", this.draftStartCheckListFormValue);
+    console.log("AddedInstructionList", this.AddedInstructionList);
+    console.log("draftEndCheckListFormValue", this.draftEndCheckListFormValue);
+    console.log("AddedQualityList", this.AddedQualityList);
+    console.log("DiffWghInstructionList", this.DiffWghInstructionList);
 
-    //   if (this.isEditMode) {
-    //     this.updateliquidPreparation(Playload);
-    //   } else {
-    //     this.createliquidPreparation(Playload);
-    //   }
-    // }
+    let Playload = this.TransFormData();
+    console.log("Playload", Playload)
+
+    if (this.isEditMode) {
+      this.updateliquidPreparation(Playload);
+    } else {
+      this.createliquidPreparation(Playload);
+    }
   }
 
-  transformData(originalData) {
-    // Helper function to format date
-    function formatToDateTime(dateStr) {
-      const date = new Date(dateStr);
+  formatDateForSQL(date) {
+    if (!date || !date.isValid()) return null;
+    return date.format("YYYY-MM-DDTHH:mm:ss");
+  }
 
-      if (isNaN(date.getTime())) {
-        throw new Error("Invalid date string provided");
-      }
+  TransFormData() {
 
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-      const day = String(date.getDate()).padStart(2, '0');
-      const hours = String(date.getHours()).padStart(2, '0');
-      const minutes = String(date.getMinutes()).padStart(2, '0');
+    const mergedArray: any[] = [
+      ...this.draftStartCheckListFormValue.questions.map(item => ({ ...item, type: 1 })),
+      ...this.draftEndCheckListFormValue.questions.map(item => ({ ...item, type: 2 }))
+    ];
 
-      return `${year}-${month}-${day}T${hours}:${minutes}`;
-    }
-
-    function formatToTime(timeStr) {
-      const timeRegex = /(\d{1,2}):(\d{2}) (AM|PM)/i;
-
-      // Match the input time
-      const match = timeStr.match(timeRegex);
-
-      if (!match) {
-        throw new Error('Invalid time format');
-      }
-
-      // Extract hour, minute, and period from the match
-      let [, hourStr, minuteStr, period] = match;
-      let hour = parseInt(hourStr, 10);
-      const minute = parseInt(minuteStr, 10);
-
-      // Convert hour based on AM/PM
-      if (period.toUpperCase() === 'AM') {
-        if (hour === 12) {
-          hour = 0; // Midnight case
-        }
-      } else if (period.toUpperCase() === 'PM') {
-        if (hour !== 12) {
-          hour += 12; // Convert PM hour to 24-hour format
-        }
-      }
-
-      // Format hour and minute with leading zeros
-      const formattedHour = hour.toString().padStart(2, '0');
-      const formattedMinute = minute.toString().padStart(2, '0');
-
-      // Get the current date
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = (now.getMonth() + 1).toString().padStart(2, '0');
-      const day = now.getDate().toString().padStart(2, '0');
-
-      // Construct the final output string
-      const result = `${year}-${month}-${day}T${formattedHour}:${formattedMinute}`;
-
-      return result;
-    }
-
-    const detailsArray = Array.isArray(originalData.attributeCheckDetails)
-      ? originalData.attributeCheckDetails
-      : Object.values(originalData.attributeCheckDetails || {});
-
-    const result = {
-      // id: this.isEditMode ? this.attributeCheckData.id : 0,
-      // code: this.isEditMode ? this.attributeCheckData.code : "",
-      // aCDate: formatToDateTime(originalData.ACDate),
-      // productionOrderId: this.isEditMode ? this.attributeCheckData.productionOrderId : originalData.ProductionOrderId,
-      // productId: this.isEditMode ? this.attributeCheckData.productId : originalData.ProductId,
-      // bottleDateCode: originalData.BottleDateCode.toString(),
-      // packSize: originalData.PackSize.toString(),
-      // isWeightRange: originalData.IsWeightRange,
-      // note: originalData.Note, // Capitalize first letter
-
-      // attributeCheckDetails: Array.isArray(detailsArray) ? detailsArray.map((details, index) => ({
-
-      //   id: 0,
-      //   headerId: 0, // Static value, update if needed
-      //   tDateTime: formatToTime(details.TDateTime), // Assuming Time is the timestamp
-      //   isGoodCondition: details.IsGoodCondition,
-      //   capTorque: details.CapTorque,
-      //   emptyBottleWeight: (details.EmptyBottleWeight ? details.EmptyBottleWeight : 0).toString(),
-      //   lotNoOfLiquid: details.LotNoOfLiquid,
-      //   isCorrect: details.IsCorrect,
-      //   leakTest: details.LeakTest,
-      //   DoneByUserIdList: details.DoneByUserIds,
-      //   // DoneByUserNames : details.Usernames
-
-      // })) : []
+    const apiPayload = {
+      Id: this.isEditMode ? this.liquidPreparationId : 0,
+      Code: this.isEditMode ? this.liquidPreparationData.code : '',
+      StartDateTime: this.draftBasicFormValue.StartDateTime,
+      EndDateTime: this.draftBasicFormValue.EndDateTime,
+      SAPProductionOrderId: this.isEditMode ? this.liquidPreparationData.sapProductionOrderId : this.draftBasicFormValue.SAPProductionOrderId,
+      ProductId: this.isEditMode ? this.liquidPreparationData.ProductId : this.draftBasicFormValue.ProductId,
+      ShiftId: this.draftBasicFormValue.ShiftId,
+      BatchLotNumber: this.draftBasicFormValue.BatchLotNumber.toString(),
+      TankId: this.draftBasicFormValue.TankId,
+      CompounderUserId: this.draftBasicFormValue.CompounderUserId,
+      StandardBatchWeight: this.draftBasicFormValue.StandardBatchWeight.toString(),
+      TestingDateTime: null,
+      AnalysisDoneByIds: '',
+      AnalysisDoneByList: null,
+      SampleReceivedTime: null,
+      SampleTestedTime: null,
+      IsActive: true,
+      liquidPreparationAdjustmentDetails: this.DiffWghInstructionList.map(item => ({
+        Id: 0,
+        LiquidPreparationId: 0,
+        MaterialId: item.MaterialId,
+        LiquidPreparationInstructionId: item.InstructionId,
+        Weight: item.WeightAdded,
+        Adjustment: item.diffWeight,
+        Total: item.Weight,
+        IsActive: true,
+      })),
+      liquidPreparationChecklistDetails: mergedArray.map(q => ({
+        Id: 0,
+        LiquidPreparationId: 0,
+        Type: q.type.toString(), // Adjust as needed
+        QuestionId: q.id,
+        Answer: q.answer,
+        TankNo: q.tankNo || null,
+        IsActive: true,
+        TankId: q.tankId || null,
+        Reason: q.reason || ''
+      })),
+      liquidPreparationInstructionDetails: this.AddedInstructionList.map(item => ({
+        Id: 0,
+        LiquidPreparationId: 0,
+        InstructionId: item.InstructionId,
+        MaterialId: item.MaterialId,
+        LotNumber: item.LotNumber.toString(),
+        Weight: item.Weight,
+        WeightAdded: item.WeightAdded,
+        DoneByList: item.DoneByIds.map(id => `${id}`), 
+        AddedTime: item.AddedTime,// Adjust as needed
+        IsActive: true,
+      })),
+      liquidPreparationSpecificationDetails: this.AddedQualityList.map(item => ({
+        Id: 0,
+        LiquidPreparationId: 0,
+        SpecificationLimitId: item.SpecificationLimitId,
+        Test1: item.Test1 || '',
+        Test2: item.Test2 || '',
+        TestingDateTime: item.TestingDateTime,
+        AnalysisDoneByList: item.AnalysisDoneByIds.map(id => `${id}`),
+        SampleReceivedTime: item.SampleReceivedTime,
+        SampleTestedTime: item.SampleTestedTime,
+        IsActive: true,
+      }))
     };
 
-    return result;
+    return apiPayload;
   }
+
 
   cancel() {
     if (this.isEditMode) {
