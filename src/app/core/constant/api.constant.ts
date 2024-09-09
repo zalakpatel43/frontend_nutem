@@ -89,6 +89,11 @@ export const APIConstant = {
     postCheckDelete: `${basePath}PostCheckList/Delete`,
 
 
+  // Production Order APIs
+  productionOrderList: `${basePath}ProductionOrder/GetAllProductionOrder`,
+  productionOrderGetById: `${basePath}ProductionOrder/GetByIdAsync`,
+
+
     // PrePostQuestion
     PrePostQuestion:`${basePath}PrePostQuestion/GetAllPrePostQuestions`,
 

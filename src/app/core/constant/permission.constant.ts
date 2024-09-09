@@ -15,6 +15,7 @@ export const ApplicationPage = {
     trailerInspection : 'adm_trailer_inspection',
     downtimeTracking: 'adm_downtime',
     preCheck:'adm_PreCheckList',
+    productionOrder:'adm_ProductionOrder',
     liquidPreparation:'adm_liquid_Preparation',
     postCheck:'adm_PostCheckList',
     bom: 'adm_bom',

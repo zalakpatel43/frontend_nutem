@@ -192,6 +192,12 @@ const routes: Routes = [
                 loadChildren: () => import('./pre-check/pre-check.module').then(m => m.PreCheckModule)
             },
             {
+                path: 'production-order',
+                canActivate: [PageAuthGuard],
+                data: { page: ApplicationPage.productionOrder },
+                loadChildren: () => import('./production-order/production-order.module').then(m => m.ProductionOrderModule)
+              },
+            {
                 path: 'post-check',
                 canActivate: [PageAuthGuard],
                 data: { page: ApplicationPage.postCheck },
