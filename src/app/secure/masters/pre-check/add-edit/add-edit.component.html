@@ -140,16 +140,15 @@
                         <div formArrayName="preCheckListDetails">
                             <div *ngFor="let detail of preCheckDetails.controls; let i = index" [formGroupName]="i"
                                 class="row mt-3">
-                                <div class="col-12 mb-3">
+                                <div class="row">
                                     <!-- Question -->
-                                    <mat-form-field appearance="fill" class="full-width">
-                                        <mat-label>Question</mat-label>
-                                        <input matInput [value]="questionList[i]?.question" readonly class="readonly-input">
-                                    </mat-form-field>
+                                    <div class="col-12 col-sm-12 col-md-5 col-lg-5 mb-3">
+                                        <mat-label>{{ questionList[i]?.question }}</mat-label>
+                                    </div>
                                 </div>
 
                                 <!-- Answer -->
-                                <div class="col-12 mb-3">
+                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 mb-3">
                                     <mat-radio-group formControlName="answer" (change)="onAnswerChange(i)">
                                       <mat-radio-button [value]="1">Yes</mat-radio-button>
                                       <mat-radio-button [value]="-1">No</mat-radio-button>
@@ -159,7 +158,7 @@
                                   
 
                                 <!-- Reason -->
-                                <div class="col-12" *ngIf="preCheckDetails.at(i).get('answer').value === 0">
+                                <div class="col-12 col-sm-12 col-md-4 col-lg-4 mb-3" *ngIf="preCheckDetails.at(i).get('answer').value === 0">
                                     <mat-form-field appearance="fill" class="full-width">
                                         <mat-label>Reason</mat-label>
                                         <input matInput formControlName="reason">
@@ -177,7 +176,7 @@
                 <div class="row">
                     <div class="col-12 d-flex justify-content-end">
                         <button mat-flat-button color="primary" type="submit">Save</button>
-                        <button mat-flat-button color="warn" type="button" (click)="cancel()">Cancel</button>
+                        <!-- <button mat-flat-button color="warn" type="button" (click)="cancel()">Cancel</button> -->
                     </div>
                 </div>
             </form>
