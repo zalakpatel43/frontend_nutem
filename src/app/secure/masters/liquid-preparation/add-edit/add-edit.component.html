@@ -25,7 +25,18 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
-                                                <mat-form-field appearance="fill" class="full-width">
+                                                <mat-form-field appearance="fill">
+                                                    <input matInput [ngxMatDatetimePicker]="pickerStartDate"
+                                                        placeholder="Start Date" formControlName="StartDateTime"
+                                                        required>
+                                                    <button type="button" mat-icon-button
+                                                        (click)="pickerStartDate.open()" matSuffix>
+                                                        <mat-icon>calendar_today</mat-icon>
+                                                    </button>
+                                                    <ngx-mat-datetime-picker #pickerStartDate
+                                                        apperance="fill"></ngx-mat-datetime-picker>
+                                                </mat-form-field>
+                                                <!-- <mat-form-field appearance="fill" class="full-width">
                                                     <mat-label>Start Date</mat-label>
                                                     <input matInput [matDatepicker]="pickerStartDate"
                                                         formControlName="StartDateTime">
@@ -35,11 +46,21 @@
                                                     <mat-validation-message [control]="basicForm.controls.StartDateTime"
                                                         [message]="'Start Date Time'"
                                                         [formSubmitted]="isBasicFormSubmitted"></mat-validation-message>
-                                                </mat-form-field>
+                                                </mat-form-field> -->
                                             </div>
 
                                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
-                                                <mat-form-field appearance="fill" class="full-width">
+                                                <mat-form-field appearance="fill">
+                                                    <input matInput [ngxMatDatetimePicker]="pickerEndDate" (dateChange)="onEndDateChange()" 
+                                                        placeholder="End Date" formControlName="EndDateTime" required>
+                                                    <button type="button" mat-icon-button (click)="pickerEndDate.open()"
+                                                        matSuffix >
+                                                        <mat-icon>calendar_today</mat-icon>
+                                                    </button>
+                                                    <ngx-mat-datetime-picker #pickerEndDate
+                                                        apperance="fill"></ngx-mat-datetime-picker>
+                                                </mat-form-field>
+                                                <!-- <mat-form-field appearance="fill" class="full-width">
                                                     <mat-label>End Date</mat-label>
                                                     <input matInput [matDatepicker]="pickerEndDate"
                                                         (dateChange)="onEndDateChange()" formControlName="EndDateTime">
@@ -49,7 +70,7 @@
                                                     <mat-validation-message [control]="basicForm.controls.EndDateTime"
                                                         [message]="'End DateTime'"
                                                         [formSubmitted]="isBasicFormSubmitted"></mat-validation-message>
-                                                </mat-form-field>
+                                                </mat-form-field> -->
                                             </div>
 
                                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
@@ -274,8 +295,8 @@
                                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                                 <mat-form-field appearance="fill" class="full-width">
                                                     <mat-label>Weight</mat-label>
-                                                    <input matInput formControlName="Weight" type="number"
-                                                        [disabled]="true">
+                                                    <input matInput formControlName="Weight" type="number" 
+                                                    >
                                                     <mat-validation-message [control]="InstructionForm.controls.Weight"
                                                         [message]="'Weight'"
                                                         [formSubmitted]="isInstructionFormSubmitted"></mat-validation-message>
@@ -358,7 +379,7 @@
                                                         <td> {{ins.Weight}} </td>
                                                         <td> {{ins.WeightAdded}} </td>
                                                         <td> {{ins.DoneByNames}} </td>
-                                                        <td> {{ins.AddedTime}} </td>
+                                                        <td> {{ins.AddedTime | date:'yyyy-MM-dd HH:mm:ss'}} </td>
                                                         <td>
                                                             <button (click)="onEditDetail(ins,i)" type="button"
                                                                 class="btn btn-primary btn-sm btnModifyRow"><i
@@ -451,12 +472,207 @@
                     </mat-tab>
                     <mat-tab label="Quality" [disabled]="isQualityDisable">
                         <ng-template matTabContent>
-                            <p>This is the content of Tab 3.</p>
+                            <form [formGroup]="QualityForm" #form="ngForm" novalidate class="app-form">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Quality Details</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                                <mat-form-field appearance="fill">
+                                                    <input matInput [ngxMatDatetimePicker]="pickerTestingDateTime"
+                                                        placeholder="Date Tested" formControlName="TestingDateTime"
+                                                        required>
+                                                    <button type="button" mat-icon-button
+                                                        (click)="pickerTestingDateTime.open()" matSuffix>
+                                                        <mat-icon>calendar_today</mat-icon>
+                                                    </button>
+                                                    <ngx-mat-datetime-picker #pickerTestingDateTime
+                                                        apperance="fill"></ngx-mat-datetime-picker>
+                                                </mat-form-field>
+                                            </div>
+
+
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                                <mat-form-field appearance="fill" class="full-width">
+                                                    <mat-label>Analysis Done By</mat-label>
+                                                    <mat-select formControlName="AnalysisDoneByIds" multiple>
+                                                        <mat-option *ngFor="let user of usersList" [value]="user.id">
+                                                            {{ user.name }}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                    <mat-validation-message
+                                                        [control]="QualityForm.controls.AnalysisDoneByIds"
+                                                        [message]="'Analysis Done By'"
+                                                        [formSubmitted]="isQualityFormSubmitted"></mat-validation-message>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                                <mat-form-field appearance="fill">
+                                                    <input matInput [ngxMatDatetimePicker]="pickerSampleReceivedTime"
+                                                        placeholder="Sample Received At"
+                                                        formControlName="SampleReceivedTime" required>
+                                                    <button type="button" mat-icon-button
+                                                        (click)="pickerSampleReceivedTime.open()" matSuffix>
+                                                        <mat-icon>calendar_today</mat-icon>
+                                                    </button>
+                                                    <ngx-mat-datetime-picker #pickerSampleReceivedTime
+                                                        apperance="fill"></ngx-mat-datetime-picker>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                                <mat-form-field appearance="fill">
+                                                    <input matInput [ngxMatDatetimePicker]="pickerSampleTestedTime"
+                                                        placeholder="Sample Tested At"
+                                                        formControlName="SampleTestedTime" required>
+                                                    <button type="button" mat-icon-button
+                                                        (click)="pickerSampleTestedTime.open()" matSuffix>
+                                                        <mat-icon>calendar_today</mat-icon>
+                                                    </button>
+                                                    <ngx-mat-datetime-picker #pickerSampleTestedTime
+                                                        apperance="fill"></ngx-mat-datetime-picker>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                                <mat-form-field appearance="fill" class="full-width">
+                                                    <mat-label>Specification Limit</mat-label>
+                                                    <mat-select formControlName="SpecificationLimitId">
+                                                        <mat-option *ngFor="let spec of qCTSpecificationMasterList"
+                                                            [value]="spec.id">
+                                                            {{ spec.specificationName }}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                    <mat-validation-message
+                                                        [control]="QualityForm.controls.SpecificationLimitId"
+                                                        [message]="'Material'"
+                                                        [formSubmitted]="isQualityFormSubmitted"></mat-validation-message>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                                <mat-form-field appearance="fill" class="full-width">
+                                                    <mat-label>Result</mat-label>
+                                                    <input matInput formControlName="Test1">
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                                <mat-form-field appearance="fill" class="full-width">
+                                                    <mat-label> Comments</mat-label>
+                                                    <input matInput formControlName="Test2">
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div
+                                                class="col-12 col-sm-12 col-md-1 col-lg-1 mb-3 p-1 d-flex align-items-center">
+                                                <button type="button" mat-icon-button color="warn"
+                                                    (click)="addQuality()">
+                                                    <mat-icon>add</mat-icon>
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table id="gridQualityList"
+                                                class="table table-hover table-bordered display mb-30 fixed-table-scroll-inner"
+                                                style="overflow:scroll;width:auto">
+                                                <thead class="bg-primary text-primary text-center">
+                                                    <tr>
+                                                        <th>Id</th>
+                                                        <th>Date Tested</th>
+                                                        <th>Analysis Done By</th>
+                                                        <th>Sample Received At</th>
+                                                        <th>Sample Tested At</th>
+                                                        <th>Specification Limit</th>
+                                                        <th>Result</th>
+                                                        <th>Comments</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let Qa of AddedQualityList; let i = index">
+                                                        <td> {{ i +1 }} </td>
+                                                        <td> {{Qa.TestingDateTime| date:'yyyy-MM-dd HH:mm:ss'}} </td>
+                                                        <td> {{Qa.DoneByNames}} </td>
+                                                        <td> {{Qa.SampleReceivedTime | date:'yyyy-MM-dd HH:mm:ss'}}
+                                                        </td>
+                                                        <td> {{Qa.SampleTestedTime | date:'yyyy-MM-dd HH:mm:ss'}} </td>
+                                                        <td> {{Qa.SpecificationLimitName}} </td>
+                                                        <td> {{Qa.Test1}} </td>
+                                                        <td> {{Qa.Test2}} </td>
+                                                        <td>
+                                                            <button (click)="onEditQualityDetail(Qa,i)" type="button"
+                                                                class="btn btn-primary btn-sm btnModifyRow"><i
+                                                                    class="fa fa-pencil"></i></button>
+                                                            <button (click)="removeQualityDetail(i)" type="button"
+                                                                class="btn btn-danger btn-sm btnRemoveRow"><i
+                                                                    class="fa fa-close"></i></button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </ng-template>
                     </mat-tab>
                     <mat-tab label="Adjustment" [disabled]="isAdjustmentDisable">
                         <ng-template matTabContent>
-                            <p>This is the content of Tab 3.</p>
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Adjustment Details</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="table-responsive">
+                                                <table id="gridAdjustment"
+                                                    class="table table-hover table-bordered display mb-30 fixed-table-scroll-inner"
+                                                    style="overflow:scroll;width:auto">
+                                                    <thead class="bg-primary text-primary text-center">
+                                                        <tr class="full-width">
+                                                            <th style="width:25%">Material & Part Code</th>
+                                                            <th  style="width:25%">Weight </th>
+                                                            <th  style="width:20%">Adjustment</th>
+                                                            <th  style="width:25%">Total</th>
+                                                            <!-- <th>Action</th> -->
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let ins of DiffWghInstructionList; let i = index">
+                                                            <td> {{ins.MaterialName}} </td>
+                                                            <td> {{ins.WeightAdded}} </td>
+                                                            <td> {{ins.diffWeight}} </td>
+                                                            <td> {{ins.Weight}} </td>
+                                                            <!-- <td>
+                                                        <button (click)="onEditDetail(ins,i)" type="button"
+                                                            class="btn btn-primary btn-sm btnModifyRow"><i
+                                                                class="fa fa-pencil"></i></button>
+                                                        <button (click)="removeDetail(i)" type="button"
+                                                            class="btn btn-danger btn-sm btnRemoveRow"><i
+                                                                class="fa fa-close"></i></button>
+                                                    </td> -->
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
                         </ng-template>
                     </mat-tab>
                 </mat-tab-group>
@@ -465,7 +681,9 @@
                     <button mat-raised-button color="primary" (click)="goToPreviousTab()"
                         [disabled]="selectedIndex === 0">Previous</button>
                     <button mat-raised-button color="primary" class="ms-4" (click)="goToNextTab()"
-                        [disabled]="selectedIndex === tabCount - 1">Next</button>
+                        [disabled]="selectedIndex === tabCount - 1"  *ngIf ="selectedIndex != 5">Draft &Next</button>
+                    <button mat-raised-button color="primary" class="ms-4" (click)="Submit()"
+                        *ngIf ="selectedIndex === 5">Submit</button>
                 </div>
             </div>
         </div>

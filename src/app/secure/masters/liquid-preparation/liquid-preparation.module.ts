@@ -7,6 +7,12 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { LiquidPreparationService } from './liquid-preparation.service';
 import { provideEnvironmentNgxMask } from 'ngx-mask';
 import { MatTabsModule } from '@angular/material/tabs';
+import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatMomentDateModule } from "@angular/material-moment-adapter";
 
 
 @NgModule({
@@ -18,7 +24,15 @@ import { MatTabsModule } from '@angular/material/tabs';
     LiquidPreparationRoutingModule,
     SharedModule,
     NgxMaterialTimepickerModule,
-    MatTabsModule            
+    MatTabsModule,
+    NgxMatDatetimePickerModule,
+    NgxMatNativeDateModule,
+    NgxMatTimepickerModule,
+    MatNativeDateModule,
+    MatMomentDateModule,
+    NgxMatMomentModule,
+    MatFormFieldModule,
+    MatInputModule            
   ],
   providers: [
       LiquidPreparationService,
