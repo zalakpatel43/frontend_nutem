@@ -2,25 +2,27 @@ import { Component, OnInit } from '@angular/core';
 import { ApplicationPage, PermissionType } from '@app-core';
 import { ProductionOrderService } from '../production-order.service';
 import { ToastrService } from 'ngx-toastr';
-
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-production-order-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss']
+  styleUrls: ['./list.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class ProductionOrderListComponent implements OnInit {
 
   productionOrderData: any[] = [];
-  page: string = ApplicationPage.productionOrder;
-  permissions = PermissionType;
-  error: string;
-  loading: boolean;
-  expandedRow: any = null;
+  columnsToDisplay: string[] = ['code', 'poNumber', 'poDateTimeFormatted', 'plannedQty', 'itemName', 'actions'];
+  expandedElement: any | null = null;
   relatedData: any[] = [];
-  expanded: any = {};  // To track expanded rows
   searchData: { [key: string]: any } = {};
-row: any;
 
   constructor(private productionOrderService: ProductionOrderService,
               private notificationService: ToastrService) { }
@@ -29,34 +31,22 @@ row: any;
     this.getProductionOrderData();
   }
 
-  private getProductionOrderData() {
-    this.loading = true;
+  private getProductionOrderData(): void {
     this.productionOrderService.getProductionOrderList()
       .subscribe((result: any) => {
-        console.log("Production Order Data:", result);
         this.productionOrderData = result;
-        this.loading = false;
       },
       (error) => {
-        this.error = error;
-        this.loading = false;
+        this.notificationService.error('Failed to load production orders.');
       });
   }
   
-
-  toggleExpandRow(row: any) {
-    console.log("PLUS",row);
-    
-    if (!row || !row.id) {
-      console.error("Invalid row object or missing id");
-      return;
-    }
-  
-    if (this.expandedRow === row) {
-      this.expandedRow = null; // Collapse if the same row is clicked
+  toggleExpandRow(row: any): void {
+    if (this.expandedElement === row) {
+      this.expandedElement = null;
     } else {
       this.productionOrderService.getByIdProductionOrder(row.id).subscribe((data: any) => {
-        this.expandedRow = row;
+        this.expandedElement = row;
         this.relatedData = this.getRelatedData(data);
       }, (error) => {
         this.notificationService.error("Failed to load related data.");
@@ -64,20 +54,18 @@ row: any;
     }
   }
   
-  isRowExpanded(row: any) {
-    return this.expandedRow === row;
+  isRowExpanded(row: any): boolean {
+    return this.expandedElement === row;
   }
-  // Dynamically fetch related data for each row to be displayed in the nested table
-  getRelatedData(row) {
-    const relatedData = [];
-    console.log("Sub-table:",relatedData);
-    
+  
+  getRelatedData(row: any): any[] {
+    const relatedData: any[] = [];
 
     if (row.weightChecks) {
       row.weightChecks.forEach(item => relatedData.push({
         type: 'Weight Check',
         code: item.code,
-        date: item.startDateTime,  // Handle date field for WeightCheck
+        date: item.startDateTime,
         productName: item.productName,
         shiftName: item.shiftName
       }));
@@ -87,9 +75,9 @@ row: any;
       row.attributeChecks.forEach(item => relatedData.push({
         type: 'Attribute Check',
         code: item.code,
-        date: item.acDate,  // Handle date field for AttributeCheck
+        date: item.acDate,
         productName: item.productName,
-        shiftName: ''  // If shift name not available
+        shiftName: ''
       }));
     }
 
@@ -97,7 +85,7 @@ row: any;
       row.preCheckListEntities.forEach(item => relatedData.push({
         type: 'Pre Check List',
         code: item.code,
-        date: item.startDateTime,  // Handle date field for PreCheckListEntity
+        date: item.startDateTime,
         productName: item.productName,
         shiftName: item.shiftName
       }));
@@ -107,7 +95,7 @@ row: any;
       row.postCheckListEntities.forEach(item => relatedData.push({
         type: 'Post Check List',
         code: item.code,
-        date: item.endDateTime,  // Handle date field for PostCheckListEntity
+        date: item.endDateTime,
         productName: item.productName,
         shiftName: item.shiftName
       }));

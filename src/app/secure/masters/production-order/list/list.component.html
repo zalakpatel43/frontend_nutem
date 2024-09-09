@@ -10,88 +10,72 @@
       </div>
       <div class="row">
         <div class="col-12">
-          <ngx-datatable class="material" [rows]="productionOrderData | searchtable : searchData" [columnMode]="'force'"
-            [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [loadingIndicator]="loading"
-            [scrollbarH]="true" [messages]="{emptyMessage: 'No Data to Display', totalMessage: 'Total'}">
+          <table mat-table [dataSource]="productionOrderData" multiTemplateDataRows class="mat-elevation-z8">
 
-            <ngx-datatable-column name="Code" prop="code">
-              <ng-template ngx-datatable-cell-template let-row="row" let-value="value">
-                <span>{{value}}</span>
-                <button (click)="toggleExpandRow(row)" class="btn btn-link">
-                  <mat-icon>{{ row.expanded ? 'remove' : 'add' }}</mat-icon>
-                </button>
-              </ng-template>
-            </ngx-datatable-column>
+            <!-- Dynamic Columns -->
+            <ng-container *ngFor="let column of columnsToDisplay; let i = index" [matColumnDef]="column">
+              <th mat-header-cell *matHeaderCellDef> {{column | titlecase}} </th>
+              <td mat-cell *matCellDef="let row">
+                <ng-container *ngIf="column !== 'actions'">{{row[column]}}</ng-container>
+                <ng-container *ngIf="column === 'actions'">
+                  <a mat-icon-button (click)="toggleExpandRow(row)">
+                    <mat-icon>add</mat-icon>
+                  </a>
+                  <a mat-icon-button [routerLink]="['../', 'edit', row.id]">
+                    <mat-icon>edit</mat-icon>
+                  </a>
+                </ng-container>
+              </td>
+            </ng-container>
 
-            <ngx-datatable-column name="PO Number" prop="poNumber">
-              <ng-template ngx-datatable-cell-template let-value="value">
-                <span>{{value}}</span>
-              </ng-template>
-            </ngx-datatable-column>
+            <!-- Expanded Content Column -->
+            <ng-container matColumnDef="expandedDetail">
+              <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplay.length">
+                <div class="matgrid-element-detail"
+                     [@detailExpand]="isRowExpanded(row) ? 'expanded' : 'collapsed'">
+                  <table mat-table [dataSource]="relatedData" class="mat-elevation-z8 nested-table">
+                    
+                    <!-- Nested Columns -->
+                    <ng-container matColumnDef="type">
+                      <th mat-header-cell *matHeaderCellDef> Type </th>
+                      <td mat-cell *matCellDef="let data"> {{data.type}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="code">
+                      <th mat-header-cell *matHeaderCellDef> Code </th>
+                      <td mat-cell *matCellDef="let data"> {{data.code}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="date">
+                      <th mat-header-cell *matHeaderCellDef> Date </th>
+                      <td mat-cell *matCellDef="let data"> {{data.date | date: 'dd-MMM-yyyy HH:mm a'}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="productName">
+                      <th mat-header-cell *matHeaderCellDef> Product Name </th>
+                      <td mat-cell *matCellDef="let data"> {{data.productName}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="shiftName">
+                      <th mat-header-cell *matHeaderCellDef> Shift Name </th>
+                      <td mat-cell *matCellDef="let data"> {{data.shiftName}} </td>
+                    </ng-container>
 
-            <ngx-datatable-column name="PO Date" prop="poDateTimeFormatted">
-              <ng-template ngx-datatable-cell-template let-value="value">
-                <span>{{value}}</span>
-              </ng-template>
-            </ngx-datatable-column>
+                    <!-- Nested Table Header and Rows -->
+                    <tr mat-header-row *matHeaderRowDef="['type', 'code', 'date', 'productName', 'shiftName']"></tr>
+                    <tr mat-row *matRowDef="let data; columns: ['type', 'code', 'date', 'productName', 'shiftName']"></tr>
+                  </table>
+                </div>
+              </td>
+            </ng-container>
 
-            <ngx-datatable-column name="Planned Qty" prop="plannedQty">
-              <ng-template ngx-datatable-cell-template let-value="value">
-                <span>{{value}}</span>
-              </ng-template>
-            </ngx-datatable-column>
-
-            <ngx-datatable-column name="Item Name" prop="itemName">
-              <ng-template ngx-datatable-cell-template let-value="value">
-                <span>{{value}}</span>
-              </ng-template>
-            </ngx-datatable-column>
-
-            <ngx-datatable-column name="Actions" [sortable]="false">
-              <ng-template ngx-datatable-cell-template let-row="row">
-                <a class="button-padding" color="primary" (click)="toggleExpandRow(row)">
-                  <mat-icon>{{ row.expanded ? 'remove' : 'add' }}</mat-icon>
-                </a>
-                <a class="button-padding" color="primary" [routerLink]="['../', 'edit', row.id]">
-                  <mat-icon>edit</mat-icon>
-                </a>
-              </ng-template>
-            </ngx-datatable-column>
-
-          </ngx-datatable>
-
-          <ngx-datatable *ngIf="expandedRow" class="nested-table material" [rows]="relatedData" [columnMode]="'force'"
-            [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10"
-            [messages]="{emptyMessage: 'No Data to Display', totalMessage: 'Total'}">
-            <ngx-datatable-column name="Type" prop="type">
-              <ng-template ngx-datatable-cell-template let-value="value">
-                <span>{{value}}</span>
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column name="Code" prop="code">
-              <ng-template ngx-datatable-cell-template let-value="value">
-                <span>{{value}}</span>
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column name="Date" prop="date">
-              <ng-template ngx-datatable-cell-template let-value="value">
-                <span>{{value | date: 'dd-MMM-yyyy HH:mm a'}}</span>
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column name="Product Name" prop="productName">
-              <ng-template ngx-datatable-cell-template let-value="value">
-                <span>{{value}}</span>
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column name="Shift Name" prop="shiftName">
-              <ng-template ngx-datatable-cell-template let-value="value">
-                <span>{{value}}</span>
-              </ng-template>
-            </ngx-datatable-column>
-          </ngx-datatable>
+            <!-- Main Table Header and Rows -->
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"
+                class="matgrid-element-row"
+                [class.matgrid-expanded-row]="expandedElement === row"
+                (click)="toggleExpandRow(row)">
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="matgrid-detail-row"></tr>
+          </table>
         </div>
       </div>
     </div>
   </div>
 </div>
-   
