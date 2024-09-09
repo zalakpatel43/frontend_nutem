@@ -41,12 +41,12 @@ export class ProductionOrderListComponent implements OnInit {
       });
   }
   
-  toggleExpandRow(row: any): void {
+  toggleExpandRow(row: any) {
     if (this.expandedElement === row) {
-      this.expandedElement = null;
+      this.expandedElement = null; // Collapse if the same row is clicked
     } else {
+      this.expandedElement = row; // Expand the clicked row
       this.productionOrderService.getByIdProductionOrder(row.id).subscribe((data: any) => {
-        this.expandedElement = row;
         this.relatedData = this.getRelatedData(data);
       }, (error) => {
         this.notificationService.error("Failed to load related data.");
