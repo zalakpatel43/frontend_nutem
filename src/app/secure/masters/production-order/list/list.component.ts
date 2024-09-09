@@ -3,6 +3,8 @@ import { ApplicationPage, PermissionType } from '@app-core';
 import { ProductionOrderService } from '../production-order.service';
 import { ToastrService } from 'ngx-toastr';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Router } from '@angular/router';
+import { WeightCheckAddEditComponent } from '../../weight-check/add-edit/add-edit.component';
 
 @Component({
   selector: 'app-production-order-list',
@@ -23,9 +25,10 @@ export class ProductionOrderListComponent implements OnInit {
   expandedElement: any | null = null;
   relatedData: any[] = [];
   searchData: { [key: string]: any } = {};
+  
 
   constructor(private productionOrderService: ProductionOrderService,
-              private notificationService: ToastrService) { }
+              private notificationService: ToastrService,private router: Router) { }
 
   ngOnInit(): void {
     this.getProductionOrderData();
@@ -64,6 +67,7 @@ export class ProductionOrderListComponent implements OnInit {
     if (row.weightChecks) {
       row.weightChecks.forEach(item => relatedData.push({
         type: 'Weight Check',
+        id: item.id,
         code: item.code,
         date: item.startDateTime,
         productName: item.productName,
@@ -74,6 +78,7 @@ export class ProductionOrderListComponent implements OnInit {
     if (row.attributeChecks) {
       row.attributeChecks.forEach(item => relatedData.push({
         type: 'Attribute Check',
+        id: item.id,
         code: item.code,
         date: item.acDate,
         productName: item.productName,
@@ -84,6 +89,7 @@ export class ProductionOrderListComponent implements OnInit {
     if (row.preCheckListEntities) {
       row.preCheckListEntities.forEach(item => relatedData.push({
         type: 'Pre Check List',
+        id: item.id,
         code: item.code,
         date: item.startDateTime,
         productName: item.productName,
@@ -94,6 +100,7 @@ export class ProductionOrderListComponent implements OnInit {
     if (row.postCheckListEntities) {
       row.postCheckListEntities.forEach(item => relatedData.push({
         type: 'Post Check List',
+        id: item.id,
         code: item.code,
         date: item.endDateTime,
         productName: item.productName,
@@ -102,5 +109,19 @@ export class ProductionOrderListComponent implements OnInit {
     }
 
     return relatedData;
+  }
+
+  editRelatedData(data: any): void {
+    if (data.type === 'Weight Check') {
+      this.router.navigate(['/secure/masters/weight-check/edit', data.id]);
+    } else if (data.type === 'Attribute Check') {
+      this.router.navigate(['/secure/masters/attribute-check/edit', data.id]);
+    } else if (data.type === 'Pre Check List') {
+      this.router.navigate(['/secure/masters/pre-check/edit', data.id]);
+    } else if (data.type === 'Post Check List') {
+      this.router.navigate(['/secure/masters/post-check/edit', data.id]);
+    } else {
+      console.error('Unknown type:', data.type);
+    }
   }
 }
