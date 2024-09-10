@@ -43,7 +43,7 @@
             <!-- Expanded Content Column -->
             <ng-container matColumnDef="expandedDetail">
               <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplay.length">
-                <div class="matgrid-element-detail" [@detailExpand]="isRowExpanded(row) ? 'expanded' : 'collapsed'">
+                <div class="matgrid-element-detail" [@detailExpand]="isRowExpanded(row) ? 'expanded' : 'collapsed'" style="margin-left: 3%;">
                   <table mat-table [dataSource]="relatedData" class="mat-elevation-z8 nested-table">
 
                     <!-- Nested Columns -->
