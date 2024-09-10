@@ -235,7 +235,7 @@
                                 <tbody>
                                     <tr *ngFor="let weight of AddedWeightCheckDetailsList; let i = index">
                                         <td> {{weight.Time}} </td>
-                                        <td> {{weight.DoneBy}} </td>
+                                        <td> {{weight.DoneByNames}} </td>
                                         <td *ngFor="let nozzle of NozzleList"> {{ weight[nozzle.nozzelName] || ''}} </td>
                                         <td> {{weight.Average | number:'1.2-2'}} </td>
                                         <td> <button (click)="onEditDetail(weight,i)" type="button" class="btn btn-primary btn-sm btnModifyRow"><i class="fa fa-pencil"></i></button>

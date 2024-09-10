@@ -94,7 +94,9 @@ export class AttributeCheckAddEditComponent implements OnInit, OnDestroy {
       this.attributeCheckData.attributeCheckDetails?.forEach(element => {
 
         const doneByArray: number[] = element.doneByUserIds.split(',').map(item => Number(item.trim())).filter(value => !isNaN(value));
-console.log("done by array", doneByArray);
+        let DoneByNames = this.usersList.filter(item => element.doneByUserIds?.includes(item.id)).map(item => item.name)
+
+        console.log("done by array", doneByArray);
         let DetailsData = {
           TDateTime: formatTimeWithAMPM(element.tDateTime),
           IsGoodCondition: element.isGoodCondition,
@@ -104,7 +106,8 @@ console.log("done by array", doneByArray);
           LotNoOfLiquid: element.lotNoOfLiquid,
           IsCorrect: element.isCorrect,
           LeakTest: element.leakTest,
-          DoneByUserIds: element.doneByUserIds,
+          DoneByUserIds: doneByArray,
+          Usernames: DoneByNames
         }
 
         this.AddedattributeCheckDetailsList.push(DetailsData);

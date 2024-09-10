@@ -106,7 +106,8 @@ trailerLoadingForm: any;
         });
 
         const doneByArray: number[] = element.doneByUserIds.split(',').map(item => Number(item.trim())).filter(value => !isNaN(value));
-
+        let DoneByNames = this.usersList.filter(item => element.doneByUserIds?.includes(item.id)).map(item => item.name)
+        .join(', ');
         console.log("nozzle weight ", nozzleWeights)
         let DetailsData = {
           Time: formatTimeWithAMPM(element.tDateTime),
@@ -114,6 +115,7 @@ trailerLoadingForm: any;
           Average: element.avgWeight,
           Id: element.id,
           HeaderId: element.headerId,
+          DoneByNames: DoneByNames
 
         }
 
@@ -249,12 +251,24 @@ trailerLoadingForm: any;
       if (this.EditNozzleDetailsId >= 0) {
         const average = this.calculateAverageForEntry(weightDetail);
         weightDetail.Average = average;
+
+        let DoneByNames = this.usersList
+        .filter(item => weightDetail.DoneBy.includes(item.id))
+        .map(item => item.name)
+        .join(', ');
+        weightDetail["DoneByNames"] = DoneByNames;
+
         this.AddedWeightCheckDetailsList[this.EditNozzleDetailsId] = weightDetail;
         this.addWeightDetail();
       }
       else {
         const average = this.calculateAverageForEntry(weightDetail);
         weightDetail.Average = average;
+        let DoneByNames = this.usersList
+        .filter(item => weightDetail.DoneBy.includes(item.id))
+        .map(item => item.name)
+        .join(', ');
+        weightDetail["DoneByNames"] = DoneByNames;
         this.AddedWeightCheckDetailsList.push(weightDetail);
         this.addWeightDetail();
 
@@ -473,7 +487,7 @@ trailerLoadingForm: any;
         DoneByUserIdList: details.DoneBy,
 
         WeightCheckSubDetails: Object.entries(details)
-          .filter(([key, value]) => key !== 'Average' && key !== 'Time' && key !== 'DoneBy')
+          .filter(([key, value]) => key !== 'Average' && key !== 'Time' && key !== 'DoneBy' && key !== 'DoneByNames')
           .map(([nozzleId, weight]) => ({
             Id: 0,
             DetailId: 0,
