@@ -105,7 +105,7 @@
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <mat-form-field appearance="fill" class="full-width">
                                     <mat-label>Supervised By</mat-label>
-                                    <mat-select formControlName="SupervisedBy" [disabled]="isEditMode">
+                                    <mat-select formControlName="SupervisedBy">
                                         <mat-option *ngFor="let user of usersList" [value]="user.id" >
                                             {{ user.name }}
                                         </mat-option>
@@ -182,21 +182,20 @@
                                             </mat-select>
                                         </mat-form-field>
                                     </div> -->
-                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
-                                        <mat-form-field appearance="fill" class="full-width">
-                                            <mat-label>Done By</mat-label>
-                                            <mat-select formControlName="DoneByIds"  multiple>
-                                                <mat-option *ngFor="let user of usersList" [value]="user.id">
-                                                    {{ user.name }}
-                                                </mat-option>
-                                            </mat-select>
-                                            <mat-validation-message [control]="detail.get('DoneByIds')"
-                                                [message]="'Action Taken By'"
-                                                [formSubmitted]="isFormSubmitted"></mat-validation-message>
-                                        </mat-form-field>
+                                     <!-- Done By -->
+                                 <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                     <mat-form-field appearance="fill" class="full-width">
+                                        <mat-label>Done By</mat-label>
+                                        <mat-select formControlName="DoneByIds" multiple>
+                                            <mat-option *ngFor="let user of usersList" [value]="user.id">
+                                                {{ user.name }}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-validation-message [control]="detail.get('DoneByIds')"
+                                            [message]="'Done By'"
+                                            [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                    </mat-form-field>
                                     </div>
-
-                             
 
                                 <!-- Add/Remove Buttons -->
                                 <div class="col-12 col-sm-12 col-md-2 col-lg-2 mb-3 d-flex align-items-center">
@@ -230,7 +229,8 @@
                                     <tr *ngFor="let detail of addedPalletPackingDetailsList; let i = index">
                                         <td>{{ detail.PalletNo }}</td>
                                         <td>{{ detail.Time }}</td>
-                                        <td>{{ detail.DoneByIds }}</td>
+                                        <td>{{ getUserNames(detail.DoneByIds) }}</td>
+
                                         <td>
                                             <button (click)="onEditDetail(detail, i)" type="button"
                                                 class="btn btn-primary btn-sm btnModifyRow">
