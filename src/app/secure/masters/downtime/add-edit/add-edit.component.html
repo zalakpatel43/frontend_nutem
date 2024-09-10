@@ -21,17 +21,30 @@
           <div class="card-body">
             <div class="row">
 
-<!-- Production Date Time -->
-<div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
-  <mat-form-field appearance="fill" class="full-width">
-    <mat-label>Production Date Time</mat-label>
-    <input matInput [matDatepicker]="pickerProductionDateTime" formControlName="ProductionDateTime">
-    <mat-datepicker-toggle matSuffix [for]="pickerProductionDateTime"></mat-datepicker-toggle>
-    <mat-datepicker #pickerProductionDateTime></mat-datepicker>
-    <mat-validation-message [control]="downtimeTrackingForm.controls.ProductionDateTime"
-      [message]="'Production Date Time'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
-  </mat-form-field>
-</div>
+
+              <!-- Production Date Time -->
+              <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                <!-- <mat-form-field appearance="fill" class="full-width">
+                  <mat-label>Production Date Time</mat-label>
+                  <input matInput [matDatepicker]="pickerProductionDateTime" formControlName="ProductionDateTime">
+                  <mat-datepicker-toggle matSuffix [for]="pickerProductionDateTime"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerProductionDateTime></mat-datepicker>
+                  <mat-validation-message [control]="downtimeTrackingForm.controls.ProductionDateTime"
+                    [message]="'Production Date Time'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                </mat-form-field> -->
+                <mat-form-field appearance="fill">
+                  <input matInput 
+                         [ngxMatDatetimePicker]="pickerProductionDateTime" 
+                         placeholder="Production Date Time" 
+                         formControlName="ProductionDateTime"
+                         required>
+                  <button type="button" mat-icon-button (click)="pickerProductionDateTime.open()" matSuffix>
+                    <mat-icon>calendar_today</mat-icon>
+                  </button>
+                  <ngx-mat-datetime-picker #pickerProductionDateTime apperance="fill"></ngx-mat-datetime-picker>
+                </mat-form-field>
+              </div>
+
               <!-- Product -->
               <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                 <mat-form-field appearance="fill" class="full-width">
@@ -164,7 +177,6 @@
             </div>
           </div>
         </div>
-
         <div class="row">
           <div class="col-md-12">
             <div class="table-responsive">
@@ -173,40 +185,42 @@
                 style="overflow:scroll;width:auto">
                 <thead class="bg-primary text-primary text-center">
                   <tr>
-                    <th style="width:12%">Start Date</th>
-                    <th style="width:12%">End Date</th>
-                    <th>Durations</th>
-                    <th>Shift</th>
-                    <th>Cause</th>
-                    <th>Action Taken</th>
-                    <th>Action Taken By</th>
-
+                    <th style="width:10%">Start Date</th>
+                    <th style="width:10%">End Date</th>
+                    <th style="width:15%">Durations</th>
+                    <th style="width:15%">Shift</th>
+                    <th style="width:15%">Cause</th>
+                    <th style="width:20%">Action Taken</th>
+                    <th style="width:20%">Action Taken By</th>
                     <th style="width:5%">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let detail of addedDowntimeTrackingDetailsList; let i = index">
-                    <!-- Table columns as per your requirement -->
                     <td>{{ detail.StartDate }}</td>
                     <td>{{ detail.EndDate }}</td>
                     <td>{{ detail.Durations }}</td>
-                    <td>{{ detail.ShiftId }}</td>
-                    <td>{{ detail.CauseId }}</td>
+                    <td>{{ shiftMap.get(detail.ShiftId) || 'Unknown' }}</td>
+                    <td>{{ causeMap.get(detail.CauseId) || 'Unknown' }}</td>
                     <td>{{ detail.ActionTaken }}</td>
-                    <td>{{ detail.DoneByUserIds }}</td>
                     <td>
+                      <ng-container *ngFor="let userId of detail.DoneByUserIds">
+                        {{ userMap.get(userId) || 'Unknown' }}
+                        <ng-container *ngIf="!last"> </ng-container>
+                      </ng-container>
+                    </td>
+                    <td class="text-center">
                       <button (click)="onEditDetail(detail, i)" type="button" class="btn btn-primary btn-sm btnModifyRow">
                         <i class="fa fa-pencil"></i>
                       </button>
                     </td>
                   </tr>
-                  
-
                 </tbody>
               </table>
             </div>
           </div>
         </div>
+        
 
         <div class="row">
           <div class="col-lg-12 text-center">

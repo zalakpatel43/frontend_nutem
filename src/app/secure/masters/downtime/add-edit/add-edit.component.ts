@@ -39,6 +39,7 @@ export class DowntimeTrackingAddEditComponent implements OnInit, OnDestroy {
   selectedDate: string | null = null;
   selectedTime: string | null = null;
   form: any;
+last: any;
   constructor(private activatedRoute: ActivatedRoute, private router: Router,
     private formBuilder: FormBuilder, private downtimeTrackingService: DowntimeTrackingService,
     private notificationService: ToastrService) { }
@@ -130,6 +131,9 @@ export class DowntimeTrackingAddEditComponent implements OnInit, OnDestroy {
     }, 500);
   }
   
+  shiftMap: Map<number, string> = new Map();
+  causeMap: Map<number, string> = new Map();
+  userMap: Map<number, string> = new Map();
 
   private loadDropdowns() {
     this.downtimeTrackingService.getProductionOrderList()
@@ -143,23 +147,27 @@ export class DowntimeTrackingAddEditComponent implements OnInit, OnDestroy {
         this.productList = result;
       });
 
-    this.downtimeTrackingService.getCauseList()
+      this.downtimeTrackingService.getCauseList()
       .subscribe((result: any) => {
         this.causeList = result;
+        this.causeMap = new Map(result.map(cause => [cause.id, cause.causeName]));
       });
     this.downtimeTrackingService.getMaster()
       .subscribe((result: any) => {
         this.fillingLineList = this.filterFillingLines(result);
       });
-    this.downtimeTrackingService.getUserList()
+ 
+      this.downtimeTrackingService.getUserList()
       .subscribe((result: any) => {
         this.usersList = result;
+        this.userMap = new Map(result.map(user => [user.id, user.name]));
       });
 
 
-    this.downtimeTrackingService.getShiftList()
+      this.downtimeTrackingService.getShiftList()
       .subscribe((result: any) => {
         this.shiftList = result;
+        this.shiftMap = new Map(result.map(shift => [shift.id, shift.shiftName]));
       });
 
 
