@@ -78,6 +78,12 @@ const routes: Routes = [
                 loadChildren: () => import('./weight-check/weight-check.module').then(m => m.WeightCheckModule)
             },
             {
+                path: 'pallet-packing',
+                canActivate: [PageAuthGuard],
+                data: { page: ApplicationPage.palletPacking },
+                loadChildren: () => import('./pallet-packing/pallet-packing.module').then(m => m.PalletPackingModule)
+            },
+            {
                 path: 'attribute-check',
                 canActivate: [PageAuthGuard],
                 data: { page: ApplicationPage.attributeCheck },
@@ -89,6 +95,13 @@ const routes: Routes = [
                 data: { page: ApplicationPage.trailerInspection },
                 loadChildren: () => import('./trailer-inspection/trailer-inspection.module').then(m => m.TrailerInspectionModule)
             },
+            {
+                path: 'trailor-loading',
+                canActivate: [PageAuthGuard],
+                data: { page: ApplicationPage.trailerLoading },
+                loadChildren: () => import('./trailor-loading/trailor-loading.module').then(m => m.TrailerLoadingModule)
+            },
+            
             {
                 path: 'downtimeTracking',
                 canActivate: [PageAuthGuard],

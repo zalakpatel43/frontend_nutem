@@ -1,0 +1,50 @@
+<div class="row justify-content-center">
+    <div class="col-xl-11 col-lg-12">
+        <div class="border p30 rounded">
+            <div class="row align-items-center">
+                <div class="col-lg-7 col-sm-9 col-xs-10 d-flex align-items-end leftSideHeader">
+                    <h4 class="mb20 float-left">Pallet Packing List</h4>
+                </div>
+                <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end rightSideHeader mb10">
+                    <a mat-flat-button color="primary" class="app-button" [routerLink]="['../','add']">
+                        <span>Add New</span>
+                        <i class="icon-plus"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <pallet-packing-search-panel (searchChanged)="updateSearch($event)"></pallet-packing-search-panel>
+                    <ngx-datatable class="material" [rows]="palletPackingData | searchtable : searchData" [columnMode]="'force'"
+                        [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10"
+                        [loadingIndicator]="loading" [scrollbarH]="true" 
+                        [messages]="{emptyMessage:'No Data to Display',totalMessage:'Total'}">
+                       
+                        <ngx-datatable-column name=" Date" prop="packingDateTime">
+                            <ng-template let-value="value" ngx-datatable-cell-template>
+                                <span>{{value | date: 'MM/dd/yyyy hh:mm a'}}</span>
+                            </ng-template>
+                        </ngx-datatable-column>
+                       
+                        <ngx-datatable-column name="Product Name" prop="productName">
+                            <ng-template let-value="value" ngx-datatable-cell-template>
+                                <span>{{value }}</span>
+                            </ng-template>
+                        </ngx-datatable-column>
+
+                        <ngx-datatable-column name="Actions" [sortable]="false">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                <a *authPermission="page + '_' + permissions.edit" class="button-padding" color="primary" [routerLink]="['..','edit',row.id]">
+                                    <mat-icon>edit</mat-icon>
+                                </a>
+                                <button (click)="removePalletPacking(row.id)" type="button" style="border: none; background-color: white; color: red;">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </ng-template>
+                        </ngx-datatable-column>
+                    </ngx-datatable>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

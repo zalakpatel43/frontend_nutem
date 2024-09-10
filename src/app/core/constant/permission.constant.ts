@@ -11,6 +11,8 @@ export const ApplicationPage = {
     student:'adm_Student',
     jobcard:'adm_JobCard',
     weightCheck : 'adm_weight_check',
+    palletPacking: 'adm_PalletPackingHeader',
+    trailerLoading: 'adm_trailor-loading',
     attributeCheck : 'adm_attribute_check',
     trailerInspection : 'adm_trailer_inspection',
     downtimeTracking: 'adm_downtime',

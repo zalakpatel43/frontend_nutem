@@ -1,0 +1,257 @@
+<div class="row justify-content-center">
+    <div class="col-xl-11 col-lg-12">
+        <div class="border p30 rounded">
+            <div class="row align-items-center mb-4">
+                <div class="col-lg-7 col-sm-9 col-xs-10 d-flex align-items-end">
+                    <h4 class="mb-0"><i class="icon-edit"></i> Add/Edit Pallet Packing</h4>
+                </div>
+                <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end">
+                    <a *authPermission="page + '_' + permissions.list" mat-flat-button color="primary"
+                        class="app-button" (click)="cancel()">
+                        View List
+                    </a>
+                </div>
+            </div>
+            <form [formGroup]="palletPackingForm" (ngSubmit)="save()" #form="ngForm" novalidate class="app-form">
+                <!-- Basic Details Section -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Header Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Packing Date Time -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Packing Date Time</mat-label>
+                                    <input matInput [matDatepicker]="pickerPackingDate"
+                                        (dateChange)="onPackingDateChange()" formControlName="PackingDateTime">
+                                    <mat-datepicker-toggle matSuffix [for]="pickerPackingDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #pickerPackingDate></mat-datepicker>
+                                    <mat-validation-message [control]="palletPackingForm.controls.PackingDateTime"
+                                        [message]="'Packing Date Time'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- SAP Production Order -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>SAP Production Order</mat-label>
+                                    <mat-select formControlName="SAPProductionOrderId" [disabled]="isEditMode">
+                                        <mat-option *ngFor="let order of productionOrderList" [value]="order.id">
+                                            {{ order.poNumber }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-validation-message [control]="palletPackingForm.controls.SAPProductionOrderId"
+                                        [message]="'SAP Production Order'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Product -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Product</mat-label>
+                                    <mat-select formControlName="ProductId" [disabled]="isEditMode">
+                                        <mat-option *ngFor="let product of productList" [value]="product.id">
+                                            {{ product.productName }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-validation-message [control]="palletPackingForm.controls.ProductId"
+                                        [message]="'Product'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Finished Cases On Incomplete Pallet At Start -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Finished Cases (Start)</mat-label>
+                                    <input matInput formControlName="FinishedCasesOnIncompletePalletAtStart"
+                                        type="number">
+                                    <mat-validation-message
+                                        [control]="palletPackingForm.controls.FinishedCasesOnIncompletePalletAtStart"
+                                        [message]="'Finished Cases (Start)'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Finished Cases On Incomplete Pallet At End -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Finished Cases (End)</mat-label>
+                                    <input matInput formControlName="FinishedCasesOnIncompletePalletAtEnd"
+                                        type="number">
+                                    <mat-validation-message
+                                        [control]="palletPackingForm.controls.FinishedCasesOnIncompletePalletAtEnd"
+                                        [message]="'Finished Cases (End)'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Total Cases Produced -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Total Cases Produced</mat-label>
+                                    <input matInput formControlName="TotalCasesProduced" type="number">
+                                    <mat-validation-message [control]="palletPackingForm.controls.TotalCasesProduced"
+                                        [message]="'Total Cases Produced'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Supervised By -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Supervised By</mat-label>
+                                    <mat-select formControlName="SupervisedBy" [disabled]="isEditMode">
+                                        <mat-option *ngFor="let user of usersList" [value]="user.id" >
+                                            {{ user.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-validation-message [control]="palletPackingForm.controls.SupervisedBy"
+                                        [message]="'Supervised By'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Notes -->
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-12 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Notes</mat-label>
+                                    <textarea matInput formControlName="Notes"></textarea>
+                                    <mat-validation-message [control]="palletPackingForm.controls.Notes"
+                                        [message]="'Notes'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pallet Packing Detail Section -->
+                <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h5 class="mb-0">Pallet Packing Details</h5>
+                        <!-- <button type="button" mat-flat-button color="primary" (click)="addPalletDetail()">Add
+                            Detail</button> -->
+                    </div>
+                    <div class="card-body">
+                        <div formArrayName="palletPackingDetails">
+                            <div *ngFor="let detail of palletPackingDetails.controls; let i = index" [formGroupName]="i"
+                                class="row mt-3">
+                                <!-- Pallet No -->
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                    <mat-form-field appearance="fill" class="full-width">
+                                        <mat-label>Pallet No</mat-label>
+                                        <input matInput formControlName="PalletNo">
+                                        <mat-validation-message [control]="detail.get('PalletNo')"
+                                            [message]="'Pallet No'"
+                                            [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                    </mat-form-field>
+                                </div>
+
+                                <!-- Time -->
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                    <mat-form-field appearance="fill" class="full-width">
+                                        <mat-label>Time</mat-label>
+                                        <input matInput [ngxTimepicker]="timepicker" placeholder="Select time"
+                                            formControlName="Time">
+                                        <ngx-material-timepicker #timepicker></ngx-material-timepicker>
+                                    </mat-form-field>
+                                </div>
+
+                                <!-- Done By -->
+                     
+                                    <!-- <mat-form-field appearance="fill" class="full-width">
+                                        <mat-label>Done By</mat-label>
+                                        <mat-select formControlName="DoneByIds">
+                                            <mat-option *ngFor="let user of usersList" [value]="user.id">
+                                                {{ user.name }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field> -->
+                                    <!-- Done By -->
+                                    <!-- <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Done By</mat-label>
+                                            <mat-select formControlName="DoneByIds" >
+                                                <mat-option *ngFor="let user of usersList" [value]="user.id">
+                                                    {{ user.name }}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div> -->
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Done By</mat-label>
+                                            <mat-select formControlName="DoneByIds"  multiple>
+                                                <mat-option *ngFor="let user of usersList" [value]="user.id">
+                                                    {{ user.name }}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-validation-message [control]="detail.get('DoneByIds')"
+                                                [message]="'Action Taken By'"
+                                                [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                        </mat-form-field>
+                                    </div>
+
+                             
+
+                                <!-- Add/Remove Buttons -->
+                                <div class="col-12 col-sm-12 col-md-2 col-lg-2 mb-3 d-flex align-items-center">
+                                    <!-- <button type="button" mat-icon-button color="warn" (click)="removePalletDetail(i)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button> -->
+
+                                    <button type="button" mat-icon-button color="warn" (click)="addFinalPalletDetail()">
+                                        <mat-icon>add</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Display Added Details -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table id="gridPalletPackingDetails" class="table table-hover table-bordered">
+                                <thead class="bg-primary text-primary text-center">
+                                    <tr>
+                                        <th>Pallet No</th>
+                                        <th>Time</th>
+                                        <th>Done By</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let detail of addedPalletPackingDetailsList; let i = index">
+                                        <td>{{ detail.PalletNo }}</td>
+                                        <td>{{ detail.Time }}</td>
+                                        <td>{{ detail.DoneByIds }}</td>
+                                        <td>
+                                            <button (click)="onEditDetail(detail, i)" type="button"
+                                                class="btn btn-primary btn-sm btnModifyRow">
+                                                <i class="fa fa-pencil"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <button type="submit" mat-flat-button color="primary" class="app-button mr-1">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

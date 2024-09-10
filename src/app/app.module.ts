@@ -22,7 +22,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-
+import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 
 @NgModule({
   declarations: [
@@ -33,13 +33,14 @@ import { MatIconModule } from '@angular/material/icon';
     BrowserAnimationsModule,
     CoreModule,
     PublicModule,
-    AppRoutingModule,MatTableModule,    MatFormFieldModule,
+    AppRoutingModule,MatTableModule,    MatFormFieldModule,NgxMatTimepickerModule,NgxMatDatetimePickerModule,
     MatInputModule,
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatButtonModule,
     MatIconModule,
+
     // NgProgressModule,
     // NgProgressHttpModule,
     // NgProgressRouterModule,

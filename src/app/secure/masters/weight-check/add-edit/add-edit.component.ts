@@ -34,6 +34,7 @@ export class WeightCheckAddEditComponent implements OnInit, OnDestroy {
   AddedWeightCheckDetailsList: any[] = [];
   EditNozzleDetailsId: number = -1;
   minEndDate: Date | null = null;
+trailerLoadingForm: any;
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router,
     private formBuilder: UntypedFormBuilder, private weightCheckService: WeightCheckService,

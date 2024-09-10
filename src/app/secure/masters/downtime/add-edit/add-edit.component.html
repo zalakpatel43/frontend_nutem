@@ -21,19 +21,17 @@
           <div class="card-body">
             <div class="row">
 
-
-              <!-- Production Date Time -->
-              <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
-                <mat-form-field appearance="fill" class="full-width">
-                  <mat-label>Production Date Time</mat-label>
-                  <input matInput [matDatepicker]="pickerProductionDateTime" formControlName="ProductionDateTime">
-                  <mat-datepicker-toggle matSuffix [for]="pickerProductionDateTime"></mat-datepicker-toggle>
-                  <mat-datepicker #pickerProductionDateTime></mat-datepicker>
-                  <mat-validation-message [control]="downtimeTrackingForm.controls.ProductionDateTime"
-                    [message]="'Production Date Time'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
-                </mat-form-field>
-              </div>
-
+<!-- Production Date Time -->
+<div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Production Date Time</mat-label>
+    <input matInput [matDatepicker]="pickerProductionDateTime" formControlName="ProductionDateTime">
+    <mat-datepicker-toggle matSuffix [for]="pickerProductionDateTime"></mat-datepicker-toggle>
+    <mat-datepicker #pickerProductionDateTime></mat-datepicker>
+    <mat-validation-message [control]="downtimeTrackingForm.controls.ProductionDateTime"
+      [message]="'Production Date Time'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
+  </mat-form-field>
+</div>
               <!-- Product -->
               <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                 <mat-form-field appearance="fill" class="full-width">
@@ -156,8 +154,6 @@
                     </mat-form-field>
                   </div>
 
-
-
                   <div class="col-12 col-sm-12 col-md-2 col-lg-2 mb-3 p-1 d-flex align-items-center">
                     <button type="button" mat-icon-button color="warn" (click)="addFinalDowntimeDetail()">
                       <mat-icon>add</mat-icon>
@@ -190,23 +186,21 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let detail of addedDowntimeTrackingDetailsList; let i = index">
+                    <!-- Table columns as per your requirement -->
                     <td>{{ detail.StartDate }}</td>
                     <td>{{ detail.EndDate }}</td>
                     <td>{{ detail.Durations }}</td>
-                    <td>{{detail.ShiftId }}</td>
+                    <td>{{ detail.ShiftId }}</td>
                     <td>{{ detail.CauseId }}</td>
                     <td>{{ detail.ActionTaken }}</td>
                     <td>{{ detail.DoneByUserIds }}</td>
                     <td>
-                      <button (click)="onEditDetail(detail, i)" type="button"
-                        class="btn btn-primary btn-sm btnModifyRow">
+                      <button (click)="onEditDetail(detail, i)" type="button" class="btn btn-primary btn-sm btnModifyRow">
                         <i class="fa fa-pencil"></i>
                       </button>
                     </td>
-
-
-
                   </tr>
+                  
 
                 </tbody>
               </table>

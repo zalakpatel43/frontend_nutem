@@ -1,0 +1,11 @@
+<div class="row">
+    <div class="col-lg-6">
+        <search-text [placeHolder]="'Search Shift'" (textSearchEntered)="updateSearchTerms(searchKey, $event)">
+        </search-text>
+    </div>
+    <!-- Add any additional search filters here if needed -->
+    <!-- <div class="col-lg-4">
+        <search-inactive (chkChanged)="updateSearchTerms('isActive', $event)">
+        </search-inactive>
+    </div> -->
+</div>

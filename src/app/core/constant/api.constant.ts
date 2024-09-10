@@ -43,19 +43,32 @@ export const APIConstant = {
     downtimeTrackingGetById: `${basePath}DowntimeTracking/GetByIdAsync`,
     downtimeTrackingDelete: `${basePath}DowntimeTracking/DeleteDowntimeTracking`,
 
+  // PalletPacking
+  palletPackingList: `${basePath}PalletPacking/GetAllPalletPacking`,
+  palletPackingAdd: `${basePath}PalletPacking/AddPalletPacking`,
+  palletPackingEdit: `${basePath}PalletPacking/EditPalletPacking`,
+  palletPackingGetById: `${basePath}PalletPacking/GetByIdAsync`,
+  palletPackingDelete: `${basePath}PalletPacking/DeletePalletPacking`,
+    //Trailer Inspection
+    TrailerInspectionList: `${basePath}TrailerInspection/GetAllTrailerInspection`,
+    TrailerInspectionAdd: `${basePath}TrailerInspection/AddTrailerInspection`,
+    TrailerInspectionEdit: `${basePath}TrailerInspection/EditTrailerInspection`,
+    TrailerInspectionGetById: `${basePath}TrailerInspection/GetByIdAsync`,
+    TrailerInspectionDelete: `${basePath}TrailerInspection/DeleteTrailerInspection`,
 
-     //Trailer Inspection
-     TrailerInspectionList: `${basePath}TrailerInspection/GetAllTrailerInspection`,
-     TrailerInspectionAdd: `${basePath}TrailerInspection/AddTrailerInspection`,
-     TrailerInspectionEdit: `${basePath}TrailerInspection/EditTrailerInspection`,
-     TrailerInspectionGetById: `${basePath}TrailerInspection/GetByIdAsync`,
-     TrailerInspectionDelete: `${basePath}TrailerInspection/DeleteTrailerInspection`,
+    // Trailer Loading
+    trailerLoadingList: `${basePath}TrailerLoading/GetAllTrailerLoadings`,
+    trailerLoadingAdd: `${basePath}TrailerLoading/AddTrailerLoading`,
+    trailerLoadingEdit: `${basePath}TrailerLoading/EditTrailerLoading`,
+    trailerLoadingGetById: `${basePath}TrailerLoading/GetByIdAsync`,
+    trailerLoadingDelete: `${basePath}TrailerLoading/DeleteTrailerLoading`,
 
-     //Company
-     CompanyMasterList: `${basePath}CompanyMaster/GetAllCompany`,  //TrailerInspection service 
 
-     //Masters
-     VehicleTypeMasterList: `${basePath}Masters/vehicle-types`,  //TrailerInspection service 
+    //Company
+    CompanyMasterList: `${basePath}CompanyMaster/GetAllCompany`,  //TrailerInspection service 
+
+    //Masters
+    VehicleTypeMasterList: `${basePath}Masters/vehicle-types`,  //TrailerInspection service 
 
     //Nozzle
     NozzleList: `${basePath}NozzleMaster/GetAllNozzle`,  //WeightCHeck service 
@@ -82,7 +95,7 @@ export const APIConstant = {
     preCheckDelete: `${basePath}PreCheckList/Delete`,
 
     // PrePostQuestion
-    PrePostQuestion:`${basePath}PrePostQuestion/GetAllPrePostQuestions`,
+    PrePostQuestion: `${basePath}PrePostQuestion/GetAllPrePostQuestions`,
 
     //Pages
     company: `${apiPath}company`,
