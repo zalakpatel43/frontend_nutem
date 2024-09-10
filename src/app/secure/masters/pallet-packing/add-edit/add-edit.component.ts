@@ -184,29 +184,25 @@ isEditing: any;
   }
 
   addPalletDetail() {
-    // Get the FormArray from the form group and clear it
     this.palletPackingDetails = this.palletPackingForm.get('palletPackingDetails') as FormArray;
     this.palletPackingDetails.clear();
     this.editPalletDetailsId = -1;
   
-    // Create a new FormGroup
     const item = this.formBuilder.group({});
     
-    console.log("ProductionOrderList", this.productionOrderList); // Assuming this is your API response for production orders
-    
-    // Dynamically add controls based on the API response
     this.productionOrderList.forEach((order) => {
-      item.addControl(order.id, this.formBuilder.control(""));
+      item.addControl(order.id.toString(), this.formBuilder.control(""));
     });
-    
-    // Add the remaining static controls
+  
     item.addControl('PalletNo', this.formBuilder.control(""));
     item.addControl('Time', this.formBuilder.control(""));
-    item.addControl('DoneByIds', this.formBuilder.control("")); 
-    // Push the dynamically created item FormGroup into the FormArray
+    item.addControl('DoneByIds', this.formBuilder.control([]));  // Initialize as an array
+  
     this.palletPackingDetails.push(item);
     console.log("PalletPackingDetails", this.palletPackingDetails.controls);
   }
+  
+  
   
   private formatToDateTime(dateStr: string | null): string | null {
     if (!dateStr) {
@@ -240,35 +236,36 @@ isEditing: any;
     return `${year}-${month}-${day}T${hours}:${minutes}`;
   }
   
-addFinalPalletDetail() {
-  const palletDetail = this.palletPackingDetails.at(0).value;
-
-  if (!palletDetail.Time) {
-    this.notificationService.error("Please select time");
-  } else if (!palletDetail.DoneByIds || palletDetail.DoneByIds.length === 0) {
-    this.notificationService.error("Please select Done By");
-  } else {
-    // Convert DoneByIds to comma-separated string
-    palletDetail.DoneByIds = Array.isArray(palletDetail.DoneByIds)
-      ? palletDetail.DoneByIds.join(',')
-      : palletDetail.DoneByIds;
-
-    if (this.editPalletDetailsId >= 0) {
-      this.addedPalletPackingDetailsList[this.editPalletDetailsId] = palletDetail;
-      this.editPalletDetailsId = -1;
+  addFinalPalletDetail() {
+    const palletDetail = this.palletPackingDetails.at(0).value;
+  
+    if (!palletDetail.Time) {
+      this.notificationService.error("Please select time");
+    } else if (!palletDetail.DoneByIds || palletDetail.DoneByIds.length === 0) {
+      this.notificationService.error("Please select Done By");
     } else {
-      this.addedPalletPackingDetailsList.push(palletDetail);
+      // Convert DoneByIds to an array of numbers
+      palletDetail.DoneByIds = Array.isArray(palletDetail.DoneByIds)
+        ? palletDetail.DoneByIds.map(id => Number(id))
+        : [];
+      
+      if (this.editPalletDetailsId >= 0) {
+        this.addedPalletPackingDetailsList[this.editPalletDetailsId] = palletDetail;
+        this.editPalletDetailsId = -1;
+      } else {
+        this.addedPalletPackingDetailsList.push(palletDetail);
+      }
+  
+      this.palletPackingDetails.clear();
+      this.addPalletDetail();
+  
+      console.log("Added pallet details:", this.addedPalletPackingDetailsList);
     }
-
-    this.palletPackingDetails.clear();
-    this.addPalletDetail();
-
-    console.log("Added pallet details:", this.addedPalletPackingDetailsList);
   }
-}
-
   
 getUserNames(userIds: number[]): string {
+  console.log('User IDs:', userIds);
+  console.log('User Map:', this.userMap);
   if (!userIds || !Array.isArray(userIds)) {
     return 'Unknown';
   }
