@@ -109,6 +109,12 @@ const routes: Routes = [
                 loadChildren: () => import('./downtime/downtime.module').then(m => m.DowntimeTrackingModule)
             },
             {
+                path: 'liquid-preparation',
+                canActivate: [PageAuthGuard],
+                data: { page: ApplicationPage.liquidPreparation },
+                loadChildren: () => import('./liquid-preparation/liquid-preparation.module').then(m => m.LiquidPreparationModule)
+            },
+            {
                 path: 'bom',
                 canActivate: [PageAuthGuard],
                 data: { page: ApplicationPage.bom, action: PermissionType.list },
@@ -197,6 +203,18 @@ const routes: Routes = [
                 canActivate: [PageAuthGuard],
                 data: { page: ApplicationPage.preCheck },
                 loadChildren: () => import('./pre-check/pre-check.module').then(m => m.PreCheckModule)
+            },
+            {
+                path: 'production-order',
+                canActivate: [PageAuthGuard],
+                data: { page: ApplicationPage.productionOrder },
+                loadChildren: () => import('./production-order/production-order.module').then(m => m.ProductionOrderModule)
+              },
+            {
+                path: 'post-check',
+                canActivate: [PageAuthGuard],
+                data: { page: ApplicationPage.postCheck },
+                loadChildren: () => import('./post-check/post-check.module').then(m => m.PostCheckModule)
             },
         ]
     }

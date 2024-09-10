@@ -1,0 +1,19 @@
+import { Component, EventEmitter, Output } from '@angular/core';
+
+@Component({
+  selector: 'liquid-preparation-search-panel',
+  // standalone: true,
+  // imports: [],
+  templateUrl: './search-panel.component.html',
+  styleUrl: './search-panel.component.scss'
+})
+export class LiquidPreparationSearchPanelComponent {
+  @Output() searchChanged = new EventEmitter();
+  searchData: { [key: string]: any } = {};
+  searchKey = "startDateTime , endDateTime, shiftName";
+
+  updateSearchTerms(key: string, value: any) {
+      this.searchData[key] = value;
+      this.searchChanged.emit(this.searchData);
+  }
+}

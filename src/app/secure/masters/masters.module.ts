@@ -3,7 +3,8 @@ import { SharedModule } from '@app-shared';
 import { MastersComponents, MastersRoutingModule } from './masters-routing.module';
 import { MasterService } from './masters.service';
 import { ModuleGroupComponent } from './module-group/module-group.component';
-
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { MatNativeDateModule } from '@angular/material/core'
 @NgModule({
     declarations: [
         [...MastersComponents
@@ -11,7 +12,8 @@ import { ModuleGroupComponent } from './module-group/module-group.component';
     ],
     imports: [
         SharedModule,
-        MastersRoutingModule
+        MastersRoutingModule,
+        NgxMaterialTimepickerModule,MatNativeDateModule
     ],
     providers: [
         MasterService

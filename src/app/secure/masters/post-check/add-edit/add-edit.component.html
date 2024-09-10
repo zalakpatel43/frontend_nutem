@@ -3,7 +3,7 @@
         <div class="border p30 rounded">
             <div class="row align-items-center mb-4">
                 <div class="col-lg-7 col-sm-9 col-xs-10 d-flex align-items-end">
-                    <h4 class="mb-0"><i class="icon-edit"></i> Add/Edit Pre Check</h4>
+                    <h4 class="mb-0"><i class="icon-edit"></i> Add/Edit Post Check</h4>
                 </div>
                 <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end">
                     <a mat-flat-button color="primary" class="app-button" (click)="cancel()">
@@ -11,36 +11,61 @@
                     </a>
                 </div>
             </div>
-            <form [formGroup]="preCheckForm" (ngSubmit)="save()" #form="ngForm" novalidate class="app-form">
+            <form [formGroup]="postCheckForm" (ngSubmit)="save()" #form="ngForm" novalidate class="app-form">
                 <!-- Basic Details Section -->
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h5 class="mb-0">Pre Check Header</h5>
+                        <h5 class="mb-0">Post Check Header</h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <!-- Start Date -->
+                            <!-- End Date -->
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <!-- FIRST  -->
                                 <!-- <mat-form-field appearance="fill" class="full-width">
-                                    <mat-label>Start Date</mat-label>
-                                    <input matInput [matDatepicker]="pickerStartDate" formControlName="StartDate">
-                                    <mat-datepicker-toggle matSuffix [for]="pickerStartDate"></mat-datepicker-toggle>
-                                    <mat-datepicker #pickerStartDate></mat-datepicker>
-                                    <mat-validation-message [control]="preCheckForm.controls.StartDate"
-                                        [message]="'Start Date'"
+                                    <mat-label>End Date</mat-label>
+                                    <input matInput [matDatepicker]="pickerEndDate" formControlName="EndDate">
+                                    <mat-datepicker-toggle matSuffix [for]="pickerEndDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #pickerEndDate></mat-datepicker>
+                                    <mat-validation-message [control]="postCheckForm.controls.EndDate"
+                                        [message]="'End Date'"
                                         [formSubmitted]="isFormSubmitted"></mat-validation-message>
                                 </mat-form-field> -->
+                                <!-- SECOND -->
                                 <mat-form-field appearance="fill">
                                     <input matInput 
-                                           [ngxMatDatetimePicker]="pickerStartDate" 
-                                           placeholder="Start Date" 
-                                           formControlName="StartDate"
+                                           [ngxMatDatetimePicker]="pickerEndDate" 
+                                           placeholder="End Date" 
+                                           formControlName="EndDate"
                                            required>
-                                    <button type="button" mat-icon-button (click)="pickerStartDate.open()" matSuffix>
+                                    <button type="button" mat-icon-button (click)="pickerEndDate.open()" matSuffix>
                                       <mat-icon>calendar_today</mat-icon>
                                     </button>
-                                    <ngx-mat-datetime-picker #pickerStartDate apperance="fill"></ngx-mat-datetime-picker>
+                                    <ngx-mat-datetime-picker #pickerEndDate apperance="fill"></ngx-mat-datetime-picker>
                                   </mat-form-field>
+                                  <!-- <mat-form-field appearance="fill">
+                                    <mat-label>Choose a date and time</mat-label>
+                                    <mtx-datetimepicker #pickerEndDate
+                                                        [type]="'datetime'"
+                                                        [mode]="'auto'"
+                                                        [multiYearSelector]="false"
+                                                        [calendarHeaderComponent]="customHeader"
+                                                        [startView]="'month'"
+                                                        [twelvehour]="false"
+                                                        [timeInterval]="1"
+                                                        [touchUi]="false"
+                                                        [timeInput]="true">
+                                      <mtx-datetimepicker-actions>
+                                        <button mat-button mtxDatetimepickerClear>Clear</button>
+                                        <button mat-button mtxDatetimepickerCancel>Cancel</button>
+                                        <button mat-raised-button mtxDatetimepickerApply>Apply</button>
+                                      </mtx-datetimepicker-actions>
+                                    </mtx-datetimepicker>
+                                    <input matInput [mtxDatetimepicker]="pickerEndDate" formControlName="EndDate" required>
+                                    <button mat-icon-button (click)="pickerEndDate.open()" matSuffix>
+                                      <mat-icon>calendar_today</mat-icon>
+                                    </button>
+                                  </mat-form-field> -->
                             </div>
 
                             <!-- Production Order -->
@@ -52,7 +77,7 @@
                                             {{ order.poNumber }}
                                         </mat-option>
                                     </mat-select>
-                                    <mat-validation-message [control]="preCheckForm.controls.ProductionOrderId"
+                                    <mat-validation-message [control]="postCheckForm.controls.ProductionOrderId"
                                         [message]="'Production Order'"
                                         [formSubmitted]="isFormSubmitted"></mat-validation-message>
                                 </mat-form-field>
@@ -67,7 +92,7 @@
                                             {{ shift.shiftName }}
                                         </mat-option>
                                     </mat-select>
-                                    <mat-validation-message [control]="preCheckForm.controls.ShiftId"
+                                    <mat-validation-message [control]="postCheckForm.controls.ShiftId"
                                         [message]="'Shift'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
                                 </mat-form-field>
                             </div>
@@ -81,7 +106,7 @@
                                             {{ line.name }}
                                         </mat-option>
                                     </mat-select>
-                                    <mat-validation-message [control]="preCheckForm.controls.FillingLineId"
+                                    <mat-validation-message [control]="postCheckForm.controls.FillingLineId"
                                         [message]="'Filling Line'"
                                         [formSubmitted]="isFormSubmitted"></mat-validation-message>
                                 </mat-form-field>
@@ -96,7 +121,7 @@
                                             {{ product.productName }}
                                         </mat-option>
                                     </mat-select>
-                                    <mat-validation-message [control]="preCheckForm.controls.ProductId"
+                                    <mat-validation-message [control]="postCheckForm.controls.ProductId"
                                         [message]="'Product'"
                                         [formSubmitted]="isFormSubmitted"></mat-validation-message>
                                 </mat-form-field>
@@ -111,7 +136,7 @@
                                             {{ operator.name }}
                                         </mat-option>
                                     </mat-select>
-                                    <mat-validation-message [control]="preCheckForm.controls.FillerOperatorIds"
+                                    <mat-validation-message [control]="postCheckForm.controls.FillerOperatorIds"
                                         [message]="'Filler Operator'"
                                         [formSubmitted]="isFormSubmitted"></mat-validation-message>
                                 </mat-form-field>
@@ -122,7 +147,7 @@
                                 <mat-form-field appearance="fill" class="full-width">
                                     <mat-label>Comments</mat-label>
                                     <textarea matInput formControlName="Comments"></textarea>
-                                    <mat-validation-message [control]="preCheckForm.controls.Comments"
+                                    <mat-validation-message [control]="postCheckForm.controls.Comments"
                                         [message]="'Comments'"
                                         [formSubmitted]="isFormSubmitted"></mat-validation-message>
                                 </mat-form-field>
@@ -131,21 +156,21 @@
                     </div>
                 </div>
 
-                <!-- Pre Check Details Section -->
+                <!-- Post Check Details Section -->
                 <div class="card mb-4">
                     <div class="card-header d-flex align-items-center justify-content-between">
-                        <h5 class="mb-0">Pre Check Details</h5>
+                        <h5 class="mb-0">Post Check Details</h5>
                     </div>
                     <div class="card-body">
-                        <div formArrayName="preCheckListDetails">
-                            <div *ngFor="let detail of preCheckDetails.controls; let i = index" [formGroupName]="i"
+                        <div formArrayName="postCheckListDetails">
+                            <div *ngFor="let detail of postCheckDetails.controls; let i = index" [formGroupName]="i"
                                 class="row mt-3">
                                 <div class="row">
                                     <!-- Question -->
                                     <div class="col-12 col-sm-12 col-md-5 col-lg-5 mb-3">
                                         <mat-label>{{ questionList[i]?.question }}</mat-label>
                                     </div>
-                                </div>
+                                </div> 
 
                                 <!-- Answer -->
                                 <div class="col-12 col-sm-12 col-md-3 col-lg-3 mb-3">
@@ -158,7 +183,7 @@
                                   
 
                                 <!-- Reason -->
-                                <div class="col-12 col-sm-12 col-md-4 col-lg-4 mb-3" *ngIf="preCheckDetails.at(i).get('answer').value === 0">
+                                <div class="col-12 col-sm-12 col-md-4 col-lg-4 mb-3" *ngIf="postCheckDetails.at(i).get('answer').value === 0">
                                     <mat-form-field appearance="fill" class="full-width">
                                         <mat-label>Reason</mat-label>
                                         <input matInput formControlName="reason">

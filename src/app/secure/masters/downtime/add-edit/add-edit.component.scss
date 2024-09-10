@@ -41,3 +41,11 @@
 .mb-3 {
     margin-bottom: 1rem; /* Adjust as needed */
 }
+::ng-deep .mat-calendar {
+    background-color: lightgray; // or any other color you prefer
+  }
+  
+  ::ng-deep .time-container{
+    background-color: lightgray; // Ensure the calendar itself has a background
+  }
+  

@@ -1,27 +1,32 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { PreCheckComponents, PreCheckRoutingModule } from './pre-check-routing.module';
-import { PreCheckComponent } from './pre-check/pre-check.component';
+import { ProductionOrderComponents, ProductionOrderRoutingModule } from './production-order-routing.module';
+import { ProductionOrderComponent } from './production-order/production-order.component';
 import { SharedModule } from '@app-shared';
-import { PreCheckService } from './pre-check.service';
+import { ProductionOrderService } from './production-order.service';
 import { provideEnvironmentNgxMask } from 'ngx-mask';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
-import { MatNativeDateModule } from '@angular/material/core'
-import { MatMomentDateModule } from "@angular/material-moment-adapter";
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatTableModule } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import {MatSortModule} from '@angular/material/sort';
 
 @NgModule({
   declarations: [
-    [...PreCheckComponents]
+    [...ProductionOrderComponents]
   ],
   imports: [
     CommonModule,
-    PreCheckRoutingModule,
-    SharedModule,NgxDatatableModule,
+    ProductionOrderRoutingModule,
+    SharedModule,
+    NgxDatatableModule,
     NgxMaterialTimepickerModule,
     NgxMatDatetimePickerModule,
     NgxMatNativeDateModule,
@@ -30,11 +35,15 @@ import { MatInputModule } from '@angular/material/input';
     MatMomentDateModule,
     NgxMatMomentModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatTableModule,
+    MatButtonModule,
+    MatIconModule,
+    MatSortModule
   ],
   providers: [
-    PreCheckService,
+    ProductionOrderService,
     provideEnvironmentNgxMask(),
   ]
 })
-export class PreCheckModule { }
+export class ProductionOrderModule { }

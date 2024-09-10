@@ -1,0 +1,99 @@
+<div class="row justify-content-center">
+  <div class="col-xl-11 col-lg-12">
+    <div class="border p30 rounded">
+      <div class="row align-items-center">
+        <div class="col-lg-7 col-sm-9 col-xs-10 d-flex align-items-end leftSideHeader">
+          <h4 class="mb20 float-left">Production Order List</h4>
+        </div>
+        <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end rightSideHeader mb10">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <table mat-table [dataSource]="productionOrderData" multiTemplateDataRows class="mat-elevation-z8">
+
+            <!-- Dynamic Columns -->
+            <ng-container *ngFor="let column of columnsToDisplay; let i = index" [matColumnDef]="column">
+              <th mat-header-cell *matHeaderCellDef> {{column | titlecase}} </th>
+              <td mat-cell *matCellDef="let row">
+                <ng-container *ngIf="column === 'code'">
+                  {{row[column]}}
+                  <a mat-icon-button (click)="isRowExpanded(row)">
+                    <mat-icon>{{ isRowExpanded(row) ? 'remove' : 'add' }}</mat-icon>
+                  </a>
+                </ng-container>
+                <ng-container *ngIf="column !== 'code' && column !== 'actions'">
+                  {{row[column]}}
+                </ng-container>
+                <ng-container *ngIf="column === 'actions'">
+                  <!-- <a mat-icon-button (click)="toggleExpandRow(row)">
+                    <mat-icon>add</mat-icon>
+                  </a> -->
+                  <a mat-icon-button [routerLink]="['../', 'edit', row.id]">
+                    <mat-icon>edit</mat-icon>
+                  </a>
+                </ng-container>
+              </td>
+            </ng-container>
+
+            <!-- Expanded Content Column -->
+            <!-- Expanded Content Column -->
+            <ng-container matColumnDef="expandedDetail">
+              <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplay.length">
+                <div class="matgrid-element-detail" [@detailExpand]="isRowExpanded(row) ? 'expanded' : 'collapsed'">
+                  <table mat-table [dataSource]="relatedData" class="mat-elevation-z8 nested-table">
+
+                    <!-- Nested Columns -->
+                    <ng-container matColumnDef="type">
+                      <th mat-header-cell *matHeaderCellDef> Type </th>
+                      <td mat-cell *matCellDef="let data"> {{data.type}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="code">
+                      <th mat-header-cell *matHeaderCellDef> Code </th>
+                      <td mat-cell *matCellDef="let data"> {{data.code}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="date">
+                      <th mat-header-cell *matHeaderCellDef> Date </th>
+                      <td mat-cell *matCellDef="let data"> {{data.date | date: 'dd-MMM-yyyy HH:mm a'}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="productName">
+                      <th mat-header-cell *matHeaderCellDef> Product Name </th>
+                      <td mat-cell *matCellDef="let data"> {{data.productName}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="shiftName">
+                      <th mat-header-cell *matHeaderCellDef> Shift Name </th>
+                      <td mat-cell *matCellDef="let data"> {{data.shiftName}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="actions">
+                      <th mat-header-cell *matHeaderCellDef> Actions </th>
+                      <td mat-cell *matCellDef="let data">
+                        <a mat-icon-button (click)="editRelatedData(data)">
+                          <mat-icon>edit</mat-icon>
+                        </a>
+                      </td>
+                    </ng-container>
+
+                    <!-- Nested Table Header and Rows -->
+                    <tr mat-header-row
+                      *matHeaderRowDef="['type', 'code', 'date', 'productName', 'shiftName', 'actions']"></tr>
+                    <tr mat-row
+                      *matRowDef="let data; columns: ['type', 'code', 'date', 'productName', 'shiftName', 'actions']">
+                    </tr>
+                  </table>
+                </div>
+              </td>
+            </ng-container>
+
+
+            <!-- Main Table Header and Rows -->
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnsToDisplay;" class="matgrid-element-row"
+              [class.matgrid-expanded-row]="expandedElement === row" (click)="toggleExpandRow(row)">
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="matgrid-detail-row"></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -94,9 +94,36 @@ export const APIConstant = {
     preCheckGetById: `${basePath}PreCheckList/GetByIdAsync`,
     preCheckDelete: `${basePath}PreCheckList/Delete`,
 
+    // Post-Check 
+    postCheckList: `${basePath}PostCheckList/GetAllPostCheckList`,
+    postCheckAdd: `${basePath}PostCheckList/AddPostCheckList`,
+    postCheckEdit: `${basePath}PostCheckList/EditPostCheckList`,
+    postCheckGetById: `${basePath}PostCheckList/GetByIdAsync`,
+    postCheckDelete: `${basePath}PostCheckList/Delete`,
+
+
+  // Production Order APIs
+  productionOrderList: `${basePath}ProductionOrder/GetAllProductionOrder`,
+  productionOrderGetById: `${basePath}ProductionOrder/GetByIdAsync`,
+
+
     // PrePostQuestion
     PrePostQuestion: `${basePath}PrePostQuestion/GetAllPrePostQuestions`,
 
+    //Masters 
+    StartEndBatchChecklist:`${basePath}StartEndBatchChecklist/GetAllStartEndBatchChecklist`,
+    GetAllProductInstructionDetails:`${basePath}ProductInstructionDetails/GetAllProductInstructionDetails`,
+    GetAllMaterialMaster:`${basePath}MaterialMaster/GetAllMaterialMaster`,
+    GetAllTankMaster:`${basePath}TankMaster/GetAllTankMaster`,
+    GetAllQCTSpecificationMaster:`${basePath}QCTSpecificationMaster/GetAllQCTSpecificationMaster`,
+
+     //LiquidPreparation
+     LiquidPreparationList: `${basePath}LiquidPreparation/GetAllLiquidPreparation`,
+     LiquidPreparationAdd: `${basePath}LiquidPreparation/AddLiquidPreparation`,
+     LiquidPreparationEdit: `${basePath}LiquidPreparation/EditLiquidPreparation`,
+     LiquidPreparationGetById: `${basePath}LiquidPreparation/GetByIdAsync`,
+     LiquidPreparationDelete: `${basePath}LiquidPreparation/DeleteLiquidPreparation`,
+    
     //Pages
     company: `${apiPath}company`,
     user: `${apiPath}users`,

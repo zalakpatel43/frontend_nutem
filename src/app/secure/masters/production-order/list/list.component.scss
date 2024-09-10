@@ -1,0 +1,48 @@
+table {
+    width: 100%;
+  }
+  
+  tr.matgrid-detail-row {
+    height: 0;
+  }
+  
+  tr.matgrid-element-row:not(.matgrid-expanded-row):hover {
+    background: whitesmoke;
+  }
+  
+  tr.matgrid-element-row:not(.matgrid-expanded-row):active {
+    background: #efefef;
+  }
+  
+  .matgrid-element-row td {
+    border-bottom-width: 0;
+  }
+  
+  .matgrid-element-detail {
+    overflow: hidden;
+    display: flex;
+  }
+  
+  .matgrid-element-diagram {
+    min-width: 80px;
+    border: 2px solid black;
+    padding: 8px;
+    font-weight: lighter;
+    margin: 8px 0;
+    height: 114px;
+  }
+  
+  .matgrid-element-symbol {
+    font-weight: bold;
+    font-size: 40px;
+    line-height: normal;
+  }
+  
+  .matgrid-element-description {
+    padding: 16px;
+  }
+  
+  .matgrid-element-description-attribution {
+    opacity: 0.5;
+  }
+  
