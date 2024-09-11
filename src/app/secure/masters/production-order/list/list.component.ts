@@ -71,6 +71,7 @@ export class ProductionOrderListComponent implements OnInit {
         // Update the status in the UI after the API call
         row.status = row.status === 'Open' ? 'Closed' : 'Open';
         this.notificationService.success(`Status updated successfully for Production Order: ${row.code}`);
+        this.getProductionOrderData();
       },
       (error) => {
         this.notificationService.error(`Failed to update status for Production Order: ${row.code}`);
