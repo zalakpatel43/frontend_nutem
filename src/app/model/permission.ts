@@ -25,4 +25,10 @@ export class GroupPermission extends List {
 export class Permission {
     id: number;
     hasMasterAccess: boolean;
+    permission: any;
+    view: any;
+    add: any;
+    edit: any;
+    delete: any;
+    export: any;
 }

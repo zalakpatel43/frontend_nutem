@@ -14,6 +14,7 @@ export const ApplicationPage = {
     palletPacking: 'adm_PalletPackingHeader',
     trailerLoading: 'adm_trailor-loading',
     attributeCheck : 'adm_attribute_check',
+    permissioon:'adm_Permission',
     trailerInspection : 'adm_trailer_inspection',
     downtimeTracking: 'adm_downtime',
     preCheck:'adm_PreCheckList',

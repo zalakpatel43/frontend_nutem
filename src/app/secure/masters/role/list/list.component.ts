@@ -9,6 +9,9 @@ import { RoleService } from '../role.service';
 })
 
 export class RoleListComponent implements OnInit {
+activateToggleRole(_t27: any,arg1: boolean) {
+throw new Error('Method not implemented.');
+}
 
     roleData: Role[] = [];
     page: string = ApplicationPage.role;
@@ -32,7 +35,7 @@ export class RoleListComponent implements OnInit {
     private getRoleData() {
     this.loading = true;
 
-        this.roleService.get()
+        this.roleService.getRole()
             .subscribe((result: any) => {
                 this.roleData = result;
     this.loading = false;
@@ -44,17 +47,17 @@ export class RoleListComponent implements OnInit {
             });
     }
 
-    activateToggleRole(role: Role, isActive: boolean) {
-        const result = confirm(`Are you sure you want to ${isActive ? `Active` : `Inactive`} ?`);
-        if (result) {
-            this.roleService.toggleActivate(role.id, isActive)
-                .subscribe((result) => {
-                    this.getRoleData();
-                }, (error) => {
-                    this.notificationService.error("Something went wrong.");
-                });
-        }
-    }
+    // activateToggleRole(role: Role, isActive: boolean) {
+    //     const result = confirm(`Are you sure you want to ${isActive ? `Active` : `Inactive`} ?`);
+    //     if (result) {
+    //         this.roleService.toggleActivate(role.id, isActive)
+    //             .subscribe((result) => {
+    //                 this.getRoleData();
+    //             }, (error) => {
+    //                 this.notificationService.error("Something went wrong.");
+    //             });
+    //     }
+    // }
 
     updateSearch(search: { [key: string]: any }) {
         this.searchData = Object.assign({}, search);

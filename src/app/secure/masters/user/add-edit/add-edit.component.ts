@@ -78,7 +78,7 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
         //         this.createRolesControl();
         //     })
 
-        this.roleService.get()
+        this.roleService.getRole()
         .subscribe((result: any) => {
             this.roleData = result;
             this.createRolesControl();
