@@ -4,7 +4,6 @@ import { ProductionOrderService } from '../production-order.service';
 import { ToastrService } from 'ngx-toastr';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
-import { WeightCheckAddEditComponent } from '../../weight-check/add-edit/add-edit.component';
 
 @Component({
   selector: 'app-production-order-list',
@@ -21,10 +20,13 @@ import { WeightCheckAddEditComponent } from '../../weight-check/add-edit/add-edi
 export class ProductionOrderListComponent implements OnInit {
 
   productionOrderData: any[] = [];
+  filteredProductionOrderData: any[] = [];
   columnsToDisplay: string[] = ['code', 'poNumber', 'poDateTimeFormatted', 'plannedQty', 'itemName', 'actions'];
   expandedElement: any | null = null;
   relatedData: any[] = [];
   searchData: { [key: string]: any } = {};
+  statusOptions: string[] = ['Open', 'Closed']; // Dropdown options
+  selectedStatus: string = 'Open';
   
 
   constructor(private productionOrderService: ProductionOrderService,
@@ -37,11 +39,17 @@ export class ProductionOrderListComponent implements OnInit {
   private getProductionOrderData(): void {
     this.productionOrderService.getProductionOrderList()
       .subscribe((result: any) => {
-        this.productionOrderData = result;
+        this.productionOrderData = result; 
+        this.filterByStatus();
+        // .filter((list: any) => list.status == "Open")
       },
       (error) => {
         this.notificationService.error('Failed to load production orders.');
       });
+  }
+
+  filterByStatus(): void {
+    this.filteredProductionOrderData = this.productionOrderData.filter(order => order.status === this.selectedStatus);
   }
   
   toggleExpandRow(row: any) {
@@ -55,6 +63,19 @@ export class ProductionOrderListComponent implements OnInit {
         this.notificationService.error("Failed to load related data.");
       });
     }
+  }
+
+  toggleStatus(row: any) {
+    this.productionOrderService.toggleProductionOrderStatus(row.id).subscribe(
+      () => {
+        // Update the status in the UI after the API call
+        row.status = row.status === 'Open' ? 'Closed' : 'Open';
+        this.notificationService.success(`Status updated successfully for Production Order: ${row.code}`);
+      },
+      (error) => {
+        this.notificationService.error(`Failed to update status for Production Order: ${row.code}`);
+      }
+    );
   }
   
   isRowExpanded(row: any): boolean {
@@ -71,7 +92,8 @@ export class ProductionOrderListComponent implements OnInit {
         code: item.code,
         date: item.startDateTime,
         productName: item.productName,
-        shiftName: item.shiftName
+        shiftName: item.shiftName,
+        totalcaseproduced:''
       }));
     }
 
@@ -82,7 +104,8 @@ export class ProductionOrderListComponent implements OnInit {
         code: item.code,
         date: item.acDate,
         productName: item.productName,
-        shiftName: ''
+        shiftName: '',
+        totalcaseproduced:''
       }));
     }
 
@@ -93,7 +116,8 @@ export class ProductionOrderListComponent implements OnInit {
         code: item.code,
         date: item.startDateTime,
         productName: item.productName,
-        shiftName: item.shiftName
+        shiftName: item.shiftName,
+        totalcaseproduced:''
       }));
     }
 
@@ -104,7 +128,20 @@ export class ProductionOrderListComponent implements OnInit {
         code: item.code,
         date: item.endDateTime,
         productName: item.productName,
-        shiftName: item.shiftName
+        shiftName: item.shiftName,
+        totalcaseproduced:''
+      }));
+    }
+
+    if (row.palletPackingList) {
+      row.palletPackingList.forEach(item => relatedData.push({
+        type: 'Pallet Packing List',
+        id: item.id,
+        code: item.code,
+        date: item.packingDateTime,
+        productName: item.productName,
+        shiftName: ' ',
+        totalcaseproduced:''
       }));
     }
 
@@ -120,8 +157,14 @@ export class ProductionOrderListComponent implements OnInit {
       this.router.navigate(['/secure/masters/pre-check/edit', data.id]);
     } else if (data.type === 'Post Check List') {
       this.router.navigate(['/secure/masters/post-check/edit', data.id]);
+    } else if (data.type === 'Pallet Packing List') {
+      this.router.navigate(['/secure/masters/pallet-packing/edit', data.id]);
     } else {
       console.error('Unknown type:', data.type);
     }
+  }
+
+  updateSearch(search: { [key: string]: any }) {
+    this.searchData = Object.assign({}, search);
   }
 }
