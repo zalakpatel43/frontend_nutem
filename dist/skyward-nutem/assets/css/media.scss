@@ -1,0 +1,265 @@
+/* 1366 VIEW */
+/* 1280 VIEW */
+/* 1024 VIEW */
+/*.leftSideHeader.col-lg-7 { flex:0 0 75%; max-width: 75%; }
+    .rightSideHeader.col-lg-5  { flex:0 0 25%; max-width: 25%; }*/
+/*.FileName { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: normal; }*/
+/* 768 VIEW */
+/* 667 VIEW */
+/* 568 VIEW */
+/* 480 VIEW */
+/* 320 VIEW */
+
+@media only screen and (max-width: 1539px) {
+	.rightSideHeader {
+		.search-box {
+			width: 350px;
+		}
+	}
+}
+
+@media only screen and (max-width: 1439px) {
+	.rightSideHeader {
+		.search-box {
+			width: 300px;
+		}
+	}
+}
+
+@media only screen and (max-width: 1279px) {
+	.permitStatus {
+		width: auto;
+		padding: 15px;
+	}
+
+	.fixedHeight {
+		min-height: 150px;
+	}
+
+	.FileBox {
+		height: 120px;
+		.card1 {
+			height: 100px;
+		}
+	}
+	
+	.rightSideHeader {
+		dashboard-search-panel {
+			display: none;
+		}
+	}
+
+	.datatable-header-cell-label {
+		word-break: break-all;
+	}
+
+	.plr40 {
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+	
+	.FileName {
+		font-weight: normal;
+		font-size: 13px;
+	}
+}
+
+@media only screen and (max-width: 1023px) {
+	.permitStatus {
+		width: auto;
+		padding: 10px;
+	}
+
+	.footerMenu {
+		li {
+			a {
+				padding: 0 10px;
+			}
+		}
+	}
+
+	footer {
+		div {
+			font-size: 13px;
+		}
+	}
+	
+	.form-control {
+		height: calc(2.25rem - 5px);
+	}
+
+	.form-group {
+		margin-bottom: 0.5rem;
+	}
+
+	.maxwidth-medium {
+		max-width: 90%;
+	}
+
+	.descriptionBox {
+		margin-top: 30px;
+	}
+
+	.fixedHeight.descriptionBox {
+		min-height: 50px;
+	}
+
+	.FileBox {
+		height: 90px;
+		.card1 {
+			height: 70px;
+		}
+	}
+
+	.FileBox.p20 {
+		padding: 5px;
+	}
+
+	.documentBox {
+		td {
+			float: left;
+			border: none;
+			&:first-child {
+				display: block;
+				float: none;
+				border-top: 1px solid #dee2e6;
+			}
+		}
+	}
+	
+	.SummaryBox {
+		margin-top: 20px;
+	}
+
+	.FileName {
+		padding: 10px;
+	}
+}
+
+@media only screen and (max-width: 767px) {
+	.mainContent {
+		min-height: 250px;
+	}
+
+	.fixedHeight {
+		min-height: 150px;
+	}
+	
+	.permitStatus {
+		padding: 10px 8px;
+	}
+}
+
+@media only screen and (max-width: 666px) {
+	.permitStatus {
+		padding: 10px 5px;
+	}
+
+	.btn {
+		padding: 0.4rem 0.75rem;
+	}
+	
+	h1 {
+		font-size: 1.5rem;
+	}
+
+	.h1 {
+		font-size: 1.5rem;
+	}
+
+	h2 {
+		font-size: 1.5rem;
+	}
+
+	.fixedHeight {
+		min-height: 50px;
+	}
+}
+
+@media only screen and (max-width: 567px) {
+	footer {
+		.col-12 {
+			text-align: center !important;
+			margin-bottom: 10px;
+		}
+	}
+
+	.permitStatus {
+		padding: 10px 8px;
+		.squarebox {
+			display: none;
+		}
+	}
+
+	.permitStatus.tab-Active {
+		color: #28a745;
+	}
+
+	.permitStatus.tab-Expired {
+		color: #ff0000;
+	}
+
+	.permitStatus.tab-Pending {
+		color: #ffc107;
+	}
+
+	.permitStatus.tab-Rejected {
+		color: #656565;
+	}
+
+	.mat-expansion-panel-header {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		padding: 0 8px !important;
+		border-radius: inherit;
+		position: relative;
+	}
+
+	.mat-expansion-panel-body {
+		padding: 0 8px 16px !important;
+	}
+
+	ol
+	{
+		padding-left: 25px;
+	}
+}
+
+@media only screen and (max-width: 479px) {
+	.permitStatus {
+		padding: 10px 5px;
+		font-size: 13px;
+		span {
+			padding: 10px 5px;
+			font-size: 13px;
+		}
+	}
+
+	.row.TabBox {
+		width: 100%;
+		display: block !important;
+		margin: 0;
+		flex: 0 0 100%;
+		max-width: 100% !important;
+		padding: 0;
+	}
+
+	.col-10.leftSideHeader {
+		width: 100%;
+		display: block !important;
+		margin: 0;
+		flex: 0 0 100%;
+		max-width: 100% !important;
+		padding: 0;
+	}
+
+	.col-2.rightSideHeader {
+		width: 100%;
+		display: block !important;
+		margin: 0;
+		flex: 0 0 100%;
+		max-width: 100% !important;
+		padding: 0;
+	}
+}

@@ -147,7 +147,7 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
 
         // let roles: Array<{ id: number }> = [];
         // const rolesList = CommonUtility.getSelectedCheckboxList(this.frmUser.value.roles, this.roleData);
-        // if (CommonUtility.isNotEmpty(rolesList)) {
+        // if (CommonUtility.isNotEmpty(r   olesList)) {
         //     rolesList.forEach((item: List) => {
         //         roles.push({ id: item.id });
         //     });

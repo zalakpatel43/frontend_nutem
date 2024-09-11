@@ -6,8 +6,9 @@ export const environment = {
   production: false,
 
   //API
-  serverPath: 'https://localhost:7032/',
-  //serverPath: 'http://192.168.1.102:9001/',
+  serverPath: 'https://localhost:7032/',  //local
+  
+ // serverPath: 'http://192.168.1.147:8989/',
   //serverPath: 'https://peoapi.parkvantage.com/',
 };
 
