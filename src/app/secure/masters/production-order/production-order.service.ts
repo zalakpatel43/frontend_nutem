@@ -18,7 +18,7 @@ export class ProductionOrderService {
     return this.http.get(`${APIConstant.productionOrderGetById}/${id}`);
   }
 
-//   deleteProductionOrder(id: number) {
-//     return this.http.delete(`${APIConstant.productionOrderDelete}?id=${id}`);
-//   }
+  toggleProductionOrderStatus(id: number) {
+    return this.http.patch(`${APIConstant.productionOrderStatus}/${id}`,null);
+  }
 }

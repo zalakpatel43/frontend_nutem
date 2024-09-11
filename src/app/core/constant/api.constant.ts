@@ -112,8 +112,9 @@ export const APIConstant = {
 
 
   // Production Order APIs
-  productionOrderList: `${basePath}ProductionOrder/GetAllProductionOrder`,
-  productionOrderGetById: `${basePath}ProductionOrder/GetByIdAsync`,
+    productionOrderList: `${basePath}ProductionOrder/GetAllProductionOrder`,
+    productionOrderGetById: `${basePath}ProductionOrder/GetByIdAsync`,
+    productionOrderStatus: `${basePath}ProductionOrder/ToggleStatus`,
 
 
     // PrePostQuestion

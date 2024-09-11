@@ -33,17 +33,14 @@
                                 </mat-form-field> -->
                                 <!-- SECOND -->
                                 <mat-form-field appearance="fill">
-                                    <input matInput 
-                                           [ngxMatDatetimePicker]="pickerEndDate" 
-                                           placeholder="End Date" 
-                                           formControlName="EndDate"
-                                           required>
+                                    <input matInput [ngxMatDatetimePicker]="pickerEndDate" placeholder="End Date"
+                                        formControlName="EndDate" required>
                                     <button type="button" mat-icon-button (click)="pickerEndDate.open()" matSuffix>
-                                      <mat-icon>calendar_today</mat-icon>
+                                        <mat-icon>calendar_today</mat-icon>
                                     </button>
                                     <ngx-mat-datetime-picker #pickerEndDate apperance="fill"></ngx-mat-datetime-picker>
-                                  </mat-form-field>
-                                  <!-- <mat-form-field appearance="fill">
+                                </mat-form-field>
+                                <!-- <mat-form-field appearance="fill">
                                     <mat-label>Choose a date and time</mat-label>
                                     <mtx-datetimepicker #pickerEndDate
                                                         [type]="'datetime'"
@@ -165,29 +162,32 @@
                         <div formArrayName="postCheckListDetails">
                             <div *ngFor="let detail of postCheckDetails.controls; let i = index" [formGroupName]="i"
                                 class="row mt-3">
-                                <div class="row">
+                                <!-- <div class="row"> -->
+                                <div class="col-12 d-flex align-items-center">
                                     <!-- Question -->
                                     <div class="col-12 col-sm-12 col-md-5 col-lg-5 mb-3">
                                         <mat-label>{{ questionList[i]?.question }}</mat-label>
                                     </div>
-                                </div> 
 
-                                <!-- Answer -->
-                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 mb-3">
-                                    <mat-radio-group formControlName="answer" (change)="onAnswerChange(i)">
-                                      <mat-radio-button [value]="1">Yes</mat-radio-button>
-                                      <mat-radio-button [value]="-1">No</mat-radio-button>
-                                      <mat-radio-button [value]="0">NA</mat-radio-button>
-                                    </mat-radio-group>
-                                  </div>
-                                  
 
-                                <!-- Reason -->
-                                <div class="col-12 col-sm-12 col-md-4 col-lg-4 mb-3" *ngIf="postCheckDetails.at(i).get('answer').value === 0">
-                                    <mat-form-field appearance="fill" class="full-width">
-                                        <mat-label>Reason</mat-label>
-                                        <input matInput formControlName="reason">
-                                    </mat-form-field>
+                                    <!-- Answer -->
+                                    <div class="col-12 col-sm-12 col-md-3 col-lg-3 mb-3">
+                                        <mat-radio-group formControlName="answer" (change)="onAnswerChange(i)">
+                                            <mat-radio-button [value]="1">Yes</mat-radio-button>
+                                            <mat-radio-button [value]="-1">No</mat-radio-button>
+                                            <mat-radio-button [value]="0">NA</mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+
+
+                                    <!-- Reason -->
+                                    <div class="col-12 col-sm-12 col-md-4 col-lg-4 mb-3"
+                                        *ngIf="postCheckDetails.at(i).get('answer').value === 0">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Reason</mat-label>
+                                            <input matInput formControlName="reason">
+                                        </mat-form-field>
+                                    </div>
                                 </div>
                             </div>
                         </div>

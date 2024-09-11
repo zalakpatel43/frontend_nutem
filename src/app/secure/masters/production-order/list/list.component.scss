@@ -45,4 +45,9 @@ table {
   .matgrid-element-description-attribution {
     opacity: 0.5;
   }
+
+  ::ng-deep .mat-mdc-header-cell {
+    font-size: 14px !important;
+    font-weight: bold !important;
+  }
   
