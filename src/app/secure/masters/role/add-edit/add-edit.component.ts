@@ -1,17 +1,16 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { UntypedFormGroup, UntypedFormBuilder, UntypedFormArray, Validators, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { ApplicationPage, CommonUtility, PermissionType } from '@app-core';
-import { Role } from '@app-models';
+import { ApplicationPage, CommonUtility } from '@app-core';
+import { Permission, Role } from '@app-models';
 import { RoleService } from '../role.service';
 
-
 @Component({
-    templateUrl: './add-edit.component.html'
+    templateUrl: './add-edit.component.html',
+    styleUrls: ['./add-edit.component.scss']
 })
-
 export class RoleAddEditComponent implements OnInit, OnDestroy {
     roleData: Role;
     roleId: number;
@@ -20,12 +19,26 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
     routerSub: Subscription;
     isFormSubmitted: boolean;
     page: string = ApplicationPage.role;
-    permissions = PermissionType;
     error: string;
 
-    constructor(private activatedRoute: ActivatedRoute, private router: Router,
-        private formBuilder: UntypedFormBuilder, private roleService: RoleService,
-        private notificationService: ToastrService) {
+    permissions = [
+        { permission: 'Dashboard', view: false, add: false, edit: false, delete: false },
+        { permission: 'User', view: false, add: false, edit: false, delete: false },
+        { permission: 'Role', view: false, add: false, edit: false, delete: false },
+        { permission: 'Weight Check', view: false, add: false, edit: false, delete: false },
+        { permission: 'Attribute Check', view: false, add: false, edit: false, delete: false },
+        { permission: 'PreCheck List', view: false, add: false, edit: false, delete: false },
+        { permission: 'Liquid Preparation', view: false, add: false, edit: false, delete: false },
+        // Add more permissions as needed...
+    ];
+
+    constructor(
+        private activatedRoute: ActivatedRoute,
+        private router: Router,
+        private formBuilder: UntypedFormBuilder,
+        private roleService: RoleService,
+        private notificationService: ToastrService
+    ) {
         this.createForm();
     }
 
@@ -36,75 +49,119 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
     private getRoleRoute() {
         this.routerSub = this.activatedRoute.params.subscribe((params) => {
             this.isEditMode = !CommonUtility.isEmpty(params["id"]);
-            this.createForm();
             if (this.isEditMode) {
-                this.roleId = params.id //+params["id"];
+                this.roleId = +params.id;
                 this.getRoleDetails();
             }
         });
     }
+    
 
     private getRoleDetails() {
-        this.roleService.getById(this.roleId)
-            .subscribe((result: Role) => {
+        this.roleService.getRoleById(this.roleId)
+            .subscribe((result: any) => {
                 this.roleData = result;
                 this.setRoleData();
             },
-                (error) => {
-                    console.log(error);
-                });
-    }
-
-    private setRoleData() {
-        this.frmRole.controls['name'].setValue(this.roleData.name);
+            (error) => {
+                console.error(error);
+                this.notificationService.error("Error fetching role details: " + error.message);
+            });
     }
 
     createForm() {
         this.frmRole = this.formBuilder.group({
-            name: ['', [Validators.required, Validators.maxLength(100)]]
+            name: ['', [Validators.required, Validators.maxLength(100)]],
+            permissions: this.formBuilder.array(
+                this.permissions.map(permission => this.createPermissionGroup(permission))
+            )
         });
     }
 
-    private createRole() {
-        let role :Role = this.frmRole.value;
-       let PlayLoad = {
-        name : role.name,
-        Code : role.name
-       }
-        this.roleService.add(role)
-            .subscribe((result) => {
-                this.cancel();
-                this.notificationService.success("Role saved successfully.");
-            },
-                (error) => {
-                    this.error = error;
-                });
+    private setRoleData() {
+        const permissionFormArray = this.frmRole.get('permissions') as UntypedFormArray;
+        permissionFormArray.clear(); // Clear previous values
+    
+        // Check if permissions exist before trying to iterate over them
+        if (this.roleData && this.roleData.permissions) {
+            this.roleData.permissions.forEach((perm: Permission) => {
+                permissionFormArray.push(
+                    this.formBuilder.group({
+                        permission: [perm.permission],
+                        view: [perm.view],
+                        add: [perm.add],
+                        edit: [perm.edit],
+                        delete: [perm.delete]
+                    })
+                );
+            });
+        } else {
+            console.warn('No permissions found for this role.');
+        }
+    
+        console.log(this.frmRole.value); // Debugging: Check form value
     }
+    
+    
 
-    private updateRole() {
-        let role: Role = this.frmRole.value;
-        this.roleData = Object.assign(this.roleData, this.roleData, role);
-
-        this.roleService.update(this.roleData.id, this.roleData)
-            .subscribe((result) => {
+    private createRole() {
+        const role: Role = this.frmRole.value;
+        const payload: Role = {
+            id: 0, // or an appropriate value if updating
+            name: role.name,
+            assignedPermissions: role.permissions,
+            permissions: []
+        };
+        this.roleService.addRole(payload).subscribe(
+            () => {
                 this.cancel();
-                this.notificationService.success("Role uddated successfully.");
+                this.notificationService.success("Role created successfully.");
             },
-                (error) => {
-                    this.error = error;
-                });
+            (error) => {
+                this.error = error;
+                this.notificationService.error("Error creating role: " + error.message);
+            }
+        );
+    }
+    createPermissionGroup(permission: any): UntypedFormGroup {
+        return this.formBuilder.group({
+            permission: [permission.permission],
+            view: [permission.view],
+            add: [permission.add],
+            edit: [permission.edit],
+            delete: [permission.delete]
+        });
+    }
+    private updateRole() {
+        const role: Role = this.frmRole.value;
+        const payload: Role = {
+            ...this.roleData,
+            name: role.name,
+            assignedPermissions: role.permissions
+        };
+
+        this.roleService.updateRole(this.roleData.id, payload).subscribe(
+            () => {
+                this.cancel();
+                this.notificationService.success("Role updated successfully.");
+            },
+            (error) => {
+                this.error = error;
+                this.notificationService.error("Error updating role: " + error.message);
+            }
+        );
     }
 
     save() {
         this.isFormSubmitted = true;
         if (this.frmRole.invalid) {
+            this.notificationService.error("Please fill all required fields.");
             return;
         }
 
         if (this.isEditMode) {
             this.updateRole();
-        }
-        else {
+        } else {
             this.createRole();
         }
     }
@@ -112,13 +169,14 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
     cancel() {
         if (this.isEditMode) {
             this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
-        }
-        else {
+        } else {
             this.router.navigate(['..', 'list'], { relativeTo: this.activatedRoute });
         }
     }
 
     ngOnDestroy(): void {
-        this.routerSub.unsubscribe();
+        if (this.routerSub) {
+            this.routerSub.unsubscribe();
+        }
     }
 }

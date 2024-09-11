@@ -6,11 +6,20 @@
           <h4 class="mb20 float-left">Production Order List</h4>
         </div>
         <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end rightSideHeader mb10">
+          <div class="form-group">
+            <mat-form-field appearance="outline">
+              <mat-label>Status</mat-label>
+              <mat-select [(ngModel)]="selectedStatus" (selectionChange)="filterByStatus()">
+                <mat-option *ngFor="let status of statusOptions" [value]="status">{{status}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
         </div>
       </div>
+      <!-- <production-order-search-panel (searchChanged)="updateSearch($event)"></production-order-search-panel> -->
       <div class="row">
         <div class="col-12">
-          <table mat-table [dataSource]="productionOrderData" multiTemplateDataRows class="mat-elevation-z8">
+          <table mat-table [dataSource]="filteredProductionOrderData" multiTemplateDataRows class="mat-elevation-z8">
 
             <!-- Dynamic Columns -->
             <ng-container *ngFor="let column of columnsToDisplay; let i = index" [matColumnDef]="column">
@@ -32,14 +41,14 @@
                   <!-- <a mat-icon-button (click)="toggleExpandRow(row)">
                     <mat-icon>add</mat-icon>
                   </a> -->
-                  <a mat-icon-button [routerLink]="['../', 'edit', row.id]">
-                    <mat-icon>edit</mat-icon>
+                  <a mat-icon-button (click)="toggleStatus(row)">
+                    <mat-icon>{{ row.status === 'Open' ? 'lock_open' : 'lock' }}</mat-icon>
                   </a>
                 </ng-container>
               </td>
             </ng-container>
 
-            <!-- Expanded Content Column -->
+            
             <!-- Expanded Content Column -->
             <ng-container matColumnDef="expandedDetail">
               <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplay.length">
@@ -67,6 +76,10 @@
                       <th mat-header-cell *matHeaderCellDef> Shift Name </th>
                       <td mat-cell *matCellDef="let data"> {{data.shiftName}} </td>
                     </ng-container>
+                    <ng-container matColumnDef="totalcaseproduced">
+                      <th mat-header-cell *matHeaderCellDef> Total Cases Produced </th>
+                      <td mat-cell *matCellDef="let data"> {{data.totalcaseproduced}} </td>
+                    </ng-container>
                     <ng-container matColumnDef="actions">
                       <th mat-header-cell *matHeaderCellDef> Actions </th>
                       <td mat-cell *matCellDef="let data">
@@ -78,9 +91,9 @@
 
                     <!-- Nested Table Header and Rows -->
                     <tr mat-header-row
-                      *matHeaderRowDef="['type', 'code', 'date', 'productName', 'shiftName', 'actions']"></tr>
+                      *matHeaderRowDef="['type', 'code', 'date', 'productName', 'shiftName','totalcaseproduced', 'actions']"></tr>
                     <tr mat-row
-                      *matRowDef="let data; columns: ['type', 'code', 'date', 'productName', 'shiftName', 'actions']">
+                      *matRowDef="let data; columns: ['type', 'code', 'date', 'productName', 'shiftName','totalcaseproduced',  'actions']">
                     </tr>
                   </table>
                 </div>

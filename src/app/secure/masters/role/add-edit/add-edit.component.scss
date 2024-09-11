@@ -1,0 +1,58 @@
+.permissions-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.permissions-table th, .permissions-table td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 8px;
+}
+
+.permissions-table th {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+}
+
+.permissions-table td {
+    background-color: #f9f9f9;
+}
+
+.permissions-table td mat-checkbox {
+    margin: auto;
+}
+
+.permissions-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.permissions-table tbody tr:hover {
+    background-color: #e9ecef;
+}
+.card {
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    padding: 0.75rem 1.25rem;
+}
+
+.card-body {
+    padding: 1.25rem;
+}
+
+.mat-icon {
+    vertical-align: middle;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.mb-3 {
+    margin-bottom: 1rem; /* Adjust as needed */
+}

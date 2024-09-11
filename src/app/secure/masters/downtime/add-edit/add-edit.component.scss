@@ -42,10 +42,28 @@
     margin-bottom: 1rem; /* Adjust as needed */
 }
 ::ng-deep .mat-calendar {
-    background-color: lightgray; // or any other color you prefer
-  }
-  
-  ::ng-deep .time-container{
-    background-color: lightgray; // Ensure the calendar itself has a background
-  }
+  margin-top:20px;
+  background-color: lightgray; // or any other color you prefer
+}
+
+::ng-deep .time-container{
+  background-color: lightgray; // Ensure the calendar itself has a background
+}
+::ng-deep .mat-calendar-body-selected {
+  background-color: #1976d2 !important; // Highlight color for selected date
+  color: white !important; // Text color for better visibility
+  border-radius: 50% !important; 
+}
+
+::ng-deep .mat-calendar-body-active {
+  background-color: #42a5f5 !important;
+  border-radius: 50% !important; 
+}
+
+::ng-deep .mat-calendar-body-today {
+  border-color: #ff9800 !important; // Mark today's date
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 50%;
+}
   

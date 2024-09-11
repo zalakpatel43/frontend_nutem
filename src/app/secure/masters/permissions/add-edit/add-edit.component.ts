@@ -39,7 +39,7 @@ export class PermissionsAddEditComponent implements OnInit {
     }
 
     private getRolesData() {
-        this.roleService.get()
+        this.roleService.getRole()
             .subscribe((result: any) => {
                 this.roleData = result;
                 if(this.roleData.length > 0)
@@ -87,8 +87,8 @@ export class PermissionsAddEditComponent implements OnInit {
 
     getRolePermission() {
         this.selectedRole = this.frmPermission.controls.roleId.value;
-        this.roleService.getById(this.selectedRole)
-            .subscribe((result: Role) => {
+        this.roleService.getRoleById(this.selectedRole)
+            .subscribe((result: any) => {
                 this.rolePermissionData = result;
                 this.setPermissionData();
             });
@@ -129,7 +129,13 @@ export class PermissionsAddEditComponent implements OnInit {
                     if (permission.hasAccess) {
                         permissions.push({
                             id: permission.id,
-                            hasMasterAccess: permission.hasMasterAccess
+                            hasMasterAccess: permission.hasMasterAccess,
+                            permission: undefined,
+                            view: undefined,
+                            add: undefined,
+                            edit: undefined,
+                            delete: undefined,
+                            export: undefined
                         })
                     }
                 })
@@ -140,7 +146,7 @@ export class PermissionsAddEditComponent implements OnInit {
             permissions
         });
 
-        this.roleService.update(data.id, data)
+        this.roleService.updateRole(data.id, data)
             .subscribe((result) => {
                 this.notificationService.success("Saved successfully.");
             }, (error) => {
