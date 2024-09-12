@@ -33,11 +33,8 @@
                     [message]="'Production Date Time'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
                 </mat-form-field> -->
                 <mat-form-field appearance="fill">
-                  <input matInput 
-                         [ngxMatDatetimePicker]="pickerProductionDateTime" 
-                         placeholder="Production Date Time" 
-                         formControlName="ProductionDateTime"
-                         required>
+                  <input matInput [ngxMatDatetimePicker]="pickerProductionDateTime" placeholder="Production Date Time"
+                    formControlName="ProductionDateTime" required>
                   <button type="button" mat-icon-button (click)="pickerProductionDateTime.open()" matSuffix>
                     <mat-icon>calendar_today</mat-icon>
                   </button>
@@ -103,7 +100,7 @@
               <div *ngFor="let detail of downtimeTrackingDetails.controls; let i = index" [formGroupName]="i"
                 class="row mt-3">
                 <div class="row">
-                  <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                  <!-- <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                     <mat-form-field appearance="fill" class="full-width">
                       <mat-label>Start Date</mat-label>
                       <input matInput [matDatepicker]="startDatePicker" formControlName="StartDate">
@@ -118,13 +115,49 @@
                       <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
                       <mat-datepicker #endDatePicker></mat-datepicker>
                     </mat-form-field>
-                  </div>
+                  </div> -->
+                  <!-- <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                    <mat-form-field appearance="fill" class="full-width">
+                      <mat-label>Time In</mat-label>
+                      <input matInput [ngxTimepicker]="timepicker" placeholder="Select time" formControlName="TimeIn">
+                      <ngx-material-timepicker #timepicker></ngx-material-timepicker>
+                    </mat-form-field>
+                  </div> -->
+                  <!-- Time In and Out -->
                   <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                    <mat-form-field appearance="fill" class="full-width">
+                      <mat-label>Time In</mat-label>
+                      <input matInput [ngxTimepicker]="timepicker" placeholder="Select time" formControlName="TimeIn">
+                      <ngx-material-timepicker #timepicker></ngx-material-timepicker>
+                      <mat-error *ngIf="downtimeTrackingForm.get('TimeIn').hasError('required')">
+                        Time In is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                    <mat-form-field appearance="fill" class="full-width">
+                      <mat-label>Time Out</mat-label>
+                      <input matInput [ngxTimepicker]="timeOutPicker" placeholder="Select time"
+                        formControlName="TimeOut" (ngModelChange)="OnTimeOut($event)">
+                      <ngx-material-timepicker #timeOutPicker></ngx-material-timepicker>
+
+                    </mat-form-field>
+                  </div>
+                  
+                  <!-- <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                     <mat-form-field appearance="fill" class="full-width">
                       <mat-label>Durations</mat-label>
                       <input matInput formControlName="Durations">
                     </mat-form-field>
+                  </div> -->
+                  <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                    <mat-form-field appearance="fill" class="full-width">
+                      <mat-label>Total Time at Dock</mat-label>
+                      <input matInput formControlName="TotalTime" readonly>
+                    </mat-form-field>
                   </div>
+
                   <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                     <mat-form-field appearance="fill" class="full-width">
                       <mat-label>Cause</mat-label>
@@ -210,7 +243,8 @@
                       </ng-container>
                     </td>
                     <td class="text-center">
-                      <button (click)="onEditDetail(detail, i)" type="button" class="btn btn-primary btn-sm btnModifyRow">
+                      <button (click)="onEditDetail(detail, i)" type="button"
+                        class="btn btn-primary btn-sm btnModifyRow">
                         <i class="fa fa-pencil"></i>
                       </button>
                     </td>
@@ -220,7 +254,7 @@
             </div>
           </div>
         </div>
-        
+
 
         <div class="row">
           <div class="col-lg-12 text-center">

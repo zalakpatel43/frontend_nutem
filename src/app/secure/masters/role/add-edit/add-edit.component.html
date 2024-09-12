@@ -50,7 +50,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let permission of frmRole.get('Permissions')['controls']; let i = index">
+                                    <tr *ngFor="let permission of frmRole.get('permissions')['controls']; let i = index">
                                         <td>{{ permission.get('permission').value }}</td>
                                         <td><mat-checkbox [formControl]="permission.get('view')"></mat-checkbox></td>
                                         <td><mat-checkbox [formControl]="permission.get('add')"></mat-checkbox></td>

@@ -28,7 +28,13 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
         { permission: 'Weight Check', view: false, add: false, edit: false, delete: false },
         { permission: 'Attribute Check', view: false, add: false, edit: false, delete: false },
         { permission: 'PreCheck List', view: false, add: false, edit: false, delete: false },
+        { permission: 'PostCheck List', view: false, add: false, edit: false, delete: false },
         { permission: 'Liquid Preparation', view: false, add: false, edit: false, delete: false },
+        { permission: 'Trailer Loading', view: false, add: false, edit: false, delete: false },
+        { permission: 'Trailer Inspection', view: false, add: false, edit: false, delete: false },
+        { permission: 'Pallet Packing', view: false, add: false, edit: false, delete: false },
+        { permission: 'DownTime Tracking', view: false, add: false, edit: false, delete: false },
+        { permission: 'Producion Order', view: false, add: false, edit: false, delete: false },
         // Add more permissions as needed...
     ];
 
