@@ -4,6 +4,6 @@ import { Permission } from "./permission";
 export class Role extends BaseAuditable {
     id: number;
     name: string;
-    permissions: Permission[]
+    Permissions: Permission[]
     assignedPermissions: any;
 }

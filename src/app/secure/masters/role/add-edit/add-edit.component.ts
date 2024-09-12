@@ -21,7 +21,7 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
     page: string = ApplicationPage.role;
     error: string;
 
-    permissions = [
+    Permissions = [
         { permission: 'Dashboard', view: false, add: false, edit: false, delete: false },
         { permission: 'User', view: false, add: false, edit: false, delete: false },
         { permission: 'Role', view: false, add: false, edit: false, delete: false },
@@ -55,7 +55,7 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
             }
         });
     }
-    
+
 
     private getRoleDetails() {
         this.roleService.getRoleById(this.roleId)
@@ -63,17 +63,17 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
                 this.roleData = result;
                 this.setRoleData();
             },
-            (error) => {
-                console.error(error);
-                this.notificationService.error("Error fetching role details: " + error.message);
-            });
+                (error) => {
+                    console.error(error);
+                    this.notificationService.error("Error fetching role details: " + error.message);
+                });
     }
 
     createForm() {
         this.frmRole = this.formBuilder.group({
             name: ['', [Validators.required, Validators.maxLength(100)]],
-            permissions: this.formBuilder.array(
-                this.permissions.map(permission => this.createPermissionGroup(permission))
+            Permissions: this.formBuilder.array(
+                this.Permissions.map(permission => this.createPermissionGroup(permission))
             )
         });
     }
@@ -81,37 +81,62 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
     private setRoleData() {
         const permissionFormArray = this.frmRole.get('permissions') as UntypedFormArray;
         permissionFormArray.clear(); // Clear previous values
-    
+
         // Check if permissions exist before trying to iterate over them
-        if (this.roleData && this.roleData.permissions) {
-            this.roleData.permissions.forEach((perm: Permission) => {
+        if (this.roleData && this.roleData.Permissions) {
+            this.roleData.Permissions.forEach((perm: Permission) => {
                 permissionFormArray.push(
                     this.formBuilder.group({
                         permission: [perm.permission],
-                        view: [perm.view],
-                        add: [perm.add],
-                        edit: [perm.edit],
-                        delete: [perm.delete]
+                        view: [perm.IsList],
+                        add: [perm.IsAdd],
+                        edit: [perm.IsEdit],
+                        delete: [perm.IsDelete],
+                        code: [perm.Code]
                     })
                 );
             });
         } else {
             console.warn('No permissions found for this role.');
         }
-    
+
         console.log(this.frmRole.value); // Debugging: Check form value
     }
-    
-    
 
-    private createRole() {
+
+
+    // private createRole() {
+    //     const role: Role = this.frmRole.value;
+    //     const payload: Role = {
+    //         id: 0, // or an appropriate value if updating
+    //         name: role.name,
+    //         assignedPermissions: role.permissions,
+    //         permissions: []
+    //     };
+    //     this.roleService.addRole(payload).subscribe(
+    //         () => {
+    //             this.cancel();
+    //             this.notificationService.success("Role created successfully.");
+    //         },
+    //         (error) => {
+    //             this.error = error;
+    //             this.notificationService.error("Error creating role: " + error.message);
+    //         }
+    //     );
+    // }
+    createRole() {
         const role: Role = this.frmRole.value;
+
+        // Transform permissions into the required format
+        const transformedPermissions = this.transformPermissions(role.Permissions);
+
         const payload: Role = {
             id: 0, // or an appropriate value if updating
             name: role.name,
-            assignedPermissions: role.permissions,
-            permissions: []
+            Permissions: transformedPermissions, // Assign to permissions field
+            assignedPermissions: [] // Leave empty or adjust as needed
         };
+
         this.roleService.addRole(payload).subscribe(
             () => {
                 this.cancel();
@@ -132,12 +157,35 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
             delete: [permission.delete]
         });
     }
+    // private updateRole() {
+    //     const role: Role = this.frmRole.value;
+    //     const payload: Role = {
+    //         ...this.roleData,
+    //         name: role.name,
+    //         assignedPermissions: role.permissions
+    //     };
+
+    //     this.roleService.updateRole(this.roleData.id, payload).subscribe(
+    //         () => {
+    //             this.cancel();
+    //             this.notificationService.success("Role updated successfully.");
+    //         },
+    //         (error) => {
+    //             this.error = error;
+    //             this.notificationService.error("Error updating role: " + error.message);
+    //         }
+    //     );
+    // }
     private updateRole() {
         const role: Role = this.frmRole.value;
+
+        // Transform permissions into the required format
+        const transformedPermissions = this.transformPermissions(role.Permissions);
+
         const payload: Role = {
             ...this.roleData,
             name: role.name,
-            assignedPermissions: role.permissions
+            Permissions: transformedPermissions // Assign to permissions field
         };
 
         this.roleService.updateRole(this.roleData.id, payload).subscribe(
@@ -151,7 +199,35 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
             }
         );
     }
+    private transformPermissions(formPermissions: any[]): any[] {
+        return formPermissions.map(permission => ({
+            Code: this.mapPermissionToCode(permission.permission),
+            IsList: permission.view,
+            IsAdd: permission.add,
+            IsEdit: permission.edit,
+            IsDelete: permission.delete,
+            IsExport: false // Set to false or include logic if export permissions are required
+        }));
+    }
 
+    private mapPermissionToCode(permissionName: string): string {
+        // Map permission names to codes. Adjust this mapping as needed.
+        const permissionMap = {
+            'Dashboard': 'PER_DASHBOARD',
+            'User': 'PER_USER',
+            'Role': 'PER_ROLE',
+            'Weight Check': 'PER_WEIGHTCHECK',
+            'Attribute Check': 'PER_ATTRIBUTECHECK',
+            'PreCheck List': 'PER_PRECHEKLIST',
+            'Liquid Preparation': 'PER_LIQUIDPREPARATION',
+            'PostCheck List': 'PER_POSTCHEKLIST',
+            'Downtime Checking': 'PER_DOWNTIMECHECKING',
+            'Pallet Packing': 'PER_PALLETPACKING',
+            'Purchase Order': 'PER_PURCHASEORDER'
+        };
+
+        return permissionMap[permissionName] || 'UNKNOWN_CODE'; // Default to UNKNOWN_CODE if not found
+    }
     save() {
         this.isFormSubmitted = true;
         if (this.frmRole.invalid) {

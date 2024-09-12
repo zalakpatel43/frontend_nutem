@@ -77,8 +77,8 @@ export class PermissionsAddEditComponent implements OnInit {
 
             item.moduleGroups.forEach(group => {
                 group.permissions = group.permissions.map(permission => {
-                    permission.hasAccess = this.rolePermissionData.permissions.some(x => x.id === permission.id)
-                    permission.hasMasterAccess = permission.hasAccess ? this.rolePermissionData.permissions.find(x => x.id === permission.id).hasMasterAccess : false;
+                    permission.hasAccess = this.rolePermissionData.Permissions.some(x => x.id === permission.id)
+                    permission.hasMasterAccess = permission.hasAccess ? this.rolePermissionData.Permissions.find(x => x.id === permission.id).hasMasterAccess : false;
                     return permission;
                 })
             })
@@ -131,11 +131,12 @@ export class PermissionsAddEditComponent implements OnInit {
                             id: permission.id,
                             hasMasterAccess: permission.hasMasterAccess,
                             permission: undefined,
-                            view: undefined,
-                            add: undefined,
-                            edit: undefined,
-                            delete: undefined,
-                            export: undefined
+                            IsList: undefined,
+                            IsAdd: undefined,
+                             IsEdit: undefined,
+                            IsDelete: undefined,
+                            Code:undefined
+                            // export: undefined
                         })
                     }
                 })

@@ -26,9 +26,10 @@ export class Permission {
     id: number;
     hasMasterAccess: boolean;
     permission: any;
-    view: any;
-    add: any;
-    edit: any;
-    delete: any;
-    export: any;
+    IsList: any;
+    IsAdd: any;
+    IsEdit: any;
+    IsDelete: any;
+    Code:any;
+    // export: any;
 }

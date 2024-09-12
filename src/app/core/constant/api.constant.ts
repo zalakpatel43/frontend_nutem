@@ -44,11 +44,11 @@ export const APIConstant = {
     downtimeTrackingDelete: `${basePath}DowntimeTracking/DeleteDowntimeTracking`,
 
       // Permission API endpoints
-      permissionList: `${basePath}Permission/GetAllRolePermissions`,
+      permissionList: `${basePath}RolePermission/GetAllRolePermissions`,
       permissionAdd: `${basePath}RolePermission/AddRolePermission`,
-      permissionEdit: `${basePath}Permission/UpdateRolePermission`,
-      permissionGetById: `${basePath}Permission/GetByIdAsync`,
-      permissionDelete: `${basePath}Permission/Delete`,
+      permissionEdit: `${basePath}RolePermission/UpdateRolePermission`,
+      permissionGetById: `${basePath}RolePermission/GetByIdAsync`,
+      permissionDelete: `${basePath}RolePermission/Delete`,
 
     
 
