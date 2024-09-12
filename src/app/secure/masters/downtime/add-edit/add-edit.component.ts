@@ -109,6 +109,26 @@ last: any;
       const date = new Date(dateTime);
       return date.toISOString().split('T')[0]; // Only date part
     };
+    const formatTime = (dateTime: string): string => {
+      const date = new Date(dateTime);
+    
+      // Extract hours and minutes
+      let hours = date.getHours();
+      const minutes = date.getMinutes();
+    
+      // Determine AM/PM
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      
+      // Convert hours from 24-hour to 12-hour format
+      hours = hours % 12;
+      hours = hours ? hours : 12; // Hour '0' should be '12'
+      
+      // Format minutes with leading zero if needed
+      const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+    
+      // Return formatted time string
+      return `${hours}:${formattedMinutes} ${ampm}`;
+    };
   
     setTimeout(() => {
       this.downtimeTrackingData.downtimeTrackingDetails?.forEach(element => {
@@ -116,8 +136,9 @@ last: any;
         const doneByArray: number[] = (element.doneByUserIds || '').split(',').map(item => Number(item.trim())).filter(value => !isNaN(value));
   
         let DetailsData = {
-          StartDate: formatDate(element.startDate),
-          EndDate: formatDate(element.endDate),
+          id:element.id,
+          StartDate: formatTime(element.startDate),
+          EndDate: formatTime(element.endDate),
           Durations: element.durations,
           CauseId: element.causeId,
           ShiftId: element.shiftId,
@@ -220,11 +241,11 @@ last: any;
   
     if (this.editDetailsId >= 0) {
       // Update existing detail
-      this.addedDowntimeTrackingDetailsList[this.editDetailsId] = { ...detail, IsActive: true };
+      this.addedDowntimeTrackingDetailsList[this.editDetailsId] = { ...detail, IsActive: true,id: this.addedDowntimeTrackingDetailsList[this.editDetailsId].id };
       this.editDetailsId = -1; // Reset edit ID after updating
     } else {
       // Add new detail
-      this.addedDowntimeTrackingDetailsList.push({ ...detail, IsActive: true });
+      this.addedDowntimeTrackingDetailsList.push({ ...detail, IsActive: true, id: 0 });
     }
   
     // Clear form controls and add a new empty form group
@@ -315,6 +336,30 @@ last: any;
       const minutes = String(date.getMinutes()).padStart(2, '0');
       return `${year}-${month}-${day}T${hours}:${minutes}:00.000Z`;
     }
+    function formatTimeToDateTime(timeStr: string): string {
+      const date = new Date(); // Use today's date as the default date
+      const [time, modifier] = timeStr.split(' ');
+    
+      // Split time into hours and minutes
+      let [hours, minutes] = time.split(':').map(Number);
+    
+      // Convert hours based on AM/PM
+      if (modifier === 'PM' && hours < 12) {
+        hours += 12; // Convert PM hour to 24-hour format
+      }
+      if (modifier === 'AM' && hours === 12) {
+        hours = 0; // Midnight case
+      }
+    
+      // Set hours and minutes to the date object
+      date.setHours(hours);
+      date.setMinutes(minutes);
+      date.setSeconds(0);
+      date.setMilliseconds(0);
+    
+      // Return formatted DateTime string in ISO format
+      return formatToDateTime(date.toISOString());
+    }
 
     const detailsArray = Array.isArray(originalData.downtimeTrackingDetails)
       ? originalData.downtimeTrackingDetails
@@ -333,8 +378,8 @@ last: any;
       downtimeTrackingDetails: detailsArray.map(detail => ({
         id: detail.id || 0,
         headerId: this.isEditMode ? this.downtimeTrackingData.id : 0,
-        startDate: formatToDateTime(detail.StartDate),
-        endDate: formatToDateTime(detail.EndDate),
+        startDate: formatTimeToDateTime(detail.StartDate),
+        endDate: formatTimeToDateTime(detail.EndDate),
         durations: detail.Durations,
         causeId: detail.CauseId, // Ensure CauseId is a number
         shiftId: detail.ShiftId, // Ensure ShiftId is a number
@@ -395,5 +440,50 @@ last: any;
       this.router.navigate(['..', 'list'], { relativeTo: this.activatedRoute });
     }
   }
+  calculateDuration() {
+    const startTime = this.downtimeTrackingDetails.at(0).get('StartDate')?.value;
+    const endTime = this.downtimeTrackingDetails.at(0).get('EndDate')?.value;
+  
+    if (startTime && endTime) {
+      const start = this.parseTime(startTime);
+      const end = this.parseTime(endTime);
+  
+      // Calculate the difference in minutes
+      const durationInMinutes = Math.round((end.getTime() - start.getTime()) / (1000 * 60));
+  
+      // Convert minutes to hours and minutes
+      const hours = Math.floor(durationInMinutes / 60);
+      const minutes = durationInMinutes % 60;
+  
+      // Format duration
+      const formattedDuration = `${hours}hr ${minutes}min`;
+  
+      // Set the duration in the form
+      this.downtimeTrackingDetails.at(0).get('Durations')?.setValue(formattedDuration);
+    }
+  }
+  
+  private parseTime(timeStr: string): Date {
+    // Convert 12-hour time format to 24-hour time format
+    const [time, modifier] = timeStr.split(' ');
+    let [hours, minutes] = time.split(':').map(Number);
+  
+    if (modifier === 'PM' && hours < 12) {
+      hours += 12; // Convert PM hour to 24-hour format
+    }
+    if (modifier === 'AM' && hours === 12) {
+      hours = 0; // Midnight case
+    }
+  
+    // Return a Date object with the time set
+    const now = new Date();
+    now.setHours(hours);
+    now.setMinutes(minutes);
+    now.setSeconds(0);
+    now.setMilliseconds(0);
+  
+    return now;
+  }
+  
 
 }
