@@ -45,7 +45,7 @@ export const APIConstant = {
 
       // Permission API endpoints
       permissionList: `${basePath}Permission/GetAllRolePermissions`,
-      permissionAdd: `${basePath}Permission/AddRolePermission`,
+      permissionAdd: `${basePath}RolePermission/AddRolePermission`,
       permissionEdit: `${basePath}Permission/UpdateRolePermission`,
       permissionGetById: `${basePath}Permission/GetByIdAsync`,
       permissionDelete: `${basePath}Permission/Delete`,
