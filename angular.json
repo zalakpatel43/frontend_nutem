@@ -6,7 +6,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "skyward-admin": {
+    "skyward-nutem": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -26,7 +26,7 @@
             "stylePreprocessorOptions": {
             "includePaths": ["node_modules"]
         },
-            "outputPath": "dist/skyward-admin",
+            "outputPath": "dist/skyward-nutem",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -90,10 +90,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "skyward-admin:build:production"
+              "buildTarget": "skyward-nutem:build:production"
             },
             "development": {
-              "buildTarget": "skyward-admin:build:development"
+              "buildTarget": "skyward-nutem:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -101,7 +101,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "skyward-admin:build"
+            "buildTarget": "skyward-nutem:build"
           }
         },
         "test": {
