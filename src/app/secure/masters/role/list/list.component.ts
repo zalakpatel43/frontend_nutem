@@ -48,16 +48,18 @@ throw new Error('Method not implemented.');
     }
 
     // activateToggleRole(role: Role, isActive: boolean) {
-    //     const result = confirm(`Are you sure you want to ${isActive ? `Active` : `Inactive`} ?`);
+    //     const result = confirm(`Are you sure you want to ${isActive ? 'Activate' : 'Deactivate'} this role?`);
     //     if (result) {
     //         this.roleService.toggleActivate(role.id, isActive)
-    //             .subscribe((result) => {
-    //                 this.getRoleData();
-    //             }, (error) => {
+    //             .subscribe(() => {
+    //                 this.getRoleData(); // Refresh data
+    //                 this.notificationService.success(`Role ${isActive ? 'activated' : 'deactivated'} successfully.`);
+    //             }, () => {
     //                 this.notificationService.error("Something went wrong.");
     //             });
     //     }
     // }
+    
 
     updateSearch(search: { [key: string]: any }) {
         this.searchData = Object.assign({}, search);

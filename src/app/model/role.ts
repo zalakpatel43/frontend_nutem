@@ -5,5 +5,6 @@ export class Role extends BaseAuditable {
     id: number;
     name: string;
     Permissions: Permission[]
+    rolePermissions:Permission[]
     assignedPermissions: any;
 }
