@@ -147,7 +147,7 @@ export class PalletPackingAddEditComponent implements OnInit, OnDestroy {
       SAPProductionOrderId: ['', [Validators.required]],
       ProductId: ['', [Validators.required]],
       FinishedCasesOnIncompletePalletAtStart: ['', [Validators.required]],
-      FinishedCasesOnIncompletePalletAtEnd: ['', [Validators.required]],
+      FinishedCasesOnIncompletePalletAtEnd: [''],
       TotalCasesProduced: { value: '' },
       SupervisedBy: ['', [Validators.required]],
       Notes: [''],
