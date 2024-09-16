@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, UntypedFormBuilder, UntypedFormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup, UntypedFormBuilder, UntypedFormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationPage, CommonUtility, ListService, PermissionType } from '@app-core';
 import { List } from '@app-models';
@@ -34,7 +34,7 @@ export class WeightCheckAddEditComponent implements OnInit, OnDestroy {
   AddedWeightCheckDetailsList: any[] = [];
   EditNozzleDetailsId: number = -1;
   minEndDate: Date | null = null;
-trailerLoadingForm: any;
+  trailerLoadingForm: any;
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router,
     private formBuilder: UntypedFormBuilder, private weightCheckService: WeightCheckService,
@@ -45,6 +45,9 @@ trailerLoadingForm: any;
   ngOnInit(): void {
     this.getRoute();
     this.loadDropdowns();
+    // Subscribe to value changes
+    this.WeightCheckForm.get('MinWeightRange')?.valueChanges.subscribe(() => this.onWeightRangeChange());
+    this.WeightCheckForm.get('MaxWeightRange')?.valueChanges.subscribe(() => this.onWeightRangeChange());
   }
 
   private getRoute() {
@@ -107,7 +110,7 @@ trailerLoadingForm: any;
 
         const doneByArray: number[] = element.doneByUserIds.split(',').map(item => Number(item.trim())).filter(value => !isNaN(value));
         let DoneByNames = this.usersList.filter(item => element.doneByUserIds?.includes(item.id)).map(item => item.name)
-        .join(', ');
+          .join(', ');
         console.log("nozzle weight ", nozzleWeights)
         let DetailsData = {
           Time: formatTimeWithAMPM(element.tDateTime),
@@ -173,15 +176,46 @@ trailerLoadingForm: any;
       BottleDateCode: ['', [Validators.required]],
       PackSize: ['', [Validators.required]],
       StandardWeight: ['', [Validators.required]],
-      MinWeightRange: ['', [Validators.required]],
-      MaxWeightRange: ['', [Validators.required]],
+      MinWeightRange: ['', [Validators.required, Validators.min(0)]],
+      MaxWeightRange: ['', [Validators.required, Validators.min(0)]],
       QAUserId: ['', [Validators.required]],
       Note: ['', ''],
       WeightCheckDetails: this.formBuilder.array([])
-    });
+    }, { validators: this.weightRangeValidator });
     this.WeightCheckForm.controls["StartDateTime"].setValue(new Date().toISOString().split('T')[0]);
   }
 
+  onWeightRangeChange() {
+    const minWeight = this.WeightCheckForm.get('MinWeightRange')?.value;
+    const maxWeight = this.WeightCheckForm.get('MaxWeightRange')?.value;
+  
+    if (minWeight != null && maxWeight != null) {
+      // Convert values to numbers
+      const minWeightNum = Number(minWeight);
+      const maxWeightNum = Number(maxWeight);
+  
+      // Check if minWeight is greater than maxWeight
+      if (minWeightNum > maxWeightNum) {
+        this.notificationService.error("Max Weight Range should be greater than Min Weight Range");
+      } else {
+        // Clear any previous errors if validation passes
+        this.notificationService.clear(); // Assuming you have a method to clear notifications
+      }
+    }
+  }
+  
+  weightRangeValidator: ValidatorFn = (formGroup: AbstractControl): { [key: string]: any } | null => {
+    const minWeight = formGroup.get('MinWeightRange')?.value;
+    const maxWeight = formGroup.get('MaxWeightRange')?.value;
+  
+    // Check if both values are present and minWeight is greater than maxWeight
+    if (minWeight != null && maxWeight != null && minWeight !== '' && maxWeight !== '') {
+      return minWeight > maxWeight ? { 'rangeError': true } : null;
+    }
+  
+    return null; // Return null if validation should not be triggered
+  };
+  
   endDateValidator: ValidatorFn = (control: AbstractControl): { [key: string]: any } | null => {
     const start = control.get('StartDateTime')?.value;
     const end = control.get('EndDateTime')?.value;
@@ -253,9 +287,9 @@ trailerLoadingForm: any;
         weightDetail.Average = average;
 
         let DoneByNames = this.usersList
-        .filter(item => weightDetail.DoneBy.includes(item.id))
-        .map(item => item.name)
-        .join(', ');
+          .filter(item => weightDetail.DoneBy.includes(item.id))
+          .map(item => item.name)
+          .join(', ');
         weightDetail["DoneByNames"] = DoneByNames;
 
         this.AddedWeightCheckDetailsList[this.EditNozzleDetailsId] = weightDetail;
@@ -265,9 +299,9 @@ trailerLoadingForm: any;
         const average = this.calculateAverageForEntry(weightDetail);
         weightDetail.Average = average;
         let DoneByNames = this.usersList
-        .filter(item => weightDetail.DoneBy.includes(item.id))
-        .map(item => item.name)
-        .join(', ');
+          .filter(item => weightDetail.DoneBy.includes(item.id))
+          .map(item => item.name)
+          .join(', ');
         weightDetail["DoneByNames"] = DoneByNames;
         this.AddedWeightCheckDetailsList.push(weightDetail);
         this.addWeightDetail();
@@ -374,7 +408,7 @@ trailerLoadingForm: any;
     if (this.WeightCheckForm.invalid) {
       return;
     }
-    else if(new Date(endDate) <= new Date(startDate)){
+    else if (new Date(endDate) <= new Date(startDate)) {
       this.notificationService.error("End date should be greated than Start date")
       return;
     }

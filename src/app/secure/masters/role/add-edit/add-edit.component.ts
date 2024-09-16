@@ -28,9 +28,18 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
         { permission: 'Weight Check', view: false, add: false, edit: false, delete: false },
         { permission: 'Attribute Check', view: false, add: false, edit: false, delete: false },
         { permission: 'PreCheck List', view: false, add: false, edit: false, delete: false },
+        { permission: 'PostCheck List', view: false, add: false, edit: false, delete: false },
         { permission: 'Liquid Preparation', view: false, add: false, edit: false, delete: false },
+        // { permission: 'Trailer Loading', view: false, add: false, edit: false, delete: false },
+        { permission: 'Trailer Inspection', view: false, add: false, edit: false, delete: false },
+        { permission: 'Pallet Packing', view: false, add: false, edit: false, delete: false },
+        { permission: 'DownTime Tracking', view: false, add: false, edit: false, delete: false },
+        { permission: 'Production Order', view: false, add: false, edit: false, delete: false },
         // Add more permissions as needed...
     ];
+
+    permissionId: number;
+    PermissionData: any;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -44,6 +53,9 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.getRoleRoute();
+        this.getPermissionDetails();
+        // const transformedPermissions = this.transformPermissionsEdit(this.staticRolePermissions, this.staticPermissionData);
+        // console.log('Transformed Permissions with Static Data:', transformedPermissions);
     }
 
     private getRoleRoute() {
@@ -55,20 +67,41 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
             }
         });
     }
+    private getPermissionDetails() {
+        this.roleService.getPermission(this.permissionId)
+            .subscribe((result: any) => {
+                this.PermissionData = result;
+                console.log("Permission Data:", this.PermissionData);
+    
+                if (this.roleData) {
+                    const transformedPermissions = this.transformPermissionsEdit(this.roleData.rolePermissions, this.PermissionData);
+                    this.setRoleData(transformedPermissions);
+                }
+            },
+            (error) => {
+                console.error(error);
+                this.notificationService.error("Error fetching permission details: " + error.message);
+            });
+    }
 
 
     private getRoleDetails() {
         this.roleService.getRoleById(this.roleId)
             .subscribe((result: any) => {
                 this.roleData = result;
-                this.setRoleData();
+                console.log("Role Data:", this.roleData);
+    
+                // Ensure roleData is fetched before fetching and transforming permissions
+                if (this.roleData && this.PermissionData) {
+                    const transformedPermissions = this.transformPermissionsEdit(this.roleData.rolePermissions, this.PermissionData);
+                    this.setRoleData(transformedPermissions);
+                }
             },
-                (error) => {
-                    console.error(error);
-                    this.notificationService.error("Error fetching role details: " + error.message);
-                });
+            (error) => {
+                console.error(error);
+                this.notificationService.error("Error fetching role details: " + error.message);
+            });
     }
-
     createForm() {
         this.frmRole = this.formBuilder.group({
             name: ['', [Validators.required, Validators.maxLength(100)]],
@@ -78,32 +111,74 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
         });
     }
 
-    private setRoleData() {
-        const permissionFormArray = this.frmRole.get('permissions') as UntypedFormArray;
-        permissionFormArray.clear(); // Clear previous values
-
-        // Check if permissions exist before trying to iterate over them
-        if (this.roleData && this.roleData.Permissions) {
-            this.roleData.Permissions.forEach((perm: Permission) => {
-                permissionFormArray.push(
-                    this.formBuilder.group({
-                        permission: [perm.permission],
-                        view: [perm.IsList],
-                        add: [perm.IsAdd],
-                        edit: [perm.IsEdit],
-                        delete: [perm.IsDelete],
-                        code: [perm.Code]
-                    })
-                );
+    private transformPermissionsEdit(rolePermissions: any[], permissionData: any[]): any[] {
+        // Map permission IDs to their details
+        const permissionMap = new Map<number, any>();
+        permissionData.forEach(permission => {
+            permissionMap.set(permission.id, {
+                name: permission.name,
+                type: permission.permissionTypeId
             });
-        } else {
-            console.warn('No permissions found for this role.');
-        }
+        });
+    
+        console.log('Permission Map:', Array.from(permissionMap.entries()));
+    
+        // Initialize default permissions with actions set to false
+        const transformedPermissions = this.Permissions.map(permission => ({
+            ...permission,
+            view: false,
+            add: false,
+            edit: false,
+            delete: false
+        }));
+    
+        // Map rolePermissions to corresponding permissions in the form
+        rolePermissions.forEach(rolePerm => {
+            const permissionDetail = permissionMap.get(rolePerm.permissionId);
+            if (permissionDetail) {
+                const perm = transformedPermissions.find(p => p.permission === permissionDetail.name);
+                if (perm) {
+                    // Set permission actions based on permissionTypeId
+                    switch (permissionDetail.type) {
+                        case 72: perm.add = true; break;
+                        case 73: perm.edit = true; break;
+                        case 74: perm.view = true; break;
+                        case 75: perm.delete = true; break;
+                    }
+                }
+            }
+        });
+    
+        console.log('Transformed Permissions:', transformedPermissions);
+        return transformedPermissions;
+    }
+    
 
+    private setRoleData(transformedPermissions: any[]) {
+        this.frmRole.patchValue({
+            name: this.roleData.name
+        });
+    
+        const permissionFormArray = this.frmRole.get('Permissions') as UntypedFormArray;
+    
+        // Clear the form array before adding new values
+        permissionFormArray.clear();
+    
+        // Map transformedPermissions to the form array
+        transformedPermissions.forEach((perm: any) => {
+            permissionFormArray.push(
+                this.formBuilder.group({
+                    permission: [perm.permission],
+                    view: [perm.view],
+                    add: [perm.add],
+                    edit: [perm.edit],
+                    delete: [perm.delete]
+                })
+            );
+        });
+    
         console.log(this.frmRole.value); // Debugging: Check form value
     }
-
-
 
     // private createRole() {
     //     const role: Role = this.frmRole.value;
@@ -133,7 +208,8 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
         const payload: Role = {
             id: 0, // or an appropriate value if updating
             name: role.name,
-            Permissions: transformedPermissions, // Assign to permissions field
+            Permissions: transformedPermissions,
+            rolePermissions:transformedPermissions, // Assign to permissions field
             assignedPermissions: [] // Leave empty or adjust as needed
         };
 
@@ -220,10 +296,11 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
             'Attribute Check': 'PER_ATTRIBUTECHECK',
             'PreCheck List': 'PER_PRECHEKLIST',
             'Liquid Preparation': 'PER_LIQUIDPREPARATION',
+            'Trailer Inspection':'PER_TRAILERINSPECTION',
             'PostCheck List': 'PER_POSTCHEKLIST',
-            'Downtime Checking': 'PER_DOWNTIMECHECKING',
+            'DownTime Tracking': 'PER_DOWNTIMECHECKING',
             'Pallet Packing': 'PER_PALLETPACKING',
-            'Purchase Order': 'PER_PURCHASEORDER'
+            'Production Order': 'PER_PURCHASEORDER'
         };
 
         return permissionMap[permissionName] || 'UNKNOWN_CODE'; // Default to UNKNOWN_CODE if not found

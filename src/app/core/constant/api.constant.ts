@@ -47,9 +47,9 @@ export const APIConstant = {
       permissionList: `${basePath}RolePermission/GetAllRolePermissions`,
       permissionAdd: `${basePath}RolePermission/AddRolePermission`,
       permissionEdit: `${basePath}RolePermission/UpdateRolePermission`,
-      permissionGetById: `${basePath}RolePermission/GetByIdAsync`,
+      permissionGetById: `${basePath}RolePermission/GetById`,
       permissionDelete: `${basePath}RolePermission/Delete`,
-
+      permission: `${basePath}Permission/GetAllPermissions`,
     
 
   // PalletPacking

@@ -28,12 +28,12 @@
                        
                         <ngx-datatable-column name="Start Date" prop="startDateTime">
                             <ng-template let-value="value" ngx-datatable-cell-template>
-                                <span>{{value | date: 'MM/dd/yyyy hh:mm a'}}</span>
+                                <span>{{value | date: 'dd/MM/yyyy hh:mm a'}}</span>
                             </ng-template>
                         </ngx-datatable-column>
                         <ngx-datatable-column name="End Date" prop="endDateTime">
                             <ng-template let-value="value" ngx-datatable-cell-template>
-                                <span>{{value | date: 'MM/dd/yyyy hh:mm a'}}</span>
+                                <span>{{value | date: 'dd/MM/yyyy hh:mm a'}}</span>
                             </ng-template>
                         </ngx-datatable-column>
                         <ngx-datatable-column name="Shift" prop="shiftName">

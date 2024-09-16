@@ -24,20 +24,20 @@ export class PalletPackingAddEditComponent implements OnInit, OnDestroy {
   productionOrderList: any[] = [];
   productList: any[] = [];
   usersList: any[] = [];
-  
+
   palletPackingDetails: FormArray;
   addedPalletPackingDetailsList: any[] = [];
   editPalletDetailsId: number = -1;
   minEndDate: Date | null = null;
   palletList: any[] = [];
-pallet: any;
-isEditing: any;
+  pallet: any;
+  isEditing: any;
   userMap: any;
 
   constructor(
-    private activatedRoute: ActivatedRoute, 
+    private activatedRoute: ActivatedRoute,
     private router: Router,
-    private formBuilder: UntypedFormBuilder, 
+    private formBuilder: UntypedFormBuilder,
     private palletPackingService: PalletPackingService,
     private notificationService: ToastrService
   ) {
@@ -77,50 +77,51 @@ isEditing: any;
         this.palletPackingData = result;
         this.setPalletPackingData();
       },
-      (error) => {
-        console.log(error);
-      });
+        (error) => {
+          console.log(error);
+        });
   }
   private setPalletPackingData() {
     this.palletPackingForm.patchValue({
-        PackingDateTime: this.palletPackingData.packingDateTime,
-        SAPProductionOrderId: this.palletPackingData.sapProductionOrderId,
-        ProductId: this.palletPackingData.productId,
-        FinishedCasesOnIncompletePalletAtStart: this.palletPackingData.finishedCasesOnIncompletePalletAtStart,
-        FinishedCasesOnIncompletePalletAtEnd: this.palletPackingData.finishedCasesOnIncompletePalletAtEnd,
-        TotalCasesProduced: this.palletPackingData.totalCasesProduced,
-        SupervisedBy: this.palletPackingData.supervisedId,
-        Notes: this.palletPackingData.notes
+      PackingDateTime: this.palletPackingData.packingDateTime,
+      SAPProductionOrderId: this.palletPackingData.sapProductionOrderId,
+      ProductId: this.palletPackingData.productId,
+      FinishedCasesOnIncompletePalletAtStart: this.palletPackingData.finishedCasesOnIncompletePalletAtStart,
+      FinishedCasesOnIncompletePalletAtEnd: this.palletPackingData.finishedCasesOnIncompletePalletAtEnd,
+      TotalCasesProduced: this.palletPackingData.totalCasesProduced,
+      SupervisedBy: this.palletPackingData.supervisedBy,
+      Notes: this.palletPackingData.notes
     });
 
     this.palletPackingForm.get('SAPProductionOrderId').disable();
     this.palletPackingForm.get('ProductId').disable();
+    this.palletPackingForm.get('TotalCasesProduced').disable();
 
     if (this.palletPackingData.palletPackingDetails) {
-        this.palletPackingData.palletPackingDetails.forEach(element => {
-            const doneByArray: number[] = element.doneByIds
-                ? element.doneByIds.split(',').map(item => Number(item.trim())).filter(value => !isNaN(value))
-                : []; // Ensure it's always an array
-            const detailsData = {
-                PalletNo: element.palletNo,
-                Time: new Date(element.time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }),
-                DoneByIds: doneByArray, // Ensure it's an array
-                Id: element.id,
-                HeaderId: element.headerId
-            };
-            this.addedPalletPackingDetailsList.push(detailsData);
-        });
+      this.palletPackingData.palletPackingDetails.forEach(element => {
+        const doneByArray: number[] = element.doneByIds
+          ? element.doneByIds.split(',').map(item => Number(item.trim())).filter(value => !isNaN(value))
+          : []; // Ensure it's always an array
+        const detailsData = {
+          PalletNo: element.palletNo,
+          Time: new Date(element.time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }),
+          DoneByIds: doneByArray, // Ensure it's an array
+          Id: element.id,
+          HeaderId: element.headerId
+        };
+        this.addedPalletPackingDetailsList.push(detailsData);
+      });
 
-        this.addPalletDetail();  // Rebuild the FormArray with the updated details
+      this.addPalletDetail();  // Rebuild the FormArray with the updated details
     }
-}
+  }
 
 
   private loadDropdowns() {
     this.palletPackingService.getProductionOrderList()
       .subscribe((result: any) => {
         this.productionOrderList = result;
-        console.log('data',this.productionOrderList)
+        console.log('data', this.productionOrderList)
       });
 
     this.palletPackingService.getProductList()
@@ -128,18 +129,18 @@ isEditing: any;
         this.productList = result;
       });
 
-      this.palletPackingService.getUserList()
+    this.palletPackingService.getUserList()
       .subscribe((result: any) => {
-          this.usersList = result;
-          this.initializeUserMap(); // Initialize userMap here
+        this.usersList = result;
+        this.initializeUserMap(); // Initialize userMap here
       });
   }
   private initializeUserMap() {
     this.userMap = new Map<number, string>();
     this.usersList.forEach(user => {
-        this.userMap.set(user.id, user.name);
+      this.userMap.set(user.id, user.name);
     });
-}
+  }
   createForm() {
     this.palletPackingForm = this.formBuilder.group({
       PackingDateTime: ['', [Validators.required]],
@@ -147,37 +148,41 @@ isEditing: any;
       ProductId: ['', [Validators.required]],
       FinishedCasesOnIncompletePalletAtStart: ['', [Validators.required]],
       FinishedCasesOnIncompletePalletAtEnd: ['', [Validators.required]],
-      TotalCasesProduced: [{value: '', disabled: true}, [Validators.required]],
+      TotalCasesProduced: { value: '' },
       SupervisedBy: ['', [Validators.required]],
       Notes: [''],
       palletPackingDetails: this.formBuilder.array([])  // Initialize FormArray
     });
     this.palletPackingDetails = this.palletPackingForm.get('palletPackingDetails') as FormArray;
 
-  // Add a listener for automatic calculation
-  this.calculateTotalCasesProduced();
+    // Add a listener for automatic calculation
+    this.calculateTotalCasesProduced();
 
-  
   }
   calculateTotalCasesProduced() {
     // Listen to changes in the required fields
-    this.palletPackingForm.get('NoOfPalletsCompleted')?.valueChanges.subscribe(() => this.updateTotalCasesProduced());
+    this.palletPackingForm.get('TotalCasesProduced')?.valueChanges.subscribe(() => this.updateTotalCasesProduced());
     this.palletPackingForm.get('FinishedCasesOnIncompletePalletAtStart')?.valueChanges.subscribe(() => this.updateTotalCasesProduced());
     this.palletPackingForm.get('FinishedCasesOnIncompletePalletAtEnd')?.valueChanges.subscribe(() => this.updateTotalCasesProduced());
   }
-  
+
   updateTotalCasesProduced() {
-    const noOfPalletsCompleted = this.palletPackingForm.get('NoOfPalletsCompleted')?.value || 0;
+    const noOfPalletsCompleted = this.addedPalletPackingDetailsList.length || 1;
     const finishedCasesAtStart = this.palletPackingForm.get('FinishedCasesOnIncompletePalletAtStart')?.value || 0;
     const finishedCasesAtEnd = this.palletPackingForm.get('FinishedCasesOnIncompletePalletAtEnd')?.value || 0;
-  
+
+
+    console.log('NoOfPalletsCompleted:', noOfPalletsCompleted);
+    console.log('FinishedCasesAtStart:', finishedCasesAtStart);
+    console.log('FinishedCasesAtEnd:', finishedCasesAtEnd);
+
     // Apply the formula
     const totalCasesProduced = (noOfPalletsCompleted * 64) + (finishedCasesAtEnd - finishedCasesAtStart);
-  
+
     // Update the TotalCasesProduced field
-    this.palletPackingForm.get('TotalCasesProduced')?.setValue(totalCasesProduced, {emitEvent: false});  // Avoid circular triggers
+    this.palletPackingForm.get('TotalCasesProduced')?.setValue(totalCasesProduced, { emitEvent: false });  // Avoid circular triggers
   }
-  
+
   onPackingDateChange() {
     const packingDate = this.palletPackingForm.get('PackingDateTime')?.value;
     this.minEndDate = packingDate ? new Date(packingDate) : null;
@@ -187,32 +192,30 @@ isEditing: any;
     this.palletPackingDetails = this.palletPackingForm.get('palletPackingDetails') as FormArray;
     this.palletPackingDetails.clear();
     this.editPalletDetailsId = -1;
-  
+
     const item = this.formBuilder.group({});
-    
+
     this.productionOrderList.forEach((order) => {
       item.addControl(order.id.toString(), this.formBuilder.control(""));
     });
-  
+
     item.addControl('PalletNo', this.formBuilder.control(""));
     item.addControl('Time', this.formBuilder.control(""));
     item.addControl('DoneByIds', this.formBuilder.control([]));  // Initialize as an array
-  
+
     this.palletPackingDetails.push(item);
     console.log("PalletPackingDetails", this.palletPackingDetails.controls);
   }
-  
-  
-  
+
   private formatToDateTime(dateStr: string | null): string | null {
     if (!dateStr) {
       console.error("No date string provided");
       return null;  // Handle missing or invalid date strings gracefully
     }
-  
+
     const now = new Date();  // Use the current date for default values
     let date;
-  
+
     // Check if dateStr contains time only or a full date-time
     if (dateStr.includes('AM') || dateStr.includes('PM')) {
       // If time only, combine with today's date
@@ -221,24 +224,24 @@ isEditing: any;
       // Assume dateStr is in ISO format or a full date-time string
       date = new Date(dateStr);
     }
-  
+
     if (isNaN(date.getTime())) {
       console.error("Invalid date string provided:", dateStr);
       return null;  // Return null or some default value if the date is invalid
     }
-  
+
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
-  
+
     return `${year}-${month}-${day}T${hours}:${minutes}`;
   }
-  
+
   addFinalPalletDetail() {
     const palletDetail = this.palletPackingDetails.at(0).value;
-  
+
     if (!palletDetail.Time) {
       this.notificationService.error("Please select time");
     } else if (!palletDetail.DoneByIds || palletDetail.DoneByIds.length === 0) {
@@ -248,29 +251,29 @@ isEditing: any;
       palletDetail.DoneByIds = Array.isArray(palletDetail.DoneByIds)
         ? palletDetail.DoneByIds.map(id => Number(id))
         : [];
-      
+
       if (this.editPalletDetailsId >= 0) {
         this.addedPalletPackingDetailsList[this.editPalletDetailsId] = palletDetail;
         this.editPalletDetailsId = -1;
       } else {
         this.addedPalletPackingDetailsList.push(palletDetail);
       }
-  
+
       this.palletPackingDetails.clear();
       this.addPalletDetail();
-  
+
       console.log("Added pallet details:", this.addedPalletPackingDetailsList);
     }
   }
-  
-getUserNames(userIds: number[]): string {
-  console.log('User IDs:', userIds);
-  console.log('User Map:', this.userMap);
-  if (!userIds || !Array.isArray(userIds)) {
-    return 'Unknown';
+
+  getUserNames(userIds: number[]): string {
+    console.log('User IDs:', userIds);
+    console.log('User Map:', this.userMap);
+    if (!userIds || !Array.isArray(userIds)) {
+      return 'Unknown';
+    }
+    return userIds.map(id => this.userMap.get(id) || 'Unknown').join(', ');
   }
-  return userIds.map(id => this.userMap.get(id) || 'Unknown').join(', ');
-}
 
 
   onEditDetail(detail: any, index: number) {
@@ -280,29 +283,29 @@ getUserNames(userIds: number[]): string {
     // Set the index for the edit operation
     this.editPalletDetailsId = index;
   }
-  
+
   populateFormWithValues(data: any | any[]) {
     const dataArray = Array.isArray(data) ? data : [data];
-  
+
     this.palletPackingDetails = this.palletPackingForm.get('palletPackingDetails') as FormArray;
     this.palletPackingDetails.clear();
-  
+
     dataArray.forEach(dataItem => {
       const item = this.formBuilder.group({});
       item.addControl('PalletNo', this.formBuilder.control(dataItem.PalletNo || ''));
       item.addControl('Time', this.formBuilder.control(dataItem.Time || ''));
-  
+
       // Ensure DoneByIds is an array of numbers
       const doneByIds = Array.isArray(dataItem.DoneByIds) ? dataItem.DoneByIds : [dataItem.DoneByIds];
       item.addControl('DoneByIds', this.formBuilder.control(doneByIds.map(Number)));
-  
+
       this.palletPackingDetails.push(item);
     });
-  
+
     console.log("Populated PalletPackingDetails:", this.palletPackingDetails.controls);
   }
-  
-  
+
+
   removePalletDetail(i: number) {
     this.addedPalletPackingDetailsList.splice(i, 1);
     this.palletPackingDetails.removeAt(i);
@@ -314,9 +317,9 @@ getUserNames(userIds: number[]): string {
         this.cancel();
         this.notificationService.success("Pallet Packing created successfully.");
       },
-      (error) => {
-        this.error = error;
-      });
+        (error) => {
+          this.error = error;
+        });
   }
   private formatDateTime(value: any): string | null {
     if (value) {
@@ -329,46 +332,46 @@ getUserNames(userIds: number[]): string {
     }
     return null;
   }
-  
+
   private updatePalletPacking(payload) {
     this.palletPackingService.updatePalletPacking(payload)
       .subscribe(() => {
         this.cancel();
         this.notificationService.success("Pallet Packing updated successfully.");
       },
-      (error) => {
-        this.error = error;
-      });
+        (error) => {
+          this.error = error;
+        });
   }
   save() {
     this.isFormSubmitted = true;
-  
+
     if (this.palletPackingForm.invalid) {
       return;
     }
-  
+
     // Validate date and details
     const packingDateTimeControl = this.palletPackingForm.get('PackingDateTime');
     const packingDateTime = packingDateTimeControl?.value;
-  
+
     if (!packingDateTime || isNaN(new Date(packingDateTime).getTime())) {
       this.notificationService.error("Invalid Packing Date Time");
       return;
     }
-  
+
     if (this.addedPalletPackingDetailsList.length === 0) {
       this.notificationService.error("At least one pallet detail is required.");
       return;
     }
-  
+
     // Prepare form value and payload
     const formValue = this.palletPackingForm.value;
     formValue.palletPackingDetails = this.addedPalletPackingDetailsList;
     const payload = this.transformData(formValue);
-  
+
     // Log payload for debugging
     console.log("Transformed Payload:", JSON.stringify(payload, null, 2));
-  
+
     // Decide whether to create or update
     if (this.isEditMode) {
       this.updatePalletPacking(payload);
@@ -378,44 +381,45 @@ getUserNames(userIds: number[]): string {
   }
   transformData(originalData) {
     function formatToDateTime(dateStr) {
-        if (!dateStr) return null;
+      if (!dateStr) return null;
 
-        const date = new Date(dateStr);
-        if (isNaN(date.getTime())) return null;
+      const date = new Date(dateStr);
+      if (isNaN(date.getTime())) return null;
 
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
 
-        return `${year}-${month}-${day}T${hours}:${minutes}`;
+      return `${year}-${month}-${day}T${hours}:${minutes}`;
     }
 
     const detailsArray = Array.isArray(originalData.palletPackingDetails)
-        ? originalData.palletPackingDetails
-        : Object.values(originalData.palletPackingDetails || {});
+      ? originalData.palletPackingDetails
+      : Object.values(originalData.palletPackingDetails || {});
 
     return {
-        Id: this.isEditMode ? this.palletPackingData.id : 0,
-        Code: this.isEditMode ? this.palletPackingData.code : "",
-        PackingDateTime: formatToDateTime(originalData.PackingDateTime),
-        SAPProductionOrderId: originalData.SAPProductionOrderId,
-        ProductId: originalData.ProductId,
-        FinishedCasesOnIncompletePalletAtStart: originalData.FinishedCasesOnIncompletePalletAtStart,
-        FinishedCasesOnIncompletePalletAtEnd: originalData.FinishedCasesOnIncompletePalletAtEnd,
-        TotalCasesProduced: originalData.TotalCasesProduced,
-        SupervisedBy: originalData.SupervisedBy,
-        Notes: originalData.Notes,
-        palletPackingDetails: detailsArray.map(details => ({
-            PalletNo: details.PalletNo,
-            Time: formatToDateTime(details.Time),
-            DoneByIds: Array.isArray(details.DoneByIds)
-                ? details.DoneByIds.join(',')  
-                : details.DoneByIds,
-        }))
+      Id: this.isEditMode ? this.palletPackingData.id : 0,
+      Code: this.isEditMode ? this.palletPackingData.code : "",
+      PackingDateTime: formatToDateTime(originalData.PackingDateTime),
+      SAPProductionOrderId: this.isEditMode?this.palletPackingData.sapProductionOrderId : originalData.SAPProductionOrderId,
+      ProductId:this.isEditMode ? this.palletPackingData.productId : originalData.ProductId,
+      FinishedCasesOnIncompletePalletAtStart: originalData.FinishedCasesOnIncompletePalletAtStart,
+      FinishedCasesOnIncompletePalletAtEnd: originalData.FinishedCasesOnIncompletePalletAtEnd,
+      TotalCasesProduced: originalData.TotalCasesProduced,
+
+      SupervisedBy: originalData.SupervisedBy,
+      Notes: originalData.Notes,
+      palletPackingDetails: detailsArray.map(details => ({
+        PalletNo: details.PalletNo,
+        Time: formatToDateTime(details.Time),
+        DoneByIds: Array.isArray(details.DoneByIds)
+          ? details.DoneByIds.join(',')
+          : details.DoneByIds,
+      }))
     };
-}
+  }
 
   cancel() {
     if (this.isEditMode) {
@@ -431,4 +435,3 @@ getUserNames(userIds: number[]): string {
     }
   }
 }
- 
