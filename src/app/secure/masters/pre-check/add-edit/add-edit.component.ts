@@ -129,7 +129,7 @@ export class PreCheckAddEditComponent implements OnInit, OnDestroy {
                 // Initialize form array based on the number of questions
                 const controls = this.questionList.map(question => this.formBuilder.group({
                     questionId: [question.id, [Validators.required]],
-                    answer: [null],
+                    answer: [1],
                     reason: ['']
                 }));
                 this.preCheckForm.setControl('preCheckListDetails', this.formBuilder.array(controls));

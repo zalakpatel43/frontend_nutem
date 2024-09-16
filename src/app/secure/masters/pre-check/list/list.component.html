@@ -15,7 +15,7 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <pre-check-search-panel (searchChanged)="updateSearch($event)"></pre-check-search-panel>
+                    <!-- <pre-check-search-panel (searchChanged)="updateSearch($event)"></pre-check-search-panel> -->
                     <ngx-datatable class="material" [rows]="preCheckData | searchtable : searchData" [columnMode]="'force'"
                         [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10"
                         [loadingIndicator]="loading" [scrollbarH]="true" 

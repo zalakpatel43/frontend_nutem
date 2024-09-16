@@ -170,11 +170,14 @@ export class TrailerLoadingAddEditComponent implements OnInit, OnDestroy {
   addFinalTrailerLoadingDetail() {
     const trailerDetail = this.TrailerLoadingDetails.at(0).value;
     trailerDetail.ProductionOrder = String(trailerDetail.ProductionOrder);
-
+console.log("Trailer loading", trailerDetail)
     
     // Perform validation checks
     if (!trailerDetail.ActionTakenBy) {
       this.notificationService.error('Please select Action Taken By');
+    }
+    else if(trailerDetail.PalletQty < 0) {
+      this.notificationService.error('Qty can not be leass than 0');
     } else {
       // If editing an existing entry, update it in the list
       if (this.EditDetailId >= 0) {

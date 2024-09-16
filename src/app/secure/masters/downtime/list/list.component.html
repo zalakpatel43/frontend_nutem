@@ -14,7 +14,7 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <downtime-tracking-search-panel (searchChanged)="updateSearch($event)"></downtime-tracking-search-panel>
+                    <!-- <downtime-tracking-search-panel (searchChanged)="updateSearch($event)"></downtime-tracking-search-panel> -->
                     <ngx-datatable class="material" [rows]="downtimeTrackingData | searchtable : searchData" [columnMode]="'force'"
                         [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10"
                         [loadingIndicator]="loading" [scrollbarH]="true" 

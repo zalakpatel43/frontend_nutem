@@ -16,12 +16,12 @@
                 <!-- Basic Details Section -->
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h5 class="mb-0">Attribute Check Header</h5>
+                        <h5 class="mb-0">Basic Details</h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <!-- AC Code -->
-                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                            <!-- <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <mat-form-field appearance="fill" class="full-width">
                                     <mat-label>Code</mat-label>
                                     <input matInput formControlName="ACCode" [disabled]="true">
@@ -29,7 +29,7 @@
                                         [message]="'AC Code'"
                                         [formSubmitted]="isFormSubmitted"></mat-validation-message>
                                 </mat-form-field>
-                            </div>
+                            </div> -->
 
                             <!-- AC Date -->
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
@@ -126,7 +126,7 @@
                 <!-- Attribute Check Details Section -->
                 <div class="card mb-4">
                     <div class="card-header d-flex align-items-center justify-content-between">
-                        <h5 class="mb-0">Attribute Check Details</h5>
+                        <h5 class="mb-0">Attribute Check</h5>
                     </div>
                     <div class="card-body">
                         <div formArrayName="attributeCheckDetails">
@@ -189,7 +189,7 @@
                                     </div>
                                     <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                         <mat-form-field appearance="fill" class="full-width">
-                                            <mat-label>Done By User IDs</mat-label>
+                                            <mat-label>Done By</mat-label>
                                             <mat-select formControlName="DoneByUserIds" multiple>
                                                 <mat-option *ngFor="let user of usersList" [value]="user.id">
                                                   {{ user.name }}

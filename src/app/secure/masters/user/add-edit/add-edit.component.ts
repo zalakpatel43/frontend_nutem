@@ -30,7 +30,7 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
     permissions = PermissionType;
 
     constructor(private activatedRoute: ActivatedRoute, private router: Router,
-        private formBuilder: UntypedFormBuilder, private userService: UserService,private roleService: RoleService,
+        private formBuilder: UntypedFormBuilder, private userService: UserService, private roleService: RoleService,
         private notificationService: ToastrService, private listService: ListService) {
         this.createForm();
     }
@@ -56,6 +56,8 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
         });
     }
 
+
+
     private getUserDetails() {
         console.log("user id ", this.userId)
         this.userService.getById(this.userId)
@@ -63,42 +65,50 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
                 this.userData = result;
                 this.setUserData();
                 this.getRoleData();
+                this.getUserRoles();
 
             }, (error) => {
                 console.log(error);
             });
     }
 
-   
+    private getUserRoles() {
+        this.userService.getRoles(this.userId)
+            .subscribe((roles: string[]) => {
+                // Assuming roles are returned as an array of strings
+                this.frmUser.controls['role'].setValue(roles[0] || ''); // Set the first role or default value
+            }, (error) => {
+                console.log(error);
+            });
+    }
+
+
 
     private getRoleData() {
-        // this.listService.getList("activeroles")
-        //     .subscribe((result: List[]) => {
-        //         this.roleData = result;
-        //         this.createRolesControl();
-        //     })
 
         this.roleService.getRole()
-        .subscribe((result: any) => {
-            this.roleData = result;
-            this.createRolesControl();
-        }, (error) => {
-            console.log(error);
+            .subscribe((result: any) => {
+                this.roleData = result;
+                console.log("ROLE:", this.roleData);
 
-        });
+                this.createRolesControl();
+            }, (error) => {
+                console.log(error);
+
+            });
     }
 
     getReportsToData() {
-        
+
         const userId: number = CommonUtility.isNotNull(this.userId) ? this.userId : 0;
-         this.userService.get()
-                .subscribe((result: User[]) => {
-                    this.reportsToData = result;
-                    this.createReportsToControl();
-                });
+        this.userService.get()
+            .subscribe((result: User[]) => {
+                this.reportsToData = result;
+                this.createReportsToControl();
+            });
     }
 
-   
+
 
     private setUserData() {
         this.frmUser.patchValue(this.userData);
@@ -111,12 +121,13 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
             userName: [{ value: '', disabled: this.isEditMode }, [Validators.required, Validators.maxLength(50)]],
             password: [{ value: '', disabled: this.isEditMode }, [Validators.required, Validators.min(6), Validators.maxLength(20), ValidationService.passwordValidator]],
             confirmPassword: [{ value: '', disabled: this.isEditMode }, [Validators.required, ValidationService.comparePassword]],
-           // firstName: ['', [Validators.required, Validators.maxLength(50)]],
-           // lastName: ['', [Validators.required, Validators.maxLength(50)]],
+            // firstName: ['', [Validators.required, Validators.maxLength(50)]],
+            // lastName: ['', [Validators.required, Validators.maxLength(50)]],
             email: ['', [Validators.required, ValidationService.emailValidator, ValidationService.multipleemailrestrictValidator, Validators.maxLength(50)]],
             phoneNumber: ['', [Validators.maxLength(15)]],
-           // reportsTo: new UntypedFormArray([], ValidationService.minSelectedCheckboxes(0)),
-           // roles: new UntypedFormArray([], ValidationService.minSelectedCheckboxes(1)),
+            role: ['', [Validators.required]]
+            // reportsTo: new UntypedFormArray([], ValidationService.minSelectedCheckboxes(0)),
+            // roles: new UntypedFormArray([], ValidationService.minSelectedCheckboxes(1)),
         });
     }
 
@@ -137,47 +148,35 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
     }
 
     private createUser() {
-        // let reportsTo: Array<{ reportToId: number }> = []
-        // const reportsToList = CommonUtility.getSelectedCheckboxList(this.frmUser.value.reportsTo, this.reportsToData);
-        // if (CommonUtility.isNotEmpty(reportsToList)) {
-        //     reportsToList.forEach((item: List) => {
-        //         reportsTo.push({ reportToId: item.id });
-        //     });
-        // }
+        let user: User = Object.assign({}, this.frmUser.value);
 
-        // let roles: Array<{ id: number }> = [];
-        // const rolesList = CommonUtility.getSelectedCheckboxList(this.frmUser.value.roles, this.roleData);
-        // if (CommonUtility.isNotEmpty(r   olesList)) {
-        //     rolesList.forEach((item: List) => {
-        //         roles.push({ id: item.id });
-        //     });
-        // }
-
-        let user: User = Object.assign({}, this.frmUser.value
-        //     , {
-        //     reportsTo: reportsTo,
-        //     roles: roles
-        // }
-    );
-
-        this.userService.add(user)
-            .subscribe((result: any) => {
+        this.userService.add(user).subscribe(
+            (result: any) => {
                 if (result) {
-                    this.cancel();
+                    this.userId = result.id; // Assign the userId from the response
+
+                    // Now assign the role after getting the userId
+                    const selectedRole = this.frmUser.get('role').value;
+                    if (selectedRole) {
+                        this.assignRoleToUser(this.userId, selectedRole);
+                    }
+
                     this.notificationService.success("User saved successfully.");
-                 //   this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
-                }
-                else {
+                    this.cancel();
+                } else {
                     this.notificationService.warning(result.message);
                 }
-            }, (error) => {
+            },
+            (error) => {
                 if (error.status === 400 && error.error.modelState) {
                     this.error = error.error.modelState[''][0];
                 } else {
                     this.error = 'Something went wrong';
                 }
-            });
+            }
+        );
     }
+
 
     private updateUser() {
         let user: User = this.frmUser.value;
@@ -199,11 +198,11 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
         // }
 
         this.userData = Object.assign(this.userData, user
-        //     , {
-        //     reportsTo: reportsTo,
-        //     roles: roles
-        // }
-    );
+            //     , {
+            //     reportsTo: reportsTo,
+            //     roles: roles
+            // }
+        );
 
         this.userService.update(this.userData.id, this.userData)
             .subscribe((result: any) => {
@@ -226,18 +225,64 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
 
     save() {
         this.isFormSubmitted = true;
-       // this.setValidators();
-
+    
         if (this.frmUser.invalid) {
             return;
         }
-
+    
         if (this.isEditMode) {
-            this.updateUser();
+            this.updateUser(); // Update user
         } else {
-            this.createUser();
+            this.createUser(); // Create new user
+        }
+        
+        // After creating/updating the user, assign the role
+        const selectedRole = this.frmUser.get('role').value;
+        if (selectedRole) {
+            this.handleRoleAssignment(selectedRole);
         }
     }
+    
+    private handleRoleAssignment(newRole: string) {
+        if (this.isEditMode) {
+            this.userService.getRoles(this.userId)
+                .subscribe((currentRoles: string[]) => {
+                    const oldRole = currentRoles[0]; // Assuming only one role is assigned
+                    if (oldRole && oldRole !== newRole) {
+                        // Remove the old role
+                        this.userService.removeRole(this.userId, oldRole)
+                            .subscribe(() => {
+                                // Add the new role
+                                this.assignRoleToUser(this.userId, newRole);
+                            }, (error) => {
+                                this.notificationService.error(`Failed to remove old role: ${error.message}`);
+                            });
+                    } else {
+                        // Just add the new role if no old role or same role
+                        this.assignRoleToUser(this.userId, newRole);
+                    }
+                }, (error) => {
+                    this.notificationService.error(`Failed to get current roles: ${error.message}`);
+                });
+        } else {
+            // Just assign the new role for new user
+            this.assignRoleToUser(this.userId, newRole);
+        }
+    }
+    
+    // Method to assign role to the user
+    // Method to assign role to the user
+    assignRoleToUser(userId: number, role: string) {
+        this.userService.assignRole(userId, role).subscribe(
+            (result: any) => {
+                this.notificationService.success(`Role '${role}' assigned successfully to user.`);
+            },
+            (error) => {
+                this.notificationService.error(`Failed to assign role: ${error.message}`);
+            }
+        );
+    }
+
 
     setValidators() {
         const rolesList = CommonUtility.getSelectedCheckboxList(this.frmUser.value.roles, this.roleData);

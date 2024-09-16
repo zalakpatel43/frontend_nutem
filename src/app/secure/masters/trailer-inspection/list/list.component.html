@@ -20,7 +20,7 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <trailer-inspection-search-panel (searchChanged)="updateSearch($event)"></trailer-inspection-search-panel>
+                    <!-- <trailer-inspection-search-panel (searchChanged)="updateSearch($event)"></trailer-inspection-search-panel> -->
                     <ngx-datatable class="material" [rows]="trailerInspectionData | searchtable : searchData" [columnMode]="'force'"
                         [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10"
                         [loadingIndicator]="loading" [scrollbarH]="true" 

@@ -14,6 +14,10 @@ export class ProductionOrderService {
     return this.http.get(`${APIConstant.productionOrderList}`);
   }
 
+  getPOByStatus(status : string) {
+    return this.http.get(`${APIConstant.POByStatus}` + "?status=" + status);
+  }
+
   getByIdProductionOrder(id: number) {
     return this.http.get(`${APIConstant.productionOrderGetById}/${id}`);
   }

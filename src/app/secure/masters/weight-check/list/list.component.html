@@ -20,7 +20,7 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <weight-check-search-panel (searchChanged)="updateSearch($event)"></weight-check-search-panel>
+                    <!-- <weight-check-search-panel (searchChanged)="updateSearch($event)"></weight-check-search-panel> -->
                     <ngx-datatable class="material" [rows]="weightCheckData | searchtable : searchData" [columnMode]="'force'"
                         [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10"
                         [loadingIndicator]="loading" [scrollbarH]="true" 
