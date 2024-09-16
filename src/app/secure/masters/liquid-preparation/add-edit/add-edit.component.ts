@@ -277,6 +277,7 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
         let DoneByNames = this.usersList.filter(item => element.doneByIds?.includes(item.id)).map(item => item.name)
           .join(', ');
 
+          
         let data = {
           InstructionId: element.instructionId,
           MaterialId: element.materialId,
@@ -293,6 +294,7 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
 
         this.AddedInstructionList.push(data);
       });
+      this.calculateTotals();
 
 
       //Quality 

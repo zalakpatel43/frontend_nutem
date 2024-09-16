@@ -37,10 +37,11 @@ export class ProductionOrderListComponent implements OnInit {
   }
 
   private getProductionOrderData(): void {
-    this.productionOrderService.getProductionOrderList()
+    this.productionOrderService.getPOByStatus(this.selectedStatus)
       .subscribe((result: any) => {
         this.productionOrderData = result; 
-        this.filterByStatus();
+        this.filteredProductionOrderData = result;
+       // this.filterByStatus();
         // .filter((list: any) => list.status == "Open")
       },
       (error) => {
@@ -48,8 +49,9 @@ export class ProductionOrderListComponent implements OnInit {
       });
   }
 
-  filterByStatus(): void {
-    this.filteredProductionOrderData = this.productionOrderData.filter(order => order.status === this.selectedStatus);
+  GetPOBystatus(): void {
+    this.getProductionOrderData(); 
+   // this.filteredProductionOrderData = this.productionOrderData.filter(order => order.status === this.selectedStatus);
   }
   
   toggleExpandRow(row: any) {

@@ -133,7 +133,7 @@ export class PostCheckAddEditComponent implements OnInit, OnDestroy {
                 // Initialize form array based on the number of questions
                 const controls = this.questionList.map(question => this.formBuilder.group({
                     questionId: [question.id, [Validators.required]],
-                    answer: [null],
+                    answer: [1],
                     reason: ['']
                 }));
                 this.postCheckForm.setControl('postCheckListDetails', this.formBuilder.array(controls));

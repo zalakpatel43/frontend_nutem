@@ -20,7 +20,7 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <attribute-check-search-panel (searchChanged)="updateSearch($event)"></attribute-check-search-panel>
+                    <!-- <attribute-check-search-panel (searchChanged)="updateSearch($event)"></attribute-check-search-panel> -->
                     <ngx-datatable class="material" [rows]="attributeCheckData | searchtable : searchData" [columnMode]="'force'"
                         [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10"
                         [loadingIndicator]="loading" [scrollbarH]="true" 
@@ -28,7 +28,7 @@
                        
                         <ngx-datatable-column name="Date" prop="acDate">
                             <ng-template let-value="value" ngx-datatable-cell-template>
-                                <span>{{value | date: 'MM/dd/yyyy hh:mm a'}}</span>
+                                <span>{{value | date: 'dd/MM/yyyy hh:mm a'}}</span>
                             </ng-template>
                         </ngx-datatable-column>
                         <ngx-datatable-column name="Product Name" prop="productName">
