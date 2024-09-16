@@ -37,7 +37,7 @@
                             <!-- SAP Production Order -->
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <mat-form-field appearance="fill" class="full-width">
-                                    <mat-label>SAP Production Order</mat-label>
+                                    <mat-label> Production Order</mat-label>
                                     <mat-select formControlName="SAPProductionOrderId" [disabled]="isEditMode">
                                         <mat-option *ngFor="let order of productionOrderList" [value]="order.id">
                                             {{ order.poNumber }}
@@ -60,6 +60,21 @@
                                     </mat-select>
                                     <mat-validation-message [control]="palletPackingForm.controls.ProductId"
                                         [message]="'Product'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                            
+                            <!-- Supervised By -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Supervised By</mat-label>
+                                    <mat-select formControlName="SupervisedBy">
+                                        <mat-option *ngFor="let user of usersList" [value]="user.id" >
+                                            {{ user.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-validation-message [control]="palletPackingForm.controls.SupervisedBy"
+                                        [message]="'Supervised By'"
                                         [formSubmitted]="isFormSubmitted"></mat-validation-message>
                                 </mat-form-field>
                             </div>
@@ -94,27 +109,13 @@
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <mat-form-field appearance="fill" class="full-width">
                                     <mat-label>Total Cases Produced</mat-label>
-                                    <input matInput formControlName="TotalCasesProduced" type="number">
+                                    <input matInput formControlName="TotalCasesProduced"  [disabled]="isEditMode" type="number">
                                     <mat-validation-message [control]="palletPackingForm.controls.TotalCasesProduced"
                                         [message]="'Total Cases Produced'"
                                         [formSubmitted]="isFormSubmitted"></mat-validation-message>
                                 </mat-form-field>
                             </div>
 
-                            <!-- Supervised By -->
-                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
-                                <mat-form-field appearance="fill" class="full-width">
-                                    <mat-label>Supervised By</mat-label>
-                                    <mat-select formControlName="SupervisedBy">
-                                        <mat-option *ngFor="let user of usersList" [value]="user.id" >
-                                            {{ user.name }}
-                                        </mat-option>
-                                    </mat-select>
-                                    <mat-validation-message [control]="palletPackingForm.controls.SupervisedBy"
-                                        [message]="'Supervised By'"
-                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
-                                </mat-form-field>
-                            </div>
 
                             <!-- Notes -->
                             <div class="col-12 col-sm-12 col-md-12 col-lg-12 mb-3">
@@ -252,6 +253,34 @@
                     </div>
                 </div>
             </form>
+            <!-- Static Table for Conversion -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Conversion Table</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Bottles/Case</th>
+                            <th>Cases/Pallet</th>
+                            <th>Bottles/Pallet</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>4</td>
+                            <td>64</td>
+                            <td>256</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
         </div>
     </div>
 </div>
