@@ -671,7 +671,6 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
 
   onStartDateChange(){
     const StartDate = this.basicForm.get('StartDateTime')?.value;
-
     this.StartDateOfBasicForm = new Date(StartDate);
   }
 
