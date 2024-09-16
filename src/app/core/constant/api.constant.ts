@@ -115,6 +115,7 @@ export const APIConstant = {
     productionOrderList: `${basePath}ProductionOrder/GetAllProductionOrder`,
     productionOrderGetById: `${basePath}ProductionOrder/GetByIdAsync`,
     productionOrderStatus: `${basePath}ProductionOrder/ToggleStatus`,
+    POByStatus: `${basePath}ProductionOrder/GetPOByStatus`,
 
 
     // PrePostQuestion

@@ -20,7 +20,7 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <liquid-preparation-search-panel (searchChanged)="updateSearch($event)"></liquid-preparation-search-panel>
+                    <!-- <liquid-preparation-search-panel (searchChanged)="updateSearch($event)"></liquid-preparation-search-panel> -->
                     <ngx-datatable class="material" [rows]="liquidPreparationData | searchtable : searchData" [columnMode]="'force'"
                         [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10"
                         [loadingIndicator]="loading" [scrollbarH]="true" 

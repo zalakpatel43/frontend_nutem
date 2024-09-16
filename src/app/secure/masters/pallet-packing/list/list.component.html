@@ -14,7 +14,7 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <pallet-packing-search-panel (searchChanged)="updateSearch($event)"></pallet-packing-search-panel>
+                    <!-- <pallet-packing-search-panel (searchChanged)="updateSearch($event)"></pallet-packing-search-panel> -->
                     <ngx-datatable class="material" [rows]="palletPackingData | searchtable : searchData" [columnMode]="'force'"
                         [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10"
                         [loadingIndicator]="loading" [scrollbarH]="true" 

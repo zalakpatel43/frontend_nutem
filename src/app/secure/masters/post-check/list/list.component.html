@@ -15,7 +15,7 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <post-check-search-panel (searchChanged)="updateSearch($event)"></post-check-search-panel>
+                    <!-- <post-check-search-panel (searchChanged)="updateSearch($event)"></post-check-search-panel> -->
                     <ngx-datatable class="material" [rows]="postCheckData | searchtable : searchData" [columnMode]="'force'"
                         [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10"
                         [loadingIndicator]="loading" [scrollbarH]="true" 

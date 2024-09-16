@@ -376,6 +376,10 @@ export class TrailerInspectionAddEditComponent implements OnInit, OnDestroy {
       this.notificationService.error("enter Temperature Setting Used Notes");
       return false;
     }
+     if(formvalue.VehicleStatus === 'Rejected' && (formvalue.RejectionReason.length == 0 || !formvalue.RejectionReason.trim()) ){
+        this.notificationService.error("Reason for Rejection required");
+        return false;
+     }
     return true;
   }
 
