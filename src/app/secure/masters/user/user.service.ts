@@ -17,4 +17,15 @@ export class UserService extends CRUDService<User>{
      getUsers(pageIndex: number, pageSize: number): Observable<any> {
         return this._baseService.get(`${APIConstant.user}/paged?pageIndex=${pageIndex}&pageSize=${pageSize}`);
     }
+    assignRole(userId: number, role: string): Observable<any> {
+        return this._baseService.post(`${APIConstant.user}/${userId}/assign-role?role=${role}`, {});
+    }
+    removeRole(userId: number, role: string): Observable<any> {
+        return this._baseService.post(`${APIConstant.user}/${userId}/remove-role?role=${role}`, {});
+    }
+    getRoles(userId: number): Observable<string[]> {
+        return this._baseService.get(`${APIConstant.user}/${userId}/roles`);
+    }
+    
+    
 }

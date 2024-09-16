@@ -21,7 +21,7 @@
                     <div class="card-body">
                         <div class="row">
                             <!-- Packing Date Time -->
-                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                            <!-- <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <mat-form-field appearance="fill" class="full-width">
                                     <mat-label>Packing Date Time</mat-label>
                                     <input matInput [matDatepicker]="pickerPackingDate"
@@ -32,7 +32,22 @@
                                         [message]="'Packing Date Time'"
                                         [formSubmitted]="isFormSubmitted"></mat-validation-message>
                                 </mat-form-field>
+                            </div> -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill">
+                                    <input matInput [ngxMatDatetimePicker]="pickerProductionDateTime"
+                                        placeholder="Production Date Time" formControlName="ProductionDateTime"
+                                        required>
+                                    <button type="button" mat-icon-button (click)="pickerProductionDateTime.open()"
+                                        matSuffix>
+                                        <mat-icon>calendar_today</mat-icon>
+                                    </button>
+                                    <ngx-mat-datetime-picker #pickerProductionDateTime
+                                        apperance="fill"></ngx-mat-datetime-picker>
+                                </mat-form-field>
                             </div>
+
+
 
                             <!-- SAP Production Order -->
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
@@ -63,13 +78,13 @@
                                         [formSubmitted]="isFormSubmitted"></mat-validation-message>
                                 </mat-form-field>
                             </div>
-                            
+
                             <!-- Supervised By -->
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <mat-form-field appearance="fill" class="full-width">
                                     <mat-label>Supervised By</mat-label>
                                     <mat-select formControlName="SupervisedBy">
-                                        <mat-option *ngFor="let user of usersList" [value]="user.id" >
+                                        <mat-option *ngFor="let user of usersList" [value]="user.id">
                                             {{ user.name }}
                                         </mat-option>
                                     </mat-select>
@@ -109,7 +124,8 @@
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <mat-form-field appearance="fill" class="full-width">
                                     <mat-label>Total Cases Produced</mat-label>
-                                    <input matInput formControlName="TotalCasesProduced"  [disabled]="isEditMode" type="number">
+                                    <input matInput formControlName="TotalCasesProduced" [disabled]="isEditMode"
+                                        type="number">
                                     <mat-validation-message [control]="palletPackingForm.controls.TotalCasesProduced"
                                         [message]="'Total Cases Produced'"
                                         [formSubmitted]="isFormSubmitted"></mat-validation-message>
@@ -163,8 +179,8 @@
                                 </div>
 
                                 <!-- Done By -->
-                     
-                                    <!-- <mat-form-field appearance="fill" class="full-width">
+
+                                <!-- <mat-form-field appearance="fill" class="full-width">
                                         <mat-label>Done By</mat-label>
                                         <mat-select formControlName="DoneByIds">
                                             <mat-option *ngFor="let user of usersList" [value]="user.id">
@@ -172,8 +188,8 @@
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field> -->
-                                    <!-- Done By -->
-                                    <!-- <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <!-- Done By -->
+                                <!-- <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                         <mat-form-field appearance="fill" class="full-width">
                                             <mat-label>Done By</mat-label>
                                             <mat-select formControlName="DoneByIds" >
@@ -183,9 +199,9 @@
                                             </mat-select>
                                         </mat-form-field>
                                     </div> -->
-                                     <!-- Done By -->
-                                 <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
-                                     <mat-form-field appearance="fill" class="full-width">
+                                <!-- Done By -->
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                    <mat-form-field appearance="fill" class="full-width">
                                         <mat-label>Done By</mat-label>
                                         <mat-select formControlName="DoneByIds" multiple>
                                             <mat-option *ngFor="let user of usersList" [value]="user.id">
@@ -196,7 +212,7 @@
                                             [message]="'Done By'"
                                             [formSubmitted]="isFormSubmitted"></mat-validation-message>
                                     </mat-form-field>
-                                    </div>
+                                </div>
 
                                 <!-- Add/Remove Buttons -->
                                 <div class="col-12 col-sm-12 col-md-2 col-lg-2 mb-3 d-flex align-items-center">
@@ -254,33 +270,33 @@
                 </div>
             </form>
             <!-- Static Table for Conversion -->
-<div class="row mt-4">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0">Conversion Table</h5>
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Conversion Table</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Bottles/Case</th>
+                                        <th>Cases/Pallet</th>
+                                        <th>Bottles/Pallet</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>64</td>
+                                        <td>256</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Bottles/Case</th>
-                            <th>Cases/Pallet</th>
-                            <th>Bottles/Pallet</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>4</td>
-                            <td>64</td>
-                            <td>256</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
         </div>
     </div>
 </div>
