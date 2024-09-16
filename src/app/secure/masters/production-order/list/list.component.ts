@@ -92,6 +92,7 @@ export class ProductionOrderListComponent implements OnInit {
         id: item.id,
         code: item.code,
         date: item.startDateTime,
+        endDate: item.endDateTime,
         productName: item.productName,
         shiftName: item.shiftName,
         totalcaseproduced:''
@@ -104,6 +105,7 @@ export class ProductionOrderListComponent implements OnInit {
         id: item.id,
         code: item.code,
         date: item.acDate,
+        endDate: '',
         productName: item.productName,
         shiftName: '',
         totalcaseproduced:''
@@ -115,6 +117,7 @@ export class ProductionOrderListComponent implements OnInit {
         type: 'Pre Check List',
         id: item.id,
         code: item.code,
+        endDate: '',
         date: item.startDateTime,
         productName: item.productName,
         shiftName: item.shiftName,
@@ -128,6 +131,7 @@ export class ProductionOrderListComponent implements OnInit {
         id: item.id,
         code: item.code,
         date: item.endDateTime,
+        endDate: '',
         productName: item.productName,
         shiftName: item.shiftName,
         totalcaseproduced:''
@@ -140,8 +144,22 @@ export class ProductionOrderListComponent implements OnInit {
         id: item.id,
         code: item.code,
         date: item.packingDateTime,
+        endDate: '',
         productName: item.productName,
         shiftName: ' ',
+        totalcaseproduced:item.TotalCasesProduced
+      }));
+    }
+
+    if (row.liquidPreparationList) {
+      row.liquidPreparationList.forEach(item => relatedData.push({
+        type: 'Liquid Preparation',
+        id: item.id,
+        code: item.code,
+        date: item.startDateTime,
+        endDate: item.endDateTime,
+        productName: item.productName,
+        shiftName: item.shiftName,
         totalcaseproduced:''
       }));
     }

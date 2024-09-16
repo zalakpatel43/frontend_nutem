@@ -3,6 +3,7 @@ import { CRUDService, BaseService } from "@app-core";
 import { Role } from "@app-models";
 import { APIConstant} from '@app-core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from "rxjs";
 @Injectable({
     providedIn: 'root'
   })
@@ -17,8 +18,11 @@ export class RoleService {
     constructor(private http: HttpClient,
         private _baseService: BaseService) { }
 
-    getRole() {
-        return this.http.get(`${APIConstant.permissionList}`);
+    getRole():Observable<Role[]> {
+        return this.http.get<Role[]>(`${APIConstant.permissionList}`);
+    }
+    getPermission(permissionId: number) {
+        return this.http.get(`${APIConstant.permission}`);
     }
     updateRole(roleId: number, payload: any) {
         return this.http.post(`${APIConstant.permissionEdit}`, payload);
@@ -27,7 +31,7 @@ export class RoleService {
         return this.http.post(`${APIConstant.permissionAdd}`, payload);
     }
     getRoleById(id: number) {
-        return this.http.get(`${APIConstant.permissionGetById}?id=${id}`);
+        return this.http.get(`${APIConstant.permissionGetById}/${id}`);
     }
     // getPermissionList() {
     //     throw new Error('Method not implemented.');
