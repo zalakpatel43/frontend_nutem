@@ -43,6 +43,6 @@ export class RoleService {
     //     super(_baseService, "role");
     // }
     deleteRole(id: number) {
-        return this.http.delete(`${APIConstant.permissionDelete}?id=${id}`);
+        return this.http.delete(`${APIConstant.permissionDelete}/${id}`);
       }
 }
