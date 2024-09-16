@@ -30,11 +30,11 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
         { permission: 'PreCheck List', view: false, add: false, edit: false, delete: false },
         { permission: 'PostCheck List', view: false, add: false, edit: false, delete: false },
         { permission: 'Liquid Preparation', view: false, add: false, edit: false, delete: false },
-        { permission: 'Trailer Loading', view: false, add: false, edit: false, delete: false },
+        // { permission: 'Trailer Loading', view: false, add: false, edit: false, delete: false },
         { permission: 'Trailer Inspection', view: false, add: false, edit: false, delete: false },
         { permission: 'Pallet Packing', view: false, add: false, edit: false, delete: false },
         { permission: 'DownTime Tracking', view: false, add: false, edit: false, delete: false },
-        { permission: 'Producion Order', view: false, add: false, edit: false, delete: false },
+        { permission: 'Production Order', view: false, add: false, edit: false, delete: false },
         // Add more permissions as needed...
     ];
 
@@ -179,10 +179,6 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
     
         console.log(this.frmRole.value); // Debugging: Check form value
     }
-    
-
-    
-
 
     // private createRole() {
     //     const role: Role = this.frmRole.value;
@@ -300,10 +296,11 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
             'Attribute Check': 'PER_ATTRIBUTECHECK',
             'PreCheck List': 'PER_PRECHEKLIST',
             'Liquid Preparation': 'PER_LIQUIDPREPARATION',
+            'Trailer Inspection':'PER_TRAILERINSPECTION',
             'PostCheck List': 'PER_POSTCHEKLIST',
-            'Downtime Checking': 'PER_DOWNTIMECHECKING',
+            'DownTime Tracking': 'PER_DOWNTIMECHECKING',
             'Pallet Packing': 'PER_PALLETPACKING',
-            'Purchase Order': 'PER_PURCHASEORDER'
+            'Production Order': 'PER_PURCHASEORDER'
         };
 
         return permissionMap[permissionName] || 'UNKNOWN_CODE'; // Default to UNKNOWN_CODE if not found

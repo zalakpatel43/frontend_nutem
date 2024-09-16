@@ -67,7 +67,7 @@ throw new Error('Method not implemented.');
 
     isActiveRow(row) {
         return {
-            'text-danger': !row.isActive
+            'text-dark': !row.isActive
         };
     }
 }
