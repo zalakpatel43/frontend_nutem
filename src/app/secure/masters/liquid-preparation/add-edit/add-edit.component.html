@@ -26,7 +26,7 @@
                                         <div class="row">
                                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                                 <mat-form-field appearance="fill">
-                                                    <input matInput [ngxMatDatetimePicker]="pickerStartDate"
+                                                    <input matInput [ngxMatDatetimePicker]="pickerStartDate" (dateChange)="onStartDateChange()"
                                                         placeholder="Start Date" formControlName="StartDateTime"
                                                         required>
                                                     <button type="button" mat-icon-button
@@ -481,7 +481,7 @@
                                         <div class="row">
                                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                                 <mat-form-field appearance="fill">
-                                                    <input matInput [ngxMatDatetimePicker]="pickerTestingDateTime"
+                                                    <input matInput [ngxMatDatetimePicker]="pickerTestingDateTime" (dateChange)="onTestingDateTimeChange()"
                                                         placeholder="Date Tested" formControlName="TestingDateTime"
                                                         required>
                                                     <button type="button" mat-icon-button
@@ -512,7 +512,7 @@
                                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                                 <mat-form-field appearance="fill">
                                                     <input matInput [ngxMatDatetimePicker]="pickerSampleReceivedTime"
-                                                        placeholder="Sample Received At"
+                                                        placeholder="Sample Received At" (dateChange)="onRecieveDateChange()"
                                                         formControlName="SampleReceivedTime" required>
                                                     <button type="button" mat-icon-button
                                                         (click)="pickerSampleReceivedTime.open()" matSuffix>
@@ -526,7 +526,7 @@
                                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                                 <mat-form-field appearance="fill">
                                                     <input matInput [ngxMatDatetimePicker]="pickerSampleTestedTime"
-                                                        placeholder="Sample Tested At"
+                                                        placeholder="Sample Tested At"  (dateChange)="onTestedDateChange()"
                                                         formControlName="SampleTestedTime" required>
                                                     <button type="button" mat-icon-button
                                                         (click)="pickerSampleTestedTime.open()" matSuffix>

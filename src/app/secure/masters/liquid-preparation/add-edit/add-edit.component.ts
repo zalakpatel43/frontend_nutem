@@ -71,6 +71,9 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
   productInstructionDetailsList: any[] = [];
   qCTSpecificationMasterList: any[] = [];
   tankList: any[] = [];
+  IsValidTestedDate : boolean = true;
+  IsValidQualitydDate : boolean = true;
+  StartDateOfBasicForm: any;
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router,
     private formBuilder: UntypedFormBuilder, private liquidPreparationService: LiquidPreparationService,
@@ -666,11 +669,69 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
     console.log("AddedInstructionList", this.AddedInstructionList);
   }
 
+  onStartDateChange(){
+    const StartDate = this.basicForm.get('StartDateTime')?.value;
+
+    this.StartDateOfBasicForm = new Date(StartDate);
+  }
+
+  onTestingDateTimeChange(){
+    const testingQualityDate = this.QualityForm.get('TestingDateTime')?.value;
+    const TestDateObj = new Date(testingQualityDate);
+
+    if (TestDateObj  && TestDateObj < this.StartDateOfBasicForm) {
+      this.notificationService.error("Test date should be greated than Basic Start date");
+      this.QualityForm.get('TestingDateTime')?.reset();
+      this.IsValidQualitydDate = false;
+    } else {
+      this.QualityForm.get('TestingDateTime')?.updateValueAndValidity();
+      this.IsValidQualitydDate = true;
+    }
+  }
+
+  onRecieveDateChange(){
+    const sampleReciveDate = this.QualityForm.get('SampleReceivedTime')?.value;
+    const ReciveDateObj = new Date(sampleReciveDate);
+
+    if (ReciveDateObj  && ReciveDateObj < this.StartDateOfBasicForm) {
+      this.notificationService.error("Sample received date should be greated than Basic Start date");
+      this.QualityForm.get('SampleReceivedTime')?.reset();
+      this.IsValidQualitydDate = false;
+    } else {
+      this.QualityForm.get('SampleReceivedTime')?.updateValueAndValidity();
+      this.IsValidQualitydDate = true;
+    }
+  }
+
+  onTestedDateChange(){
+    const TestDate = this.QualityForm.get('SampleTestedTime')?.value;
+    const recieveDate = this.QualityForm.get('SampleReceivedTime')?.value;
+
+    const TestDateObj = new Date(TestDate);
+    const recieveDateObj = new Date(recieveDate);
+
+    if (!recieveDate) {
+      this.notificationService.error("please select Sample recieved date");
+      this.QualityForm.get('SampleTestedTime')?.reset();
+      this.IsValidTestedDate = false;
+    }
+   else if (recieveDate && TestDate && TestDateObj < recieveDateObj) {
+      this.notificationService.error("Sample tested date should be greated than sample recieved date");
+      this.QualityForm.get('SampleTestedTime')?.reset();
+      this.IsValidTestedDate = false;
+    } else {
+      this.QualityForm.get('SampleTestedTime')?.updateValueAndValidity();
+      this.IsValidTestedDate = true;
+    }
+  }
+
 
   addQuality() {
     this.isQualityFormSubmitted = true;
-
-    if (this.QualityForm.valid) {
+    if( !this.IsValidTestedDate){
+      this.notificationService.error("Pl correct tested Date");
+    }
+    else if (this.QualityForm.valid) {
       let formvalue = this.QualityForm.value;
       console.log("quality formvalue", formvalue)
       let DoneByNames = this.usersList
@@ -692,6 +753,9 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
         this.isQualityFormSubmitted = false;
         this.CreateQualityForm();
       }
+    }
+    else{
+      this.notificationService.error("Invalid Data");
     }
     console.log("AddedQualityList", this.AddedQualityList)
   }
