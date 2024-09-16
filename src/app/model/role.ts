@@ -7,4 +7,5 @@ export class Role extends BaseAuditable {
     Permissions: Permission[]
     rolePermissions:Permission[]
     assignedPermissions: any;
+    NormalizedName:string;
 }

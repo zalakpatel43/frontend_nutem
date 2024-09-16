@@ -210,7 +210,8 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
             name: role.name,
             Permissions: transformedPermissions,
             rolePermissions:transformedPermissions, // Assign to permissions field
-            assignedPermissions: [] // Leave empty or adjust as needed
+            assignedPermissions: [],
+            NormalizedName:role.name.toUpperCase() // Leave empty or adjust as needed
         };
 
         this.roleService.addRole(payload).subscribe(
@@ -261,7 +262,8 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
         const payload: Role = {
             ...this.roleData,
             name: role.name,
-            Permissions: transformedPermissions // Assign to permissions field
+            Permissions: transformedPermissions,
+            NormalizedName:role.name.toUpperCase() // Assign to permissions field
         };
 
         this.roleService.updateRole(this.roleData.id, payload).subscribe(
