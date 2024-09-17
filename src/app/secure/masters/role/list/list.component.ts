@@ -9,9 +9,9 @@ import { RoleService } from '../role.service';
 })
 
 export class RoleListComponent implements OnInit {
-activateToggleRole(_t27: any,arg1: boolean) {
-throw new Error('Method not implemented.');
-}
+// activateToggleRole(_t27: any,arg1: boolean) {
+// throw new Error('Method not implemented.');
+// }
 
     roleData: Role[] = [];
     page: string = ApplicationPage.role;
@@ -72,7 +72,19 @@ throw new Error('Method not implemented.');
     //     }
     // }
     
+    removeRolePermission(id:number) {
+        const result = confirm(`Are you sure, you want to delete this Weight Check?`);
+        if (result) {
+            this.roleService.deleteRole(id)
+                .subscribe(() => {
+                    this.getRoleData();
+                }, () => {
+                    this.notificationService.error("Something went wrong.");
+                });
+        }
+    }
 
+  
     updateSearch(search: { [key: string]: any }) {
         this.searchData = Object.assign({}, search);
     }
