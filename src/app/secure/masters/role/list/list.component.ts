@@ -47,6 +47,18 @@ throw new Error('Method not implemented.');
             });
     }
 
+    removeRole(id:number) {
+        const result = confirm(`Are you sure, you want to delete this role?`);
+        if (result) {
+            this.roleService.deleteRole(id)
+                .subscribe(() => {
+                    this.getRoleData();
+                }, () => {
+                    this.notificationService.error("Something went wrong.");
+                });
+        }
+    }
+
     // activateToggleRole(role: Role, isActive: boolean) {
     //     const result = confirm(`Are you sure you want to ${isActive ? 'Activate' : 'Deactivate'} this role?`);
     //     if (result) {
