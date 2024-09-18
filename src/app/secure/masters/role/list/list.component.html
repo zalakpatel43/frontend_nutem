@@ -26,14 +26,17 @@
                             <a *authPermission="page + '_' + permissions.edit" [routerLink]="['..','edit',row.id]">
                                 <mat-icon>edit</mat-icon>
                             </a>
-                            <ng-container *authPermission="page + '_' + permissions.active" class="ml-10">
+                            <button (click)="removeRole(row.id)" type="button" style="border: none; background-color: white; color: red;" >
+                                <mat-icon>close</mat-icon> 
+                            </button>
+                            <!-- <ng-container *authPermission="page + '_' + permissions.active" class="ml-10">
                             <a *ngIf="row.isActive" (click)="activateToggleRole(row, false)">
                                 <mat-icon>lock</mat-icon>
                             </a>
                             <a *ngIf="!row.isActive" (click)="activateToggleRole(row, true)">
                                 <mat-icon>lock_open</mat-icon>
                             </a>
-                            </ng-container>
+                            </ng-container> -->
                         </ng-template>
                     </ngx-datatable-column>
                 </ngx-datatable>

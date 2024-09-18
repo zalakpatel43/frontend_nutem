@@ -47,18 +47,30 @@ export class RoleListComponent implements OnInit {
             });
     }
 
-    activateToggleRole(role: Role, isActive: boolean) {
-        const result = confirm(`Are you sure you want to Deactivate this role?`);
+    removeRole(id:number) {
+        const result = confirm(`Are you sure, you want to delete this role?`);
         if (result) {
-            this.roleService.deleteRole(role.id)
+            this.roleService.deleteRole(id)
                 .subscribe(() => {
-                    this.getRoleData(); // Refresh data
-                    this.notificationService.success(`Role deactivated successfully.`);
+                    this.getRoleData();
                 }, () => {
                     this.notificationService.error("Something went wrong.");
                 });
         }
     }
+
+    // activateToggleRole(role: Role, isActive: boolean) {
+    //     const result = confirm(`Are you sure you want to ${isActive ? 'Activate' : 'Deactivate'} this role?`);
+    //     if (result) {
+    //         this.roleService.toggleActivate(role.id, isActive)
+    //             .subscribe(() => {
+    //                 this.getRoleData(); // Refresh data
+    //                 this.notificationService.success(`Role ${isActive ? 'activated' : 'deactivated'} successfully.`);
+    //             }, () => {
+    //                 this.notificationService.error("Something went wrong.");
+    //             });
+    //     }
+    // }
     
     removeRolePermission(id:number) {
         const result = confirm(`Are you sure, you want to delete this Weight Check?`);
