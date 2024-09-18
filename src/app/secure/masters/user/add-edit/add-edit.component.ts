@@ -125,7 +125,8 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
             // lastName: ['', [Validators.required, Validators.maxLength(50)]],
             email: ['', [Validators.required, ValidationService.emailValidator, ValidationService.multipleemailrestrictValidator, Validators.maxLength(50)]],
             phoneNumber: ['', [Validators.maxLength(15)]],
-            role: ['', [Validators.required]]
+            role: ['', [Validators.required]],
+            name: ['', [Validators.required]],
             // reportsTo: new UntypedFormArray([], ValidationService.minSelectedCheckboxes(0)),
             // roles: new UntypedFormArray([], ValidationService.minSelectedCheckboxes(1)),
         });
@@ -271,15 +272,12 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
     }
     
     // Method to assign role to the user
-    // Method to assign role to the user
     assignRoleToUser(userId: number, role: string) {
         this.userService.assignRole(userId, role).subscribe(
             (result: any) => {
                 this.notificationService.success(`Role '${role}' assigned successfully to user.`);
             },
-            (error) => {
-                this.notificationService.error(`Failed to assign role: ${error.message}`);
-            }
+            
         );
     }
 
