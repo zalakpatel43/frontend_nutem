@@ -40,6 +40,8 @@ export class ProductionOrderListComponent implements OnInit {
     this.productionOrderService.getPOByStatus(this.selectedStatus)
       .subscribe((result: any) => {
         this.productionOrderData = result; 
+        console.log("ProductionOrderdata:",this.productionOrderData);
+        
         this.filteredProductionOrderData = result;
        // this.filterByStatus();
         // .filter((list: any) => list.status == "Open")
@@ -185,7 +187,24 @@ export class ProductionOrderListComponent implements OnInit {
     }
   }
 
-  updateSearch(search: { [key: string]: any }) {
-    this.searchData = Object.assign({}, search);
+   // Method to update search results based on emitted data from the search panel
+   updateSearch(search: { [key: string]: any }) {
+    this.searchData = { ...search };  // Store the search data
+
+    // Filtering logic based on code, poNumber, and status
+    this.filteredProductionOrderData = this.productionOrderData.filter(order => {
+      const searchText = this.searchData.searchText ? this.searchData.searchText.toLowerCase() : '';
+      const matchesCode = order.code.toLowerCase().includes(searchText);
+      const matchesPONumber = order.poNumber.toLowerCase().includes(searchText);
+
+      // Status filter (if isActive is checked, we apply that as well)
+      const matchesStatus = this.searchData.isActive
+        ? order.status.toLowerCase() === this.searchData.isActive.toLowerCase()
+        : true;
+
+      // Combine all search filters
+      return (matchesCode || matchesPONumber) && matchesStatus;
+    });
   }
+
 }

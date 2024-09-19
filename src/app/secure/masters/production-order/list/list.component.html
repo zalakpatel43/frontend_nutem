@@ -16,8 +16,8 @@
           </div>
         </div>
       </div>
-      <!-- <production-order-search-panel (searchChanged)="updateSearch($event)"></production-order-search-panel> -->
-      <div class="row">
+      <!-- Add the search panel in the production order list -->
+      <production-order-search-panel (searchChanged)="updateSearch($event)"></production-order-search-panel>      <div class="row">
         <div class="col-12">
           <table mat-table [dataSource]="filteredProductionOrderData" multiTemplateDataRows class="mat-elevation-z8">
 
@@ -27,12 +27,12 @@
               <td mat-cell *matCellDef="let row">
                 <ng-container *ngIf="column === 'code'">
                   <a mat-icon-button (click)="isRowExpanded(row)">
-                    <mat-icon>{{ isRowExpanded(row) ?  'remove_circle_outline' : 'control_point' }}</mat-icon>
+                    <mat-icon>{{ isRowExpanded(row) ? 'remove_circle_outline' : 'control_point' }}</mat-icon>
                     <!-- <mat-icon>{{ isRowExpanded(row) ? 'remove' : 'add' }}</mat-icon> -->
 
                   </a>
                   {{row[column]}}
-                  
+
                 </ng-container>
                 <ng-container *ngIf="column !== 'code' && column !== 'actions'">
                   {{row[column]}}
@@ -48,11 +48,12 @@
               </td>
             </ng-container>
 
-            
+
             <!-- Expanded Content Column -->
             <ng-container matColumnDef="expandedDetail">
               <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplay.length">
-                <div class="matgrid-element-detail" [@detailExpand]="isRowExpanded(row) ? 'expanded' : 'collapsed'" style="margin-left: 3%;">
+                <div class="matgrid-element-detail" [@detailExpand]="isRowExpanded(row) ? 'expanded' : 'collapsed'"
+                  style="margin-left: 3%;">
                   <table mat-table [dataSource]="relatedData" class="mat-elevation-z8 nested-table">
 
                     <!-- Nested Columns -->
@@ -67,8 +68,9 @@
                     <ng-container matColumnDef="date">
                       <th mat-header-cell *matHeaderCellDef> Date </th>
                       <td mat-cell *matCellDef="let data">
-                         {{data.date | date: 'dd-MMM-yyyy HH:mm a'}} 
-                         <span *ngIf="data.type === 'Weight Check' ||data.type === 'Liquid Preparation' " > To {{data.endDate | date: 'dd-MMM-yyyy HH:mm a'}} </span>
+                        {{data.date | date: 'dd-MMM-yyyy HH:mm a'}}
+                        <span *ngIf="data.type === 'Weight Check' ||data.type === 'Liquid Preparation' "> To
+                          {{data.endDate | date: 'dd-MMM-yyyy HH:mm a'}} </span>
                       </td>
                     </ng-container>
                     <ng-container matColumnDef="productName">
@@ -94,7 +96,8 @@
 
                     <!-- Nested Table Header and Rows -->
                     <tr mat-header-row
-                      *matHeaderRowDef="['type', 'code', 'date', 'productName', 'shiftName','totalcaseproduced', 'actions']"></tr>
+                      *matHeaderRowDef="['type', 'code', 'date', 'productName', 'shiftName','totalcaseproduced', 'actions']">
+                    </tr>
                     <tr mat-row
                       *matRowDef="let data; columns: ['type', 'code', 'date', 'productName', 'shiftName','totalcaseproduced',  'actions']">
                     </tr>

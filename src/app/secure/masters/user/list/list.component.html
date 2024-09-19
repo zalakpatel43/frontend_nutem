@@ -17,7 +17,7 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <user-search-panel (searchChanged)="updateSearch($event)"></user-search-panel>
+                    <!-- <user-search-panel (searchChanged)="updateSearch($event)"></user-search-panel> -->
                     <ngx-datatable class="material"
                         [rows]="userData | searchtable : searchData"
                         [columnMode]="'force'"

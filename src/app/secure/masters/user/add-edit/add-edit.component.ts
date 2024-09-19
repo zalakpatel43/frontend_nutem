@@ -179,51 +179,85 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
     }
 
 
+    // private updateUser() {
+    //     let user: User = this.frmUser.value;
+
+    //     // let reportsTo: Array<{ reportToId: number }> = []
+    //     // const reportsToList = CommonUtility.getSelectedCheckboxList(this.frmUser.value.reportsTo, this.reportsToData);
+    //     // if (CommonUtility.isNotEmpty(reportsToList)) {
+    //     //     reportsToList.forEach((item: List) => {
+    //     //         reportsTo.push({ reportToId: item.id });
+    //     //     });
+    //     // }
+
+    //     // let roles: Array<{ id: number }> = [];
+    //     // const rolesList = CommonUtility.getSelectedCheckboxList(this.frmUser.value.roles, this.roleData);
+    //     // if (CommonUtility.isNotEmpty(rolesList)) {
+    //     //     rolesList.forEach((item: List) => {
+    //     //         roles.push({ id: item.id });
+    //     //     });
+    //     // }
+
+    //     this.userData = Object.assign(this.userData, user
+    //         //     , {
+    //         //     reportsTo: reportsTo,
+    //         //     roles: roles
+    //         // }
+    //     );
+
+    //     this.userService.update(this.userData.id, this.userData)
+    //         .subscribe((result: any) => {
+    //             if (result.isSuccess) {
+                    
+    //                 this.notificationService.success("User updated successfully.");
+    //                 this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
+                    
+    //             }
+    //             else {
+    //                 this.notificationService.warning(result.message);
+    //             }
+    //         }, (error) => {
+    //             if (error.status === 400 && error.error.modelState) {
+    //                 this.error = error.error.modelState[''][0];
+    //             } else {
+    //                 this.error = 'Something went wrong';
+    //             }
+    //         });
+    // }
     private updateUser() {
         let user: User = this.frmUser.value;
-
-        // let reportsTo: Array<{ reportToId: number }> = []
-        // const reportsToList = CommonUtility.getSelectedCheckboxList(this.frmUser.value.reportsTo, this.reportsToData);
-        // if (CommonUtility.isNotEmpty(reportsToList)) {
-        //     reportsToList.forEach((item: List) => {
-        //         reportsTo.push({ reportToId: item.id });
-        //     });
-        // }
-
-        // let roles: Array<{ id: number }> = [];
-        // const rolesList = CommonUtility.getSelectedCheckboxList(this.frmUser.value.roles, this.roleData);
-        // if (CommonUtility.isNotEmpty(rolesList)) {
-        //     rolesList.forEach((item: List) => {
-        //         roles.push({ id: item.id });
-        //     });
-        // }
-
-        this.userData = Object.assign(this.userData, user
-            //     , {
-            //     reportsTo: reportsTo,
-            //     roles: roles
-            // }
-        );
-
+    
+        this.userData = Object.assign(this.userData, user);
+    
         this.userService.update(this.userData.id, this.userData)
-            .subscribe((result: any) => {
-                if (result.isSuccess) {
-                    
-                    this.notificationService.success("User updated successfully.");
-                    this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
+            .subscribe(
+                (result: any) => {
                     this.cancel();
+                    // console.log('Update Response:', result);
+                    if (result) {
+                        
+                         // Safely access result.message
+                         const errorMessage = result?.message || 'An unexpected error occurred.';
+                         this.notificationService.warning(errorMessage);
+                        
+                    } else {
+                        this.notificationService.success("User updated successfully.");
+                        this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
+                        this.cancel();
+
+                    }
+                },
+                (error) => {
+                    console.error('Update Error:', error); // Log the error
+                    // Handle errors, ensure error.message is safely accessed
+                    const errorMessage = error?.error?.modelState?.['']?.[0] || 'Something went wrong';
+                    this.error = errorMessage;
+                    this.notificationService.error(errorMessage);
                 }
-                else {
-                    this.notificationService.warning(result.message);
-                }
-            }, (error) => {
-                if (error.status === 400 && error.error.modelState) {
-                    this.error = error.error.modelState[''][0];
-                } else {
-                    this.error = 'Something went wrong';
-                }
-            });
+            );
     }
+    
+    
 
     save() {
         this.isFormSubmitted = true;
@@ -304,12 +338,11 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
 
     cancel() {
         if (this.isEditMode) {
-            this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
+          this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
+        } else {
+          this.router.navigate(['..', 'list'], { relativeTo: this.activatedRoute });
         }
-        else {
-            this.router.navigate(['..', 'list'], { relativeTo: this.activatedRoute });
-        }
-    }
+      }
 
     ngOnDestroy(): void {
         this.routerSub.unsubscribe();
