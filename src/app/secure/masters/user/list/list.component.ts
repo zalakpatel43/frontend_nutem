@@ -5,7 +5,9 @@ import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../user.service';
 
 @Component({
-    templateUrl: './list.component.html'
+ 
+    templateUrl: './list.component.html',
+    
 })
 export class UserListComponent implements OnInit {
     userData: User[] = [];
