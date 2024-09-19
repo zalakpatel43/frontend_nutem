@@ -208,9 +208,10 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
         this.userService.update(this.userData.id, this.userData)
             .subscribe((result: any) => {
                 if (result.isSuccess) {
-                    this.cancel();
+                    
                     this.notificationService.success("User updated successfully.");
                     this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
+                    this.cancel();
                 }
                 else {
                     this.notificationService.warning(result.message);
