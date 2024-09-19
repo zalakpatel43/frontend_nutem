@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit {
     password: string = "";
     userName: string = "";
     ssoToken: string = '';
+    loading: boolean = false;
 
     constructor(private router: Router, private fb: UntypedFormBuilder, private activatedRoute: ActivatedRoute,
         private publicService: PublicService, private userAuthService: UserAuthService,
@@ -60,6 +61,7 @@ export class LoginComponent implements OnInit {
             return;
         }
         this.error = null;
+        this.loading = true;
 
         const loginData = this.frmLogin.value;
         this.password = loginData.password;
@@ -67,6 +69,7 @@ export class LoginComponent implements OnInit {
 
         this.publicService.login(loginData)
             .subscribe((result) => {
+                this.loading = false;
 
                 if (result.isSuccess == true) {
                     this.userAuthService.saveToken(result.token);
@@ -87,6 +90,7 @@ export class LoginComponent implements OnInit {
                     this.error = { error: [result.message] }
                 }
             }, (error) => {
+                    this.loading = false;
                 if (error && error.status === 400) {
                     this.error = error.error ? (error.error.modelState || null) : null;
                     console.log(this.error);

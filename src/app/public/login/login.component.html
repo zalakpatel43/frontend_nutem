@@ -59,8 +59,12 @@
                         </div>
                     </div>
                     <button mat-flat-button class="app-button w-100 my-2" color="primary"
-                        [disabled]="!this.frmLogin.controls.userName.value || !this.frmLogin.controls.password.value">
-                        Login
+                        [disabled]="loading || !this.frmLogin.controls.userName.value || !this.frmLogin.controls.password.value"
+                        style="display: flex; align-items: center; justify-content: center;">
+                        <span style="display: flex; align-items: center;">
+                            <mat-spinner *ngIf="loading" diameter="24" style="margin-right: 8px;"></mat-spinner>
+                            <span *ngIf="!loading">Login</span>
+                        </span>
                     </button>
                 </form>
             </ng-container>
