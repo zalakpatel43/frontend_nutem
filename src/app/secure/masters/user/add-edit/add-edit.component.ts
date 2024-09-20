@@ -10,7 +10,8 @@ import { UserService } from '../user.service';
 import { RoleService } from '../../role/role.service';
 
 @Component({
-    templateUrl: './add-edit.component.html'
+    templateUrl: './add-edit.component.html',
+    styleUrl: './add-edit.component.scss'
 })
 
 export class UserAddEditComponent implements OnInit, OnDestroy {

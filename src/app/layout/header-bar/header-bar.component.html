@@ -2,7 +2,11 @@
     <mat-toolbar color="primary" class="app-header">
         <mat-toolbar-row>
             <!-- Logo and Dashboard -->
-            <a mat-button routerLinkActive="active" [routerLink]="['/secure/dashboard']">
+            <!-- <a mat-button routerLinkActive="active" [routerLink]="['/secure/dashboard']">
+                <img [src]="imagePath" class="img img-logo" />
+            </a> -->
+
+            <a mat-button *ngIf="ProductionOrderPermission" routerLinkActive="active" [routerLink]="['/secure/masters', 'production-order']">
                 <img [src]="imagePath" class="img img-logo" />
             </a>
 
@@ -49,10 +53,10 @@
                     <a *ngIf="PrecheckPermission" routerLinkActive="active" mat-menu-item
                         [routerLink]="['/secure/masters', 'pre-check']">
                         Pre Check</a>
-                    <a *ngIf="ProductionOrderPermission" routerLinkActive="active" mat-menu-item
+                    <!-- <a *ngIf="ProductionOrderPermission" routerLinkActive="active" mat-menu-item
                         [routerLink]="['/secure/masters', 'production-order']">
                         Production Order
-                    </a>
+                    </a> -->
                 </mat-menu>
 
                 <!-- Transactions Menu -->

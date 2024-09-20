@@ -57,7 +57,8 @@
                                 <a *ngIf="IsEditPermission" class="button-padding" color="primary" [routerLink]="['..','edit',row.id]">
                                     <mat-icon>edit</mat-icon>
                                 </a>
-                                <button *ngIf="IsDeletePermission" (click)="removeWeightCheck(row.id)" type="button" style="border: none; background-color: white; color: red;" >
+                                <button *ngIf="IsDeletePermission" (click)="removeWeightCheck(row.id)" type="button" style="color: red;" >
+                                    <!-- <mat-icon>delete</mat-icon> -->
                                     <mat-icon>close</mat-icon> 
                                 </button>
                             </ng-template>

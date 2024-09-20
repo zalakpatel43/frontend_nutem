@@ -79,8 +79,11 @@ export class LoginComponent implements OnInit {
                     setTimeout(() => {
                         const userPermissions = result.permissions;
                         localStorage.setItem('userPermissions',JSON.stringify( userPermissions));
+                        localStorage.setItem('Name',result.user.name);
+                      //  console.log("Local stroage name", localStorage.getItem('Name'));
                           this.permissionService.setPermissions();
-                        this.router.navigateByUrl('secure/dashboard');
+                        //this.router.navigateByUrl('secure/dashboard');
+                        this.router.navigateByUrl('secure/masters/production-order');
                     }, 0);
 
                     if (loginData.rememberMe === true) {

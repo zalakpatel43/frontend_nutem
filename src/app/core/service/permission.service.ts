@@ -16,7 +16,7 @@ export class PermissionService {
 
     this.permissions =  JSON.parse(localStorage.getItem('userPermissions')); 
    // this.permissions =  permissions;
-    console.log("permission from service", this.permissions);
+   // console.log("permission from service", this.permissions);
   }
 
   // Check if user has the required permission

@@ -47,11 +47,13 @@
                                 <ng-container  *ngIf="IsDeletePermission" class="ml-10">
                                     <a href="#" *ngIf="row.isActive" (click)="toggleActivate(row.id)"
                                         title="Make Inactive" class="button-padding">
-                                        <mat-icon>delete</mat-icon>
+                                        <!-- <mat-icon>delete</mat-icon> -->
+                                        <mat-icon>close</mat-icon> 
                                     </a>
                                     <a href="#" *ngIf="!row.isActive" (click)="toggleActivate(row.id)"
                                         title="Make Active" class="button-padding">
-                                        <mat-icon>delete</mat-icon>
+                                        <mat-icon>close</mat-icon> 
+                                        <!-- <mat-icon>delete</mat-icon> -->
                                     </a>
                                 </ng-container>
                             </ng-template>

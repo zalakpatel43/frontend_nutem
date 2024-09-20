@@ -17,8 +17,8 @@
                 <form #form="ngForm" novalidate class="app-form" [formGroup]="frmUser" (submit)="save()">
                     <div class="row">
                         <!-- Name -->
-                        <div class="col-md-6">
-                            <mat-form-field class="w-100">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 ">
+                            <mat-form-field class="full-width">
                                 <mat-label>Name</mat-label>
                                 <input type="text" matInput formControlName="name" textlower
                                     (keydown)="keyDownHandler($event)">
@@ -29,7 +29,7 @@
                         </div>
 
                         <!-- Username -->
-                        <div class="col-md-6">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 ">
                             <mat-form-field class="w-100">
                                 <mat-label>Username</mat-label>
                                 <input type="text" matInput formControlName="userName"
@@ -39,12 +39,10 @@
                                 </mat-validation-message>
                             </mat-form-field>
                         </div>
-                    </div>
 
-                    <div class="row">
                         <!-- Email -->
-                        <div class="col-md-6">
-                            <mat-form-field class="w-100">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 ">
+                            <mat-form-field class="full-width">
                                 <mat-label>Email</mat-label>
                                 <input type="text" matInput formControlName="email" textlower
                                     (keydown)="keyDownHandler($event)">
@@ -55,8 +53,8 @@
                         </div>
 
                         <!-- Phone Number -->
-                        <div class="col-md-6">
-                            <mat-form-field class="w-100">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 ">
+                            <mat-form-field class="full-width">
                                 <mat-label>Phone Number</mat-label>
                                 <input type="text" mask="(000) 000-0000" [dropSpecialCharacters]="false" matInput
                                     formControlName="phoneNumber" autocomplete="nope">
@@ -67,12 +65,10 @@
                                 </div>
                             </mat-form-field>
                         </div>
-                    </div>
 
-                    <div class="row">
                         <!-- Password -->
-                        <div class="col-md-6">
-                            <mat-form-field class="w-100">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 ">
+                            <mat-form-field class="full-width">
                                 <mat-label>Password</mat-label>
                                 <input [type]="hidePassword || isEditMode ? 'password' : 'text'" matInput
                                     formControlName="password" autocomplete="off" (keydown)="keyDownHandler($event)">
@@ -87,8 +83,8 @@
                         </div>
 
                         <!-- Confirm Password -->
-                        <div class="col-md-6">
-                            <mat-form-field class="w-100">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 ">
+                            <mat-form-field class="full-width">
                                 <mat-label>Confirm Password</mat-label>
                                 <input [type]="hideConfirmPassword || isEditMode ? 'password' : 'text'" matInput
                                     formControlName="confirmPassword" autocomplete="off"
@@ -104,12 +100,10 @@
                                 </mat-validation-message>
                             </mat-form-field>
                         </div>
-                    </div>
 
-                    <div class="row">
                         <!-- Role -->
-                        <div class="col-md-6">
-                            <mat-form-field class="w-100">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 ">
+                            <mat-form-field class="full-width">
                                 <mat-label>Role</mat-label>
                                 <mat-select formControlName="role">
                                     <mat-option *ngFor="let role of roleData" [value]="role.name">
@@ -120,9 +114,7 @@
                                 </mat-validation-message>
                             </mat-form-field>
                         </div>
-                    </div>
 
-                    <div class="row">
                         <div class="col-md-12">
                             &nbsp;
                         </div>
@@ -130,6 +122,11 @@
 
                     <!-- Submit and Cancel Buttons -->
                     <div class="row">
+                        <div class="col-lg-12 text-center">
+                            <button type="submit" mat-flat-button color="primary" class="app-button mr-1">Save</button>
+                        </div>
+                    </div>
+                    <!-- <div class="row">
                         <div class="col-md-8 text-right">
                             <button type="submit" mat-flat-button color="primary" class="app-button mr-1">Save
                             </button>&nbsp;&nbsp;
@@ -137,7 +134,7 @@
                                 class="app-button">Cancel
                             </button>
                         </div>
-                    </div>
+                    </div> -->
                 </form>
             </div>
         </div>

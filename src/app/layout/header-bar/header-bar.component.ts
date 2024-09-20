@@ -16,6 +16,7 @@ export class HeaderBarComponent implements OnInit, OnDestroy {
     basePath: string = APIConstant.basePath;
     userName: string = '';
     imagePath: string = 'assets/images/logo.png';
+    
 
     isWeightCheckPermission : boolean = false;
     TrailerLoadingPermission : boolean = false;
@@ -38,8 +39,9 @@ export class HeaderBarComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.userName = localStorage.getItem('Name');
         this.checkPermission();
-        this.getUser();
+      //  this.getUser();
     }
 
     checkPermission(){
