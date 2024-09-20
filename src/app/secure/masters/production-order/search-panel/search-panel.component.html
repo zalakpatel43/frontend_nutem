@@ -1,7 +1,15 @@
 <div class="row">
+    <!-- Text Search for Production Order -->
     <div class="col-lg-6">
-        <search-text [placeHolder]="'Search Production Order'" (textSearchEntered)="updateSearchTerms(searchKey, $event)">
-        </search-text>
+      <search-text [placeHolder]="'Search Production Order'" 
+                   (textSearchEntered)="updateSearchTerms('searchText', $event)">
+      </search-text>
     </div>
-    <!-- You can add more search criteria here if needed -->
-</div>
+  
+    <!-- Checkbox Search for Status (Active/Inactive) -->
+    <div class="col-lg-4">
+      <search-inactive (chkChanged)="updateSearchTerms('isActive', $event)">
+      </search-inactive>
+    </div>
+  </div>
+  

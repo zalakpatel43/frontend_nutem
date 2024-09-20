@@ -26,6 +26,8 @@ export class UserService extends CRUDService<User>{
     getRoles(userId: number): Observable<string[]> {
         return this._baseService.get(`${APIConstant.user}/${userId}/roles`);
     }
-    
+    deleteUser(id: number): Observable<any> {
+        return this._baseService.delete(`${APIConstant.UserList}/${id}`);
+    }
     
 }

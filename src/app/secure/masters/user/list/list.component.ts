@@ -6,7 +6,9 @@ import { UserService } from '../user.service';
 import { PermissionService } from 'src/app/core/service/permission.service';
 
 @Component({
-    templateUrl: './list.component.html'
+ 
+    templateUrl: './list.component.html',
+    
 })
 export class UserListComponent implements OnInit {
     userData: User[] = [];
@@ -74,12 +76,12 @@ export class UserListComponent implements OnInit {
         };
     }
 
-    toggleActivate(townId: number, isActive: boolean) {
-        const result = confirm(`Are you sure you want to ${isActive ? `Activate` : `Deactivate`} ?`);
+    toggleActivate(townId: number) {
+        const result = confirm(`Are you sure you want to Deactivate ?`);
         if (result) {
-            this.userService.toggleActivate(townId, isActive)
+            this.userService.deleteUser(townId)
                 .subscribe((result) => {
-                    if (result.isSuccess) {
+                    if (result) {
                         this.getUserData();
                     }
                     else {

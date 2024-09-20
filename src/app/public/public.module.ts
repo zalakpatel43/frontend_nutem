@@ -5,6 +5,7 @@ import { PublicComponents, PublicRoutingModule } from './public-routing.module';
 import { LayoutModule } from '../layout';
 import { NgxMaskDirective,NgxMaskPipe } from 'ngx-mask'
 import { CookieService } from 'ngx-cookie-service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { CookieService } from 'ngx-cookie-service';
         LayoutModule,
         PublicRoutingModule,
         SharedModule,
-        NgxMaskDirective,NgxMaskPipe
+        NgxMaskDirective,NgxMaskPipe,
+        MatProgressSpinnerModule
     ],
     providers: [
         PublicService,
