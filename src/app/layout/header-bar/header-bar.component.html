@@ -16,22 +16,10 @@
                     <mat-icon>arrow_drop_down</mat-icon>
                 </button>
                 <mat-menu #mastersMenu="matMenu">
-                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'user']">User</a>
-                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'role']"
-                        *authPermission="rolePage + '_' + permissions.list">Role</a>
-                    <!-- <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'permissions']"
-                        *authPermission="permissionPage + '_' + permissions.list">Permission</a> -->
-                    <!-- <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'company']"
-                        *authPermission="companyPage + '_' + permissions.list">Company</a> -->
-                    <!-- <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'location']"
-                        *authPermission="locationPage + '_' + permissions.list">Locations</a>
-                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'module']"
-                        *authPermission="modulePage + '_' + permissions.list">Module</a>
-                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'student']"
-                        *authPermission="modulePage + '_' + permissions.list">Student</a>
-
-                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'module-group']"
-                        *authPermission="moduleGroupPage + '_' + permissions.list">Module Group</a> -->
+                    <a *ngIf="UserPermission" routerLinkActive="active" mat-menu-item
+                        [routerLink]="['/secure/masters', 'user']">User</a>
+                    <a *ngIf="RolePermission" routerLinkActive="active" mat-menu-item
+                        [routerLink]="['/secure/masters', 'role']">Role</a>
                 </mat-menu>
 
                 <!-- Configuration Menu -->
@@ -41,54 +29,30 @@
                     <mat-icon>arrow_drop_down</mat-icon>
                 </button>
                 <mat-menu #ProcessMenu="matMenu">
-                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'weight-check']"
-                    >Weight Check</a>
-                    <!-- <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'permission']"
-                    >Permission</a> -->
-                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'trailor-loading']"
-                    >Trailer Loading</a>
-                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'pallet-packing']"
-                    >Pallet Packing</a>
-                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'attribute-check']"
-                    >Attribute Check</a>
-                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'trailer-inspection']"
-                    >Trailer Inspection</a>
-                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'downtimeTracking']"
-                    >DownTime Tracking</a>
-                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'liquid-preparation']"
-                    >Liquid Preparation</a>
-                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'post-check']">
+                    <a  *ngIf="hasPermission('Weight Check (PER_WEIGHTCHECK) - View')"  routerLinkActive="active" mat-menu-item
+                        [routerLink]="['/secure/masters', 'weight-check']">Weight Check</a>
+                    <a *ngIf="TrailerLoadingPermission" routerLinkActive="active" mat-menu-item
+                        [routerLink]="['/secure/masters', 'trailor-loading']">Trailer Loading</a>
+                    <a *ngIf="PalletPackingPermission" routerLinkActive="active" mat-menu-item
+                        [routerLink]="['/secure/masters', 'pallet-packing']">Pallet Packing</a>
+                    <a *ngIf="AttributeCheckPermission" routerLinkActive="active" mat-menu-item
+                        [routerLink]="['/secure/masters', 'attribute-check']">Attribute Check</a>
+                    <a *ngIf="TrailerInspectionPermission" routerLinkActive="active" mat-menu-item
+                        [routerLink]="['/secure/masters', 'trailer-inspection']">Trailer Inspection</a>
+                    <a *ngIf="DowntimeTrackingPermission" routerLinkActive="active" mat-menu-item
+                        [routerLink]="['/secure/masters', 'downtimeTracking']">DownTime Tracking</a>
+                    <a *ngIf="LiquidPreaprationPermission" routerLinkActive="active" mat-menu-item
+                        [routerLink]="['/secure/masters', 'liquid-preparation']">Liquid Preparation</a>
+                    <a *ngIf="PostCheckPermission" routerLinkActive="active" mat-menu-item
+                        [routerLink]="['/secure/masters', 'post-check']">
                         Post Check</a>
-                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'pre-check']">
+                    <a *ngIf="PrecheckPermission" routerLinkActive="active" mat-menu-item
+                        [routerLink]="['/secure/masters', 'pre-check']">
                         Pre Check</a>
-                        <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'production-order']">
-                            Production Order
-                          </a>
-                     
-                   
-                  <!--  <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'bom']"
-                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'pallet-packing']"
-                    >Pallet Packing</a>
-                     <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'pre-check']">
-                        Pre Check
-                      </a> -->
-                    <!-- <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'customer']"
-                    *authPermission="customerPage + '_' + permissions.list">Customer</a>
-                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'bom']"
-                        *authPermission="bomPage + '_' + permissions.list">BOM</a>
-                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'group-code']"
-                        *authPermission="groupCodePage + '_' + permissions.list">Group Code</a>
-                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'terms-conditions']"
-                        *authPermission="termsAndConditionsPage + '_' + permissions.list">Terms And Conditions</a>
-                  
-                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'product']"
-                        *authPermission="productPage + '_' + permissions.list">Product</a>
-                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'vendor-master']"
-                        *authPermission="vendorMasterPage + '_' + permissions.list">Vendors</a>
-                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'workflow']"
-                        *authPermission="workflowMasterPage + '_' + permissions.list">Workflow</a>
-                    <a routerLinkActive="active" mat-menu-item [routerLink]="['/secure/masters', 'inventory-type']"
-                        *authPermission="inventoryTypePage + '_' + permissions.list">Inventory Types</a> -->
+                    <a *ngIf="ProductionOrderPermission" routerLinkActive="active" mat-menu-item
+                        [routerLink]="['/secure/masters', 'production-order']">
+                        Production Order
+                    </a>
                 </mat-menu>
 
                 <!-- Transactions Menu -->
@@ -145,13 +109,11 @@
     <mat-sidenav-container fxFlexFill>
         <mat-sidenav #sidenav position="end">
             <mat-nav-list>
-                <a routerLinkActive="active" mat-list-item (click)="sidenav.toggle()"
+                <a *ngIf="UserPermission" routerLinkActive="active" mat-list-item (click)="sidenav.toggle()"
                     [routerLink]="['/secure','dashboard']">Dashboard</a>
-                <a routerLinkActive="active" mat-list-item (click)="sidenav.toggle()"
-                    *authPermission="userPage + '_' + permissions.list"
+                <a *ngIf="UserPermission" routerLinkActive="active" mat-list-item (click)="sidenav.toggle()"
                     [routerLink]="['/secure/masters','user']">User</a>
-                <a routerLinkActive="active" mat-list-item (click)="sidenav.toggle()"
-                    *authPermission="rolePage + '_' + permissions.list"
+                <a *ngIf="RolePermission" routerLinkActive="active" mat-list-item (click)="sidenav.toggle()"
                     [routerLink]="['/secure/masters','role']">Role</a>
                 <!-- <a routerLinkActive="active" mat-list-item (click)="sidenav.toggle()"
                     [routerLink]="['/secure/masters','permissions']"

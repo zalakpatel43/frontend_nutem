@@ -4,6 +4,7 @@ import { ProductionOrderService } from '../production-order.service';
 import { ToastrService } from 'ngx-toastr';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
+import { PermissionService } from 'src/app/core/service/permission.service';
 
 @Component({
   selector: 'app-production-order-list',
@@ -27,12 +28,20 @@ export class ProductionOrderListComponent implements OnInit {
   searchData: { [key: string]: any } = {};
   statusOptions: string[] = ['Open', 'Closed']; // Dropdown options
   selectedStatus: string = 'Open';
+
+  IsAddPemission:boolean = false;
+  IsEditPermission: boolean = false;
+  IsDeletePermission: boolean = false;
   
 
   constructor(private productionOrderService: ProductionOrderService,
-              private notificationService: ToastrService,private router: Router) { }
+              private notificationService: ToastrService,private router: Router,
+              private permissionService: PermissionService) { }
 
   ngOnInit(): void {
+    this.IsAddPemission = this.permissionService.hasPermission('Production Order (PER_PURCHASEORDER) - Add');
+    this.IsEditPermission = this.permissionService.hasPermission('Production Order (PER_PURCHASEORDER) - Edit');
+    this.IsDeletePermission = this.permissionService.hasPermission('Production Order (PER_PURCHASEORDER) - Delete');
     this.getProductionOrderData();
   }
 

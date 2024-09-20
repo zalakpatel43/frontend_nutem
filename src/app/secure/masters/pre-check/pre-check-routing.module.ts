@@ -5,6 +5,7 @@ import { ApplicationPage, PageAuthGuard } from '@app-core';
 import { PreCheckListComponent } from './list/list.component';
 import { PreCheckAddEditComponent } from './add-edit/add-edit.component';
 import { PreCheckSearchPanelComponent } from './search-panel/search-panel.component';
+import { PermissionGuard } from 'src/app/core/guards/permission-guard.service';
 
 const routes: Routes = [
   {
@@ -15,19 +16,19 @@ const routes: Routes = [
       {
         path: 'list',
         component: PreCheckListComponent,
-        canActivate: [PageAuthGuard],
-        data: { page: ApplicationPage.preCheck, title: 'PreCheck' }
+        canActivate: [PermissionGuard],
+        data: { permission: 'PreCheck List (PER_PRECHEKLIST) - View' },
       },
       {
         path: 'add',
-        canActivate: [PageAuthGuard],
-        data: { page: ApplicationPage.preCheck, title: 'PreCheck' },
+        canActivate: [PermissionGuard],
+        data: { permission: 'PreCheck List (PER_PRECHEKLIST) - Add' },
         component: PreCheckAddEditComponent
       },
       {
         path: 'edit/:id',
-        canActivate: [PageAuthGuard],
-        data: { page: ApplicationPage.preCheck, title: 'PreCheck' },
+        canActivate: [PermissionGuard],
+        data: { permission: 'PreCheck List (PER_PRECHEKLIST) - Edit' },
         component: PreCheckAddEditComponent
       },
     ]

@@ -3,6 +3,7 @@ import { ApplicationPage, PermissionType } from '@app-core';
 import { PalletPackingService } from '../pallet-packing.service';
 import { ToastrService } from 'ngx-toastr';
 import { PalletPacking } from 'src/app/model/pallet-packing';
+import { PermissionService } from 'src/app/core/service/permission.service';
 
 @Component({
     selector: 'app-pallet-packing-list',
@@ -20,10 +21,18 @@ export class PalletPackingListComponent implements OnInit {
     searchData: { [key: string]: any } = {};
     showDeleteModal: boolean = false;
 
+    IsAddPemission:boolean = false;
+    IsEditPermission: boolean = false;
+    IsDeletePermission: boolean = false;
+
     constructor(private palletPackingService: PalletPackingService,
-                private notificationService: ToastrService) { }
+                private notificationService: ToastrService,
+                private permissionService: PermissionService) { }
 
     ngOnInit(): void {
+        this.IsAddPemission = this.permissionService.hasPermission('Pallet Packing (PER_PALLETPACKING) - Add');
+        this.IsEditPermission = this.permissionService.hasPermission('Pallet Packing (PER_PALLETPACKING) - Edit');
+        this.IsDeletePermission = this.permissionService.hasPermission('Pallet Packing (PER_PALLETPACKING) - Delete');
         this.getPalletPackingData();
     }
 

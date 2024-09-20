@@ -5,32 +5,33 @@ import { TrailerInspectionListComponent } from './list/list.component';
 import { ApplicationPage, PageAuthGuard } from '@app-core';
 import { TrailerInspectionAddEditComponent } from './add-edit/add-edit.component';
 import { TrailerInspectionSearchPanelComponent } from './search-panel/search-panel.component';
+import { PermissionGuard } from 'src/app/core/guards/permission-guard.service';
 
 const routes: Routes = [
   {
-      path: '',
-      component: TrailerInspectionComponent,
-      children: [
-          { path: '', redirectTo: 'list', pathMatch: 'full' },
-          {
-              path: 'list',
-              component: TrailerInspectionListComponent,
-              canActivate: [PageAuthGuard],
-              data: { page: ApplicationPage.trailerInspection, title: 'TrailerInspection' }
-          },
-          {
-              path: 'add',
-              canActivate: [PageAuthGuard],
-              data: { page: ApplicationPage.trailerInspection,  title: 'TrailerInspection' },
-              component: TrailerInspectionAddEditComponent
-          },
-          {
-              path: 'edit/:id',
-              canActivate: [PageAuthGuard],
-              data: { page: ApplicationPage.trailerInspection,  title: 'TrailerInspection' },
-              component: TrailerInspectionAddEditComponent
-          },
-      ]
+    path: '',
+    component: TrailerInspectionComponent,
+    children: [
+      { path: '', redirectTo: 'list', pathMatch: 'full' },
+      {
+        path: 'list',
+        component: TrailerInspectionListComponent,
+        canActivate: [PermissionGuard],
+        data: { permission: 'Trailer Inspection (PER_TRAILERINSPECTION) - View' },
+      },
+      {
+        path: 'add',
+        canActivate: [PermissionGuard],
+        data: { permission: 'Trailer Inspection (PER_TRAILERINSPECTION) - Add' },
+        component: TrailerInspectionAddEditComponent
+      },
+      {
+        path: 'edit/:id',
+        canActivate: [PermissionGuard],
+        data: { permission: 'Trailer Inspection (PER_TRAILERINSPECTION) - Edit' },
+        component: TrailerInspectionAddEditComponent
+      },
+    ]
   }
 ];
 
@@ -41,6 +42,6 @@ const routes: Routes = [
 export class TrailerInspectionRoutingModule { }
 export const TrailerInspectionComponents = [
   TrailerInspectionSearchPanelComponent, TrailerInspectionComponent, TrailerInspectionListComponent,
-   TrailerInspectionAddEditComponent
-  
+  TrailerInspectionAddEditComponent
+
 ];

@@ -5,6 +5,7 @@ import { ApplicationPage, PageAuthGuard } from '@app-core';
 import { DowntimeTrackingListComponent } from './list/list.component';
 import { DowntimeTrackingAddEditComponent } from './add-edit/add-edit.component';
 import { DowntimeTrackingSearchPanelComponent } from './search-panel/search-panel.component';
+import { PermissionGuard } from 'src/app/core/guards/permission-guard.service';
 
 const routes: Routes = [
   {
@@ -15,19 +16,19 @@ const routes: Routes = [
       {
         path: 'list',
         component: DowntimeTrackingListComponent,
-        canActivate: [PageAuthGuard],
-        data: { page: ApplicationPage.downtimeTracking, title: 'Downtime Tracking' }
+        canActivate: [PermissionGuard],
+        data: { permission: 'DownTime Tracking (PER_DOWNTIMECHECKING) - View' },
       },
       {
         path: 'add',
-        canActivate: [PageAuthGuard],
-        data: { page: ApplicationPage.downtimeTracking, title: 'Downtime Tracking' },
+        canActivate: [PermissionGuard],
+        data: { permission: 'DownTime Tracking (PER_DOWNTIMECHECKING) - Add' },
         component: DowntimeTrackingAddEditComponent
       },
       {
         path: 'edit/:id',
-        canActivate: [PageAuthGuard],
-        data: { page: ApplicationPage.downtimeTracking, title: 'Downtime Tracking' },
+        canActivate: [PermissionGuard],
+        data: { permission: 'DownTime Tracking (PER_DOWNTIMECHECKING) - Edit' },
         component: DowntimeTrackingAddEditComponent
       },
     ]

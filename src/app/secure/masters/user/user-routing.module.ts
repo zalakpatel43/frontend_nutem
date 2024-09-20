@@ -5,6 +5,7 @@ import { UserAddEditComponent } from './add-edit/add-edit.component';
 import { UserListComponent } from './list/list.component';
 import { UserSearchPanelComponent } from './search-panel/search-panel.component';
 import { UserComponent } from './user.component';
+import { PermissionGuard } from 'src/app/core/guards/permission-guard.service';
 
 //routes
 const routes: Routes = [
@@ -15,20 +16,20 @@ const routes: Routes = [
             { path: '', redirectTo: 'list', pathMatch: 'full' },
             {
                 path: 'list',
-                canActivate: [PageAuthGuard],
+                canActivate: [PermissionGuard],
+                data: { permission: 'User (PER_USER) - View' },
                 component: UserListComponent,
-                data: { page: ApplicationPage.user, action: PermissionType.list,title: 'User' }
             },
             {
                 path: 'add',
-                canActivate: [PageAuthGuard],
-                data: { page: ApplicationPage.user, action: PermissionType.create, title: 'User' },
+                canActivate: [PermissionGuard],
+                data: { permission: 'User (PER_USER) - Add' },
                 component: UserAddEditComponent
             },
             {
                 path: 'edit/:id',
-                canActivate: [PageAuthGuard],
-                data: { page: ApplicationPage.user, action: PermissionType.edit, title: 'User' },
+                canActivate: [PermissionGuard],
+                data: { permission: 'User (PER_USER) - Edit' },
                 component: UserAddEditComponent
             }
         ]

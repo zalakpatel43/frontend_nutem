@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApplicationPage, PermissionType } from '@app-core';
 import { ToastrService } from 'ngx-toastr';
 import { LiquidPreparationService } from '../liquid-preparation.service';
+import { PermissionService } from 'src/app/core/service/permission.service';
 
 @Component({
   selector: 'app-list',
@@ -23,10 +24,18 @@ export class LiquidPreparationListComponent implements OnInit {
        // isActive: false
     };
   
+    IsAddPemission:boolean = false;
+    IsEditPermission: boolean = false;
+    IsDeletePermission: boolean = false;
+
     constructor(private liquidPreparationService: LiquidPreparationService,
-        private notificationService: ToastrService) { }
+        private notificationService: ToastrService,
+        private permissionService: PermissionService) { }
   
     ngOnInit(): void {
+        this.IsAddPemission = this.permissionService.hasPermission('Liquid Preparation (PER_LIQUIDPREPARATION) - Add');
+        this.IsEditPermission = this.permissionService.hasPermission('Liquid Preparation (PER_LIQUIDPREPARATION) - Edit');
+        this.IsDeletePermission = this.permissionService.hasPermission('Liquid Preparation (PER_LIQUIDPREPARATION) - Delete');
         this.getliquidPreparationData();
     }
   

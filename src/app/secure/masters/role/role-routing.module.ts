@@ -5,6 +5,7 @@ import { RoleAddEditComponent } from './add-edit/add-edit.component';
 import { RoleListComponent } from './list/list.component';
 import { RoleSearchPanelComponent } from './search-panel/search-panel.component';
 import { ApplicationPage, PageAuthGuard, PermissionType } from '@app-core';
+import { PermissionGuard } from 'src/app/core/guards/permission-guard.service';
 
 //routes
 const routes: Routes = [
@@ -16,19 +17,19 @@ const routes: Routes = [
             {
                 path: 'list',
                 component: RoleListComponent,
-                canActivate: [PageAuthGuard],
-                data: { page: ApplicationPage.role, action: PermissionType.list,title: 'Role' }
+                canActivate: [PermissionGuard],
+                data: { permission: 'Role (PER_ROLE) - View' },
             },
             {
                 path: 'add',
-                canActivate: [PageAuthGuard],
-                data: { page: ApplicationPage.role, action: PermissionType.create, title: 'Role' },
+                canActivate: [PermissionGuard],
+                data: { permission: 'Role (PER_ROLE) - Add' },
                 component: RoleAddEditComponent
             },
             {
                 path: 'edit/:id',
-                canActivate: [PageAuthGuard],
-                data: { page: ApplicationPage.role, action: PermissionType.edit, title: 'Role' },
+                canActivate: [PermissionGuard],
+                data: { permission: 'Role (PER_ROLE) - Edit' },
                 component: RoleAddEditComponent
             },
         ]

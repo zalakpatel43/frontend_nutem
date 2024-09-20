@@ -5,6 +5,7 @@ import { ApplicationPage, PageAuthGuard } from '@app-core';
 import { PostCheckListComponent } from './list/list.component';
 import { PostCheckAddEditComponent } from './add-edit/add-edit.component';
 import { PostCheckSearchPanelComponent } from './search-panel/search-panel.component';
+import { PermissionGuard } from 'src/app/core/guards/permission-guard.service';
 
 const routes: Routes = [
   {
@@ -15,19 +16,19 @@ const routes: Routes = [
       {
         path: 'list',
         component: PostCheckListComponent,
-        canActivate: [PageAuthGuard],
-        data: { page: ApplicationPage.postCheck, title: 'PostCheck' }
+        canActivate: [PermissionGuard],
+        data: { permission: 'PostCheck List (PER_POSTCHEKLIST) - View' },
       },
       {
         path: 'add',
-        canActivate: [PageAuthGuard],
-        data: { page: ApplicationPage.postCheck, title: 'PostCheck' },
+        canActivate: [PermissionGuard],
+        data: { permission: 'PostCheck List (PER_POSTCHEKLIST) - Add' },
         component: PostCheckAddEditComponent
       },
       {
         path: 'edit/:id',
-        canActivate: [PageAuthGuard],
-        data: { page: ApplicationPage.postCheck, title: 'PostCheck' },
+        canActivate: [PermissionGuard],
+        data: { permission: 'PostCheck List (PER_POSTCHEKLIST) - Edit' },
         component: PostCheckAddEditComponent
       },
     ]

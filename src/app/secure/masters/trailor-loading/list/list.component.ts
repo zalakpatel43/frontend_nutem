@@ -3,6 +3,8 @@ import { ApplicationPage, PermissionType } from '@app-core';
 import { TrailerLoadingService } from '../trailor-loading.service';
 import { ToastrService } from 'ngx-toastr';
 import { TrailerLoading } from 'src/app/model/trailor-loading';
+import { PermissionService } from 'src/app/core/service/permission.service';
+
 
 @Component({
     selector: 'app-trailer-loading-list',
@@ -21,10 +23,18 @@ export class TrailerLoadingListComponent implements OnInit {
     searchData: { [key: string]: any } = {};
     showDeleteModal: boolean = false;
 
+    IsAddPemission:boolean = false;
+    IsEditPermission: boolean = false;
+    IsDeletePermission: boolean = false;
+
     constructor(private trailerLoadingService: TrailerLoadingService,
-                private notificationService: ToastrService) { }
+                private notificationService: ToastrService,
+                private permissionService: PermissionService) { }
 
     ngOnInit(): void {
+        this.IsAddPemission = this.permissionService.hasPermission('Trailer Loading (PER_TRAILERLOADING) - Add');
+        this.IsEditPermission = this.permissionService.hasPermission('Trailer Loading (PER_TRAILERLOADING) - Edit');
+        this.IsDeletePermission = this.permissionService.hasPermission('Trailer Loading (PER_TRAILERLOADING) - Delete');
         this.getTrailerLoadingData();
     }
 

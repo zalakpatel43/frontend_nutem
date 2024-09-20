@@ -5,6 +5,7 @@ import { TrailerLoadingListComponent } from './list/list.component';
 import { ApplicationPage, PageAuthGuard } from '@app-core';
 import { TrailerLoadingAddEditComponent } from './add-edit/add-edit.component';
 import { TrailerLoadingSearchPanelComponent } from './search-panel/search-panel.component';
+import { PermissionGuard } from 'src/app/core/guards/permission-guard.service';
 const routes: Routes = [
   {
     path: '',
@@ -14,19 +15,19 @@ const routes: Routes = [
       {
         path: 'list',
         component: TrailerLoadingListComponent,
-        canActivate: [PageAuthGuard],
-        data: { page: ApplicationPage.trailerLoading, title: 'Trailer Loading' }
+        canActivate: [PermissionGuard],
+        data: { permission: 'Trailer Loading (PER_TRAILERLOADING) - View' }
       },
       {
         path: 'add',
-        canActivate: [PageAuthGuard],
-        data: { page: ApplicationPage.trailerLoading, title: 'Trailer Loading' },
+        canActivate: [PermissionGuard],
+        data: { permission: 'Trailer Loading (PER_TRAILERLOADING) - Add' },
         component: TrailerLoadingAddEditComponent
       },
       {
         path: 'edit/:id',
-        canActivate: [PageAuthGuard],
-        data: { page: ApplicationPage.trailerLoading, title: 'Trailer Loading' },
+        canActivate: [PermissionGuard],
+        data: { permission: 'Trailer Loading (PER_TRAILERLOADING) - Edit' },
         component: TrailerLoadingAddEditComponent
       },
     ]

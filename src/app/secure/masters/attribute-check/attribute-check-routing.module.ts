@@ -5,6 +5,7 @@ import { ApplicationPage, PageAuthGuard } from '@app-core';
 import { AttributeCheckListComponent } from './list/list.component';
 import { AttributeCheckAddEditComponent } from './add-edit/add-edit.component';
 import { AttributeCheckSearchPanelComponent } from './search-panel/search-panel.component';
+import { PermissionGuard } from 'src/app/core/guards/permission-guard.service';
 
 const routes: Routes = [
   {
@@ -15,19 +16,19 @@ const routes: Routes = [
           {
               path: 'list',
               component: AttributeCheckListComponent,
-              canActivate: [PageAuthGuard],
-              data: { page: ApplicationPage.attributeCheck, title: 'AttributeCheck' }
+              canActivate: [PermissionGuard],
+              data: { permission: 'Attribute Check (PER_ATTRIBUTECHECK) - View' },
           },
           {
               path: 'add',
-              canActivate: [PageAuthGuard],
-              data: { page: ApplicationPage.attributeCheck,  title: 'AttributeCheck' },
+              canActivate: [PermissionGuard],
+              data: { permission: 'Attribute Check (PER_ATTRIBUTECHECK) - Add' },
               component: AttributeCheckAddEditComponent
           },
           {
               path: 'edit/:id',
-              canActivate: [PageAuthGuard],
-              data: { page: ApplicationPage.attributeCheck,  title: 'AttributeCheck' },
+              canActivate: [PermissionGuard],
+              data: { permission: 'Attribute Check (PER_ATTRIBUTECHECK) - Edit' },
               component: AttributeCheckAddEditComponent
           },
       ]

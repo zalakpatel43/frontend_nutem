@@ -8,7 +8,7 @@
                 <div class="col-lg-5 col-sm-3 col-2 d-flex justify-content-end rightSideHeader mb10">
                     <div>
                         <a mat-flat-button color="primary" class="app-button"
-                            *authPermission="page + '_' + permissions.create" [routerLink]="['../','add']">
+                        *ngIf="IsAddPemission"  [routerLink]="['../','add']">
                             <span>Add New</span>
                             <i class="icon-plus"></i>
                         </a>
@@ -37,13 +37,13 @@
                                 <span>{{value | date: 'MM/dd/yyyy hh:mm a'}}</span>
                             </ng-template>
                         </ngx-datatable-column>
-                        <ngx-datatable-column name="Actions">
+                        <ngx-datatable-column name="Actions"  *ngIf="IsEditPermission || IsDeletePermission" >
                             <ng-template let-row="row" ngx-datatable-cell-template>
-                                <a *authPermission="page + '_' + permissions.edit" [routerLink]="['../','edit',row.id]"
+                                <a  *ngIf="IsEditPermission" [routerLink]="['../','edit',row.id]"
                                     title="Edit" class="button-padding">
                                     <mat-icon>edit</mat-icon>
                                 </a>
-                                <ng-container *authPermission="page + '_' + permissions.active" class="ml-10">
+                                <ng-container  *ngIf="IsDeletePermission"  class="ml-10">
                                     <a href="#" *ngIf="row.isActive" (click)="toggleActivate(row.id, false)"
                                         title="Make Inactive" class="button-padding">
                                         <mat-icon>lock</mat-icon>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApplicationPage, PermissionType } from '@app-core';
 import { DowntimeTrackingService } from '../downtime.service';
 import { ToastrService } from 'ngx-toastr';
+import { PermissionService } from 'src/app/core/service/permission.service';
 
 @Component({
   selector: 'app-list',
@@ -21,10 +22,18 @@ export class DowntimeTrackingListComponent implements OnInit {
      // isActive: false
   };
 
+  IsAddPemission:boolean = false;
+  IsEditPermission: boolean = false;
+  IsDeletePermission: boolean = false;
+
   constructor(private downtimeTrackingService: DowntimeTrackingService,
-              private notificationService: ToastrService) { }
+              private notificationService: ToastrService,
+              private permissionService: PermissionService) { }
 
   ngOnInit(): void {
+    this.IsAddPemission = this.permissionService.hasPermission('DownTime Tracking (PER_DOWNTIMECHECKING) - Add');
+    this.IsEditPermission = this.permissionService.hasPermission('DownTime Tracking (PER_DOWNTIMECHECKING) - Edit');
+    this.IsDeletePermission = this.permissionService.hasPermission('DownTime Tracking (PER_DOWNTIMECHECKING) - Delete');
       this.getDowntimeTrackingData();
   }
 

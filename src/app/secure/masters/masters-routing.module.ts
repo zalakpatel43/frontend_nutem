@@ -44,7 +44,7 @@ const routes: Routes = [
             {
                 path: 'weight-check',
                 canActivate: [PageAuthGuard],
-                data: { page: ApplicationPage.weightCheck },
+                data: { page: ApplicationPage.weightCheck, action: PermissionType.list },
                 loadChildren: () => import('./weight-check/weight-check.module').then(m => m.WeightCheckModule)
             },
             {

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApplicationPage, PermissionType } from '@app-core';
 import { ToastrService } from 'ngx-toastr';
 import { TrailerInspectionService } from '../trailer-inspection.service';
+import { PermissionService } from 'src/app/core/service/permission.service';
 
 @Component({
   selector: 'app-list',
@@ -24,10 +25,19 @@ export class TrailerInspectionListComponent  implements OnInit {
   };
   showDeleteModal : boolean = false;
 
+  IsAddPemission:boolean = false;
+  IsEditPermission: boolean = false;
+  IsDeletePermission: boolean = false;
+
   constructor(private trailerInspectionService: TrailerInspectionService,
-      private notificationService: ToastrService) { }
+      private notificationService: ToastrService,
+      private permissionService: PermissionService
+    ) { }
 
   ngOnInit(): void {
+    this.IsAddPemission = this.permissionService.hasPermission('Trailer Inspection (PER_TRAILERINSPECTION) - Add');
+    this.IsEditPermission = this.permissionService.hasPermission('Trailer Inspection (PER_TRAILERINSPECTION) - Edit');
+    this.IsDeletePermission = this.permissionService.hasPermission('Trailer Inspection (PER_TRAILERINSPECTION) - Delete');
       this.getTrailerInspectionData();
   }
 

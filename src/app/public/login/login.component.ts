@@ -4,6 +4,7 @@ import { UntypedFormBuilder, FormControl, UntypedFormGroup, Validators } from '@
 import { UserAuthService, APIConstant, CommonUtility } from '@app-core';
 import { PublicService } from '../public.service';
 import { CookieService } from 'ngx-cookie-service';
+import { PermissionService } from 'src/app/core/service/permission.service';
 
 @Component({
     templateUrl: './login.component.html',
@@ -23,7 +24,7 @@ export class LoginComponent implements OnInit {
 
     constructor(private router: Router, private fb: UntypedFormBuilder, private activatedRoute: ActivatedRoute,
         private publicService: PublicService, private userAuthService: UserAuthService,
-        private cookieService: CookieService) {
+        private permissionService: PermissionService, private cookieService: CookieService) {
         this.createForm();
 
         const cookieExists: boolean = cookieService.check('Skyward_UserName');
@@ -73,6 +74,9 @@ export class LoginComponent implements OnInit {
                     this.userAuthService.saveUser(result);
 
                     setTimeout(() => {
+                        const userPermissions = result.permissions;
+                        localStorage.setItem('userPermissions',JSON.stringify( userPermissions));
+                          this.permissionService.setPermissions();
                         this.router.navigateByUrl('secure/dashboard');
                     }, 0);
 

@@ -3,6 +3,8 @@ import { ApplicationPage, PermissionType } from '@app-core';
 import { Role } from '@app-models';
 import { ToastrService } from 'ngx-toastr';
 import { RoleService } from '../role.service';
+import { PermissionService } from 'src/app/core/service/permission.service';
+
 
 @Component({
     templateUrl: './list.component.html'
@@ -24,11 +26,20 @@ export class RoleListComponent implements OnInit {
         isActive: false
     };
 
-    constructor(private roleService: RoleService, private notificationService: ToastrService) {
+    IsAddPemission: boolean = false;
+    IsEditPermission: boolean = false;
+    IsDeletePermission: boolean = false;
+
+    constructor(private roleService: RoleService, private notificationService: ToastrService,
+        private permissionService: PermissionService
+    ) {
 
     }
 
     ngOnInit(): void {
+        this.IsAddPemission = this.permissionService.hasPermission('Role (PER_ROLE) - Add');
+        this.IsEditPermission = this.permissionService.hasPermission('Role (PER_ROLE) - Edit');
+        this.IsDeletePermission = this.permissionService.hasPermission('Role (PER_ROLE) - Delete');
         this.getRoleData();
     }
 

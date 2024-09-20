@@ -3,6 +3,7 @@ import { ApplicationPage, PermissionType } from '@app-core';
 import { User } from '@app-models';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../user.service';
+import { PermissionService } from 'src/app/core/service/permission.service';
 
 @Component({
     templateUrl: './list.component.html'
@@ -23,9 +24,18 @@ export class UserListComponent implements OnInit {
     pageSize: number = 10;
     totalItems: number = 0;
 
-    constructor(private userService: UserService, private notificationService: ToastrService) { }
+    IsAddPemission: boolean = false;
+    IsEditPermission: boolean = false;
+    IsDeletePermission: boolean = false;
+
+    constructor(private userService: UserService, private notificationService: ToastrService,
+        private permissionService: PermissionService
+    ) { }
 
     ngOnInit(): void {
+        this.IsAddPemission = this.permissionService.hasPermission('User (PER_USER) - Add');
+        this.IsEditPermission = this.permissionService.hasPermission('User (PER_USER) - Edit');
+        this.IsDeletePermission = this.permissionService.hasPermission('User (PER_USER) - Delete');
         this.getUserData();
     }
 

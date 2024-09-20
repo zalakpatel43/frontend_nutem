@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApplicationPage, PermissionType } from '@app-core';
 import { PostCheckService } from '../post-check.service';
 import { ToastrService } from 'ngx-toastr';
+import { PermissionService } from 'src/app/core/service/permission.service';
 
 @Component({
   selector: 'post-check-list',
@@ -18,10 +19,18 @@ export class PostCheckListComponent implements OnInit {
 
   searchData: { [key: string]: any } = {};
 
+  IsAddPemission:boolean = false;
+  IsEditPermission: boolean = false;
+  IsDeletePermission: boolean = false;
+
   constructor(private postCheckService: PostCheckService,
-              private notificationService: ToastrService) { }
+              private notificationService: ToastrService,
+              private permissionService: PermissionService) { }
 
   ngOnInit(): void {
+    this.IsAddPemission = this.permissionService.hasPermission('PostCheck List (PER_POSTCHEKLIST) - Add');
+    this.IsEditPermission = this.permissionService.hasPermission('PostCheck List (PER_POSTCHEKLIST) - Edit');
+    this.IsDeletePermission = this.permissionService.hasPermission('PostCheck List (PER_POSTCHEKLIST) - Delete');
     this.getPostCheckData();
   }
 

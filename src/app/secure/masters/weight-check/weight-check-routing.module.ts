@@ -5,6 +5,7 @@ import { WeightCheckListComponent } from './list/list.component';
 import { ApplicationPage, PageAuthGuard } from '@app-core';
 import { WeightCheckAddEditComponent } from './add-edit/add-edit.component';
 import { WeightCheckSearchPanelComponent } from './search-panel/search-panel.component';
+import { PermissionGuard } from 'src/app/core/guards/permission-guard.service';
 
 const routes: Routes = [
   {
@@ -15,19 +16,19 @@ const routes: Routes = [
           {
               path: 'list',
               component: WeightCheckListComponent,
-              canActivate: [PageAuthGuard],
-              data: { page: ApplicationPage.weightCheck, title: 'WeightCheck' }
+              canActivate: [PermissionGuard],
+              data: { permission: 'Weight Check (PER_WEIGHTCHECK) - View' }
           },
           {
               path: 'add',
-              canActivate: [PageAuthGuard],
-              data: { page: ApplicationPage.weightCheck,  title: 'WeightCheck' },
+              canActivate: [PermissionGuard],
+              data: { permission: 'Weight Check (PER_WEIGHTCHECK) - Add' },
               component: WeightCheckAddEditComponent
           },
           {
               path: 'edit/:id',
-              canActivate: [PageAuthGuard],
-              data: { page: ApplicationPage.weightCheck,  title: 'WeightCheck' },
+              canActivate: [PermissionGuard],
+              data: { permission:  'Weight Check (PER_WEIGHTCHECK) - Edit' },
               component: WeightCheckAddEditComponent
           },
       ]

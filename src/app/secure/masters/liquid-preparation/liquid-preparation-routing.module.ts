@@ -5,32 +5,33 @@ import { LiquidPreparationComponent } from './liquid-preparation/liquid-preparat
 import { LiquidPreparationListComponent } from './list/list.component';
 import { LiquidPreparationAddEditComponent } from './add-edit/add-edit.component';
 import { LiquidPreparationSearchPanelComponent } from './search-panel/search-panel.component';
+import { PermissionGuard } from 'src/app/core/guards/permission-guard.service';
 
 const routes: Routes = [
   {
-      path: '',
-      component: LiquidPreparationComponent,
-      children: [
-          { path: '', redirectTo: 'list', pathMatch: 'full' },
-          {
-              path: 'list',
-              component: LiquidPreparationListComponent,
-              canActivate: [PageAuthGuard],
-              data: { page: ApplicationPage.liquidPreparation, title: 'LiquidPreparation' }
-          },
-          {
-              path: 'add',
-              canActivate: [PageAuthGuard],
-              data: { page: ApplicationPage.liquidPreparation,  title: 'LiquidPreparation' },
-              component: LiquidPreparationAddEditComponent
-          },
-          {
-              path: 'edit/:id',
-              canActivate: [PageAuthGuard],
-              data: { page: ApplicationPage.liquidPreparation,  title: 'LiquidPreparation' },
-              component: LiquidPreparationAddEditComponent
-          },
-      ]
+    path: '',
+    component: LiquidPreparationComponent,
+    children: [
+      { path: '', redirectTo: 'list', pathMatch: 'full' },
+      {
+        path: 'list',
+        component: LiquidPreparationListComponent,
+        canActivate: [PermissionGuard],
+        data: { permission: 'Liquid Preparation (PER_LIQUIDPREPARATION) - View' },
+      },
+      {
+        path: 'add',
+        canActivate: [PermissionGuard],
+        data: { permission: 'Liquid Preparation (PER_LIQUIDPREPARATION) - Add' },
+        component: LiquidPreparationAddEditComponent
+      },
+      {
+        path: 'edit/:id',
+        canActivate: [PermissionGuard],
+        data: { permission: 'Liquid Preparation (PER_LIQUIDPREPARATION) - Edit' },
+        component: LiquidPreparationAddEditComponent
+      },
+    ]
   }
 ];
 
@@ -42,6 +43,6 @@ export class LiquidPreparationRoutingModule { }
 
 export const LiquidPreparationComponents = [
   LiquidPreparationAddEditComponent, LiquidPreparationComponent, LiquidPreparationListComponent,
-   LiquidPreparationSearchPanelComponent
-  
+  LiquidPreparationSearchPanelComponent
+
 ];

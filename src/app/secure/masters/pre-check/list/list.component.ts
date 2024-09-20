@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApplicationPage, PermissionType } from '@app-core';
 import { PreCheckService } from '../pre-check.service';
 import { ToastrService } from 'ngx-toastr';
+import { PermissionService } from 'src/app/core/service/permission.service';
 
 @Component({
   selector: 'pre-check-list',
@@ -18,10 +19,18 @@ export class PreCheckListComponent implements OnInit {
 
   searchData: { [key: string]: any } = {};
 
+  IsAddPemission:boolean = false;
+  IsEditPermission: boolean = false;
+  IsDeletePermission: boolean = false;
+
   constructor(private preCheckService: PreCheckService,
-              private notificationService: ToastrService) { }
+              private notificationService: ToastrService,
+              private permissionService: PermissionService) { }
 
   ngOnInit(): void {
+    this.IsAddPemission = this.permissionService.hasPermission('PreCheck List (PER_PRECHEKLIST) - Add');
+    this.IsEditPermission = this.permissionService.hasPermission('PreCheck List (PER_PRECHEKLIST) - Edit');
+    this.IsDeletePermission = this.permissionService.hasPermission('PreCheck List (PER_PRECHEKLIST) - Delete');
     this.getPreCheckData();
   }
 

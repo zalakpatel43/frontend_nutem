@@ -4,6 +4,7 @@ import { ProductionOrderComponent } from './production-order/production-order.co
 import { ApplicationPage, PageAuthGuard } from '@app-core';
 import { ProductionOrderListComponent } from './list/list.component';
 import { ProductionOrderSearchPanelComponent } from './search-panel/search-panel.component';
+import { PermissionGuard } from 'src/app/core/guards/permission-guard.service';
 
 const routes: Routes = [
   {
@@ -14,8 +15,8 @@ const routes: Routes = [
       {
         path: 'list',
         component: ProductionOrderListComponent,
-        canActivate: [PageAuthGuard],
-        data: { page: ApplicationPage.productionOrder, title: 'Production Order' }
+        canActivate: [PermissionGuard],
+        data: { permission: 'Production Order (PER_PURCHASEORDER) - View' },
       }
     ]
   }

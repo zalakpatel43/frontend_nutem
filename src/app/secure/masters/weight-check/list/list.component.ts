@@ -3,6 +3,7 @@ import { ApplicationPage, PermissionType } from '@app-core';
 import { WeightCheckService } from '../weight-check.service';
 import { ToastrService } from 'ngx-toastr';
 import { WeightCheck } from 'src/app/model/WeightCheck';
+import { PermissionService } from 'src/app/core/service/permission.service';
 
 @Component({
     selector: 'app-list',
@@ -20,15 +21,23 @@ export class WeightCheckListComponent implements OnInit {
     error: string;
     loading: boolean;
 
+    IsAddPemission:boolean = false;
+    IsEditPermission: boolean = false;
+    IsDeletePermission: boolean = false;
+
     searchData: { [key: string]: any } = {
        // isActive: false
     };
     showDeleteModal : boolean = false;
 
     constructor(private weightCheckService: WeightCheckService,
-        private notificationService: ToastrService) { }
+        private notificationService: ToastrService,
+        private permissionService: PermissionService) { } 
 
     ngOnInit(): void {
+        this.IsAddPemission = this.permissionService.hasPermission('Weight Check (PER_WEIGHTCHECK) - Add');
+        this.IsEditPermission = this.permissionService.hasPermission('Weight Check (PER_WEIGHTCHECK) - Edit');
+        this.IsDeletePermission = this.permissionService.hasPermission('Weight Check (PER_WEIGHTCHECK) - Delete');
         this.getWeightCheckData();
     }
 

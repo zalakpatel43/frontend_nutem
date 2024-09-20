@@ -30,7 +30,7 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
         { permission: 'PreCheck List', view: false, add: false, edit: false, delete: false },
         { permission: 'PostCheck List', view: false, add: false, edit: false, delete: false },
         { permission: 'Liquid Preparation', view: false, add: false, edit: false, delete: false },
-        // { permission: 'Trailer Loading', view: false, add: false, edit: false, delete: false },
+        { permission: 'Trailer Loading', view: false, add: false, edit: false, delete: false },
         { permission: 'Trailer Inspection', view: false, add: false, edit: false, delete: false },
         { permission: 'Pallet Packing', view: false, add: false, edit: false, delete: false },
         { permission: 'DownTime Tracking', view: false, add: false, edit: false, delete: false },
@@ -302,7 +302,8 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
             'PostCheck List': 'PER_POSTCHEKLIST',
             'DownTime Tracking': 'PER_DOWNTIMECHECKING',
             'Pallet Packing': 'PER_PALLETPACKING',
-            'Production Order': 'PER_PURCHASEORDER'
+            'Production Order': 'PER_PURCHASEORDER',
+            'Trailer Loading':'PER_TRAILERLOADING',
         };
 
         return permissionMap[permissionName] || 'UNKNOWN_CODE'; // Default to UNKNOWN_CODE if not found
