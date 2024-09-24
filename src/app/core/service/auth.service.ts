@@ -11,7 +11,7 @@ export class UserAuthService {
 
     saveToken(token: string) {
         window.localStorage.setItem(CommonConstant.token, token);
-        console.log("token", CommonConstant.token)
+       // console.log("token", window.localStorage.getItem(CommonConstant.token))
     }
 
     saveUser(user: BrowserUser) {
