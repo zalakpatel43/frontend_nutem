@@ -32,6 +32,14 @@ export class ProductionOrderListComponent implements OnInit {
   IsAddPemission:boolean = false;
   IsEditPermission: boolean = false;
   IsDeletePermission: boolean = false;
+  customHeaders: { [key: string]: string } = {
+    'code': 'Code',
+    'poNumber': 'PO Number',
+    'poDateTimeFormatted': 'Date',
+    'plannedQty': 'Planned Quantity',
+    'itemName': 'Item Name',
+    'actions': 'Actions'
+  };
   
 
   constructor(private productionOrderService: ProductionOrderService,
@@ -43,6 +51,9 @@ export class ProductionOrderListComponent implements OnInit {
     this.IsEditPermission = this.permissionService.hasPermission('Production Order (PER_PURCHASEORDER) - Edit');
     this.IsDeletePermission = this.permissionService.hasPermission('Production Order (PER_PURCHASEORDER) - Delete');
     this.getProductionOrderData();
+  }
+  getHeaderLabel(column: string): string {
+    return this.customHeaders[column] || column; // Return custom header or fallback to column name
   }
 
   private getProductionOrderData(): void {

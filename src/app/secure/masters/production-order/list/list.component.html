@@ -1,33 +1,37 @@
-<div class="row justify-content-center">
+<div class="row justify-content-between align-items-center">
   <div class="col-xl-11 col-lg-12">
     <div class="border p30 rounded">
       <div class="row align-items-center">
-        <div class="col-lg-7 col-sm-9 col-xs-10 d-flex align-items-end leftSideHeader">
-          <h4 class="mb20 float-left">Production Order List</h4>
+        <div class="col-lg-6 col-md-6 col-sm-12 d-flex align-items-end">
+          <h4 class="mb-0">Production Order List</h4>
         </div>
-        <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end rightSideHeader mb10">
-          <div class="form-group">
+        <div class="col-lg-6 col-md-6 col-sm-12 d-flex justify-content-end">
+          <div style="margin-right: 8px;">
             <mat-form-field appearance="outline">
               <mat-label>Status</mat-label>
               <mat-select [(ngModel)]="selectedStatus" (selectionChange)="GetPOBystatus()">
-                <mat-option *ngFor="let status of statusOptions" [value]="status">{{status}}</mat-option>
+                <mat-option *ngFor="let status of statusOptions" [value]="status">{{ status }}</mat-option>
               </mat-select>
             </mat-form-field>
+          </div>
+          <div>
+            <production-order-search-panel (searchChanged)="updateSearch($event)"></production-order-search-panel>
           </div>
         </div>
       </div>
       <!-- Add the search panel in the production order list -->
-      <production-order-search-panel (searchChanged)="updateSearch($event)"></production-order-search-panel>      <div class="row">
+      <!-- <production-order-search-panel (searchChanged)="updateSearch($event)"></production-order-search-panel> -->
+      <div class="row">
         <div class="col-12">
           <table mat-table [dataSource]="filteredProductionOrderData" multiTemplateDataRows class="mat-elevation-z8">
 
             <!-- Dynamic Columns -->
             <ng-container *ngFor="let column of columnsToDisplay; let i = index" [matColumnDef]="column">
-              <th mat-header-cell *matHeaderCellDef> {{column | titlecase}} </th>
+              <th mat-header-cell *matHeaderCellDef>  {{ getHeaderLabel(column) }}</th>
               <td mat-cell *matCellDef="let row">
                 <ng-container *ngIf="column === 'code'">
-                  <a mat-icon-button (click)="isRowExpanded(row)" *ngIf="selectedStatus === 'Open'" >
-                    <mat-icon  [ngClass]="isRowExpanded(row) ? 'icon-red' : 'icon-green'">
+                  <a mat-icon-button (click)="isRowExpanded(row)" *ngIf="selectedStatus === 'Open'">
+                    <mat-icon [ngClass]="isRowExpanded(row) ? 'icon-red' : 'icon-green'">
                       {{ isRowExpanded(row) ? 'remove_circle_outline' : 'control_point' }}
                     </mat-icon>
                     <!-- <mat-icon>{{ isRowExpanded(row) ? 'remove' : 'add' }}</mat-icon> -->
@@ -44,7 +48,7 @@
                     <mat-icon>add</mat-icon>
                   </a> -->
                   <a mat-icon-button (click)="toggleStatus(row)">
-                    <mat-icon  [ngClass]="row.status === 'Open' ? 'icon-green' : 'icon-red'">
+                    <mat-icon [ngClass]="row.status === 'Open' ? 'icon-green' : 'icon-red'">
                       {{ row.status === 'Open' ? 'lock_open' : 'lock' }}
                     </mat-icon>
                   </a>
