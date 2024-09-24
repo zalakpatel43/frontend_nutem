@@ -7,6 +7,7 @@ import { LiquidPreparationService } from '../liquid-preparation.service';
 import { WeightCheckService } from '../../weight-check/weight-check.service';
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
+import { PermissionService } from 'src/app/core/service/permission.service';
 
 @Component({
   selector: 'app-add-edit',
@@ -75,16 +76,20 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
   IsValidQualitydDate : boolean = true;
   StartDateOfBasicForm: any;
 
+  IsViewPermission: boolean = false;
+
   constructor(private activatedRoute: ActivatedRoute, private router: Router,
     private formBuilder: UntypedFormBuilder, private liquidPreparationService: LiquidPreparationService,
     private notificationService: ToastrService, private weightCheckService: WeightCheckService,
-    private cdr: ChangeDetectorRef) {
+    private cdr: ChangeDetectorRef, private permissionService: PermissionService) {
     this.createForm();
   }
 
   ngOnInit(): void {
     this.loadDropdowns();
     this.getRoute();
+    this.IsViewPermission = this.permissionService.hasPermission('Liquid Preparation (PER_LIQUIDPREPARATION) - View');
+
   }
 
   private getRoute() {

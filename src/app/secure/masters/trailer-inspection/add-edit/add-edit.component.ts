@@ -6,6 +6,7 @@ import { Subscription, timeout } from 'rxjs';
 import { WeightCheckService } from '../../weight-check/weight-check.service';
 import { ToastrService } from 'ngx-toastr';
 import { TrailerInspectionService } from '../trailer-inspection.service';
+import { PermissionService } from 'src/app/core/service/permission.service';
 
 
 @Component({
@@ -30,15 +31,20 @@ export class TrailerInspectionAddEditComponent implements OnInit, OnDestroy {
   usersList: any[] = [];
   isFormError: boolean = false;
 
+  IsViewPermission: boolean = false;
+
   constructor(private activatedRoute: ActivatedRoute, private router: Router,
     private formBuilder: UntypedFormBuilder, private weightCheckService: WeightCheckService,
-    private notificationService: ToastrService, private trailerInspectionService: TrailerInspectionService,) {
+    private notificationService: ToastrService, private trailerInspectionService: TrailerInspectionService,
+    private permissionService: PermissionService) {
     this.createForm();
   }
 
   ngOnInit(): void {
     this.getRoute();
     this.loadDropdowns();
+    this.IsViewPermission = this.permissionService.hasPermission('Trailer Inspection (PER_TRAILERINSPECTION) - View');
+
   }
 
   private getRoute() {

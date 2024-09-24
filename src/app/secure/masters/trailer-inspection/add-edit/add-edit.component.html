@@ -6,8 +6,8 @@
                     <h4 class="mb-0"><i class="icon-edit"></i> Add/Edit Trailer Inspection</h4>
                 </div>
                 <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end">
-                    <a *authPermission="page + '_' + permissions.list" mat-flat-button color="primary"
-                        class="app-button" (click)="cancel()">
+                    <a *ngIf="IsViewPermission" mat-flat-button 
+                        class="app-button back-Green" (click)="cancel()">
                         View List
                     </a>
                 </div>
@@ -377,7 +377,7 @@
 
                 <div class="row">
                     <div class="col-lg-12 text-center">
-                        <button type="submit" mat-flat-button color="primary" class="app-button mr-1">Save</button>
+                        <button type="submit" mat-flat-button  class="app-button mr-1 back-Green">Save</button>
                     </div>
                 </div>
             </form>

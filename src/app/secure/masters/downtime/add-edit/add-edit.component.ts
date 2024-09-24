@@ -5,6 +5,7 @@ import { ApplicationPage, CommonUtility, PermissionType } from '@app-core';
 import { Subscription } from 'rxjs';
 import { DowntimeTrackingService } from '../downtime.service';
 import { ToastrService } from 'ngx-toastr';
+import { PermissionService } from 'src/app/core/service/permission.service';
 
 @Component({
   selector: 'app-down-time',
@@ -40,13 +41,19 @@ export class DowntimeTrackingAddEditComponent implements OnInit, OnDestroy {
   selectedTime: string | null = null;
   form: any;
   last: any;
+
+  IsViewPermission: boolean = false;
+
   constructor(private activatedRoute: ActivatedRoute, private router: Router,
     private formBuilder: FormBuilder, private downtimeTrackingService: DowntimeTrackingService,
-    private notificationService: ToastrService) { }
+    private notificationService: ToastrService,
+    private permissionService: PermissionService) { }
 
   ngOnInit(): void {
     this.getRoute();
     this.loadDropdowns();
+    this.IsViewPermission = this.permissionService.hasPermission('Weight Check (PER_WEIGHTCHECK) - View');
+
 
     this.form = this.fb.group({
       ProductionDateTime: ['', Validators.required],

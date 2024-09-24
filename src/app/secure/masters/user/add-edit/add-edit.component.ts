@@ -8,6 +8,7 @@ import { ApplicationPage, CommonUtility, ListService, PermissionType } from '@ap
 import { ValidationService } from '@app-shared';
 import { UserService } from '../user.service';
 import { RoleService } from '../../role/role.service';
+import { PermissionService } from 'src/app/core/service/permission.service';
 
 @Component({
     templateUrl: './add-edit.component.html',
@@ -30,15 +31,20 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
     page: string = ApplicationPage.user;
     permissions = PermissionType;
 
+    IsViewPermission: boolean = false;
+
     constructor(private activatedRoute: ActivatedRoute, private router: Router,
         private formBuilder: UntypedFormBuilder, private userService: UserService, private roleService: RoleService,
-        private notificationService: ToastrService, private listService: ListService) {
+        private notificationService: ToastrService, private listService: ListService,
+        private permissionService: PermissionService) {
         this.createForm();
     }
 
     ngOnInit(): void {
         this.getUserRoute();
         this.getRoleData();
+        this.IsViewPermission = this.permissionService.hasPermission('User (PER_USER) - View');
+
     }
 
     private getUserRoute() {
@@ -170,8 +176,13 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
                 }
             },
             (error) => {
-                if (error.status === 400 && error.error.modelState) {
-                    this.error = error.error.modelState[''][0];
+                if (error.status === 400) {
+                    if (Array.isArray(error.error) && error.error.length > 0) {
+                        // Show the first error message from the array
+                        const errorMessage = error.error[0].description;
+                        this.notificationService.error(errorMessage);
+                  //  this.error = error.error.modelState[''][0];
+                    }
                 } else {
                     this.error = 'Something went wrong';
                 }

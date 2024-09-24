@@ -6,7 +6,7 @@
                     <h4 class="mb-0"><i class="icon-edit"></i> Add/Edit Liquid Preparation</h4>
                 </div>
                 <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end">
-                    <a *authPermission="page + '_' + permissions.list" mat-flat-button color="primary"
+                    <a *ngIf="IsViewPermission" mat-flat-button color="primary"
                         class="app-button" (click)="cancel()">
                         View List
                     </a>

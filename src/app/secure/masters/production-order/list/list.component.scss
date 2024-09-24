@@ -1,6 +1,13 @@
 table {
     width: 100%;
   }
+
+  th {
+    background-color: rgb(23, 187, 88) !important;
+    color: white;  
+    text-align: left;  
+    padding: 10px;  
+  }
   
   tr.matgrid-detail-row {
     height: 0;
@@ -51,3 +58,10 @@ table {
     font-weight: bold !important;
   }
   
+  .icon-red {
+    color: red;  /* Set the color for control_point */
+  }
+  
+  .icon-green {
+    color: green;  /* Set the color for remove_circle_outline */
+  }

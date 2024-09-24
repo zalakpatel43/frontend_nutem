@@ -6,8 +6,8 @@
                     <h4 class="mb-0"><i class="icon-edit"></i> Add/Edit Pallet Packing</h4>
                 </div>
                 <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end">
-                    <a *authPermission="page + '_' + permissions.list" mat-flat-button color="primary"
-                        class="app-button" (click)="cancel()">
+                    <a *ngIf="IsViewPermission" mat-flat-button
+                        class="app-button back-Green" (click)="cancel()">
                         View List
                     </a>
                 </div>
@@ -220,7 +220,7 @@
                                         <mat-icon>delete</mat-icon>
                                     </button> -->
 
-                                    <button type="button" mat-icon-button color="warn" (click)="addFinalPalletDetail()">
+                                    <button type="button" mat-icon-button class="icon-green" (click)="addFinalPalletDetail()">
                                         <mat-icon>add</mat-icon>
                                     </button>
                                 </div>
@@ -236,10 +236,10 @@
                             <table id="gridPalletPackingDetails" class="table table-hover table-bordered">
                                 <thead class="bg-primary text-primary text-center">
                                     <tr>
-                                        <th>Pallet No</th>
-                                        <th>Time</th>
-                                        <th>Done By</th>
-                                        <th>Action</th>
+                                        <th  class="back-Green">Pallet No</th>
+                                        <th  class="back-Green">Time</th>
+                                        <th class="back-Green">Done By</th>
+                                        <th class="back-Green">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -250,7 +250,7 @@
 
                                         <td>
                                             <button (click)="onEditDetail(detail, i)" type="button"
-                                                class="btn btn-primary btn-sm btnModifyRow">
+                                                class="btn btn-primary back-Green btn-sm btnModifyRow">
                                                 <i class="fa fa-pencil"></i>
                                             </button>
                                         </td>
@@ -265,7 +265,7 @@
 
                 <div class="row">
                     <div class="col-lg-12 text-center">
-                        <button type="submit" mat-flat-button color="primary" class="app-button mr-1">Save</button>
+                        <button type="submit" mat-flat-button  class="app-button mr-1 back-Green">Save</button>
                     </div>
                 </div>
             </form>

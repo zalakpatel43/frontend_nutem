@@ -6,8 +6,8 @@
                     <h4 class="mb-0"><i class="icon-edit"></i> Add/Edit Trailer Loading</h4>
                 </div>
                 <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end">
-                    <a *authPermission="page + '_' + permissions.list" mat-flat-button color="primary"
-                        class="app-button" (click)="cancel()">
+                    <a *ngIf="IsViewPermission" mat-flat-button 
+                        class="app-button back-Green" (click)="cancel()">
                         View List
                     </a>
                 </div>
@@ -183,7 +183,7 @@
 
                                     <!-- Action -->
                                     <div class="col-12 col-sm-12 col-md-2 col-lg-2 mb-3 p-1 d-flex align-items-center">
-                                        <button type="button" mat-icon-button color="warn" (click)="addFinalTrailerLoadingDetail()">
+                                        <button type="button" mat-icon-button class="icon-green" (click)="addFinalTrailerLoadingDetail()">
                                             <mat-icon>add</mat-icon>
                                         </button>
                                     </div>
@@ -200,12 +200,12 @@
                             <table id="trailerLoadingDetailsTable" class="table table-hover table-bordered mb-30">
                                 <thead class="bg-primary text-primary text-center">
                                     <tr>
-                                        <th style="width:10%">SR No</th> <!-- Added SR No column -->
-                                        <th style="width:15%">Product</th>
-                                        <th style="width:15%">Pallet Quantity</th>
-                                        <th style="width:25%">Production Order</th>
-                                        <th style="width:25%">Action Taken By</th>
-                                        <th style="width:20%">Action</th>
+                                        <th style="width:10%"  class="back-Green">SR No</th> <!-- Added SR No column -->
+                                        <th style="width:15%"  class="back-Green">Product</th>
+                                        <th style="width:15%"  class="back-Green">Pallet Quantity</th>
+                                        <th style="width:25%"  class="back-Green">Production Order</th>
+                                        <th style="width:25%"  class="back-Green">Action Taken By</th>
+                                        <th style="width:20%" class="back-Green">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -218,7 +218,7 @@
 
                                       <td>{{ userMap.get(detail.ActionTakenBy) || 'Unknown' }}</td>
                                       <td class="text-center">
-                                        <button (click)="onEditDetail(detail, i)" type="button" class="btn btn-primary btn-sm btnModifyRow">
+                                        <button (click)="onEditDetail(detail, i)" type="button" class="btn btn-primary back-Green btn-sm btnModifyRow">
                                           <i class="fa fa-pencil"></i>
                                         </button>
                                         <!-- <button (click)="removeTrailerLoadingDetail(i)" type="button" class="btn btn-danger btn-sm btnRemoveRow">
@@ -234,7 +234,7 @@
 
                 <div class="row">
                     <div class="col-lg-12 text-center">
-                        <button type="submit" mat-flat-button color="primary" class="app-button mr-1">Save</button>
+                        <button type="submit" mat-flat-button  class="app-button mr-1 back-Green">Save</button>
                     </div>
                 </div>
             </form>

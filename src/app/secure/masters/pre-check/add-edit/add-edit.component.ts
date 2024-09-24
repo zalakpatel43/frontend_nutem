@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { PreCheckService } from '../pre-check.service';
+import { PermissionService } from 'src/app/core/service/permission.service';
 
 @Component({
     selector: 'app-pre-check-add-edit',
@@ -24,18 +25,23 @@ export class PreCheckAddEditComponent implements OnInit, OnDestroy {
     isFormSubmitted: boolean = false;
     error: string;
 
+    IsViewPermission: boolean = false;
+
     constructor(
         private activatedRoute: ActivatedRoute,
         private router: Router,
         private formBuilder: UntypedFormBuilder,
         private preCheckService: PreCheckService,
-        private notificationService: ToastrService
+        private notificationService: ToastrService,
+        private permissionService: PermissionService
     ) { }
 
     ngOnInit(): void {
         this.getRoute();
         this.loadDropdowns();
         this.loadQuestions();
+        this.IsViewPermission = this.permissionService.hasPermission('PreCheck List (PER_PRECHEKLIST) - View');
+
     }
 
     // Getter for preCheckListDetails FormArray

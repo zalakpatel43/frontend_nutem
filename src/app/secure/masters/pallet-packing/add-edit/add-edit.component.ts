@@ -5,6 +5,7 @@ import { ApplicationPage, CommonUtility, PermissionType } from '@app-core';
 import { Subscription } from 'rxjs';
 import { PalletPackingService } from '../pallet-packing.service';
 import { ToastrService } from 'ngx-toastr';
+import { PermissionService } from 'src/app/core/service/permission.service';
 
 @Component({
   selector: 'app-add-edit',
@@ -34,12 +35,15 @@ export class PalletPackingAddEditComponent implements OnInit, OnDestroy {
   isEditing: any;
   userMap: any;
 
+  IsViewPermission: boolean = false;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private formBuilder: UntypedFormBuilder,
     private palletPackingService: PalletPackingService,
-    private notificationService: ToastrService
+    private notificationService: ToastrService,
+    private permissionService: PermissionService
   ) {
     this.createForm();
   }
@@ -48,6 +52,8 @@ export class PalletPackingAddEditComponent implements OnInit, OnDestroy {
     this.getRoute();
     this.loadDropdowns();
     this.addPalletDetail();
+    this.IsViewPermission = this.permissionService.hasPermission('Pallet Packing (PER_PALLETPACKING) - View');
+
   }
 
   // private getRoute() {

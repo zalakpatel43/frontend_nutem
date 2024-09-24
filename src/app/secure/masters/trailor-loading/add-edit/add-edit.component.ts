@@ -5,6 +5,7 @@ import { ApplicationPage, CommonUtility, PermissionType } from '@app-core';
 import { TrailerLoadingService } from '../trailor-loading.service';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
+import { PermissionService } from 'src/app/core/service/permission.service';
 
 
 @Component({
@@ -30,12 +31,15 @@ export class TrailerLoadingAddEditComponent implements OnInit, OnDestroy {
   EditDetailId: number = -1;
   minEndDate: Date | null = null;
 
+  IsViewPermission: boolean = false;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private formBuilder: UntypedFormBuilder,
     private trailerLoadingService: TrailerLoadingService,
-    private notificationService: ToastrService
+    private notificationService: ToastrService,
+    private permissionService: PermissionService
   ) {
     this.createForm();
   }
@@ -44,6 +48,8 @@ export class TrailerLoadingAddEditComponent implements OnInit, OnDestroy {
     this.getRoute();
     this.loadDropdowns();
     this.addTrailerLoadingDetail(); 
+    this.IsViewPermission = this.permissionService.hasPermission('Trailer Loading (PER_TRAILERLOADING) - View');
+
   }
 
   private getRoute() {

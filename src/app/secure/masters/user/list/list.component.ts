@@ -8,6 +8,7 @@ import { PermissionService } from 'src/app/core/service/permission.service';
 @Component({
  
     templateUrl: './list.component.html',
+    styleUrls: ['./list.component.scss']
     
 })
 export class UserListComponent implements OnInit {
@@ -77,7 +78,7 @@ export class UserListComponent implements OnInit {
     }
 
     toggleActivate(townId: number) {
-        const result = confirm(`Are you sure you want to Deactivate ?`);
+        const result = confirm(`Are you sure you want to delete User ?`);
         if (result) {
             this.userService.deleteUser(townId)
                 .subscribe((result) => {

@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ApplicationPage, CommonUtility } from '@app-core';
 import { Permission, Role } from '@app-models';
 import { RoleService } from '../role.service';
+import { PermissionService } from 'src/app/core/service/permission.service';
 
 @Component({
     templateUrl: './add-edit.component.html',
@@ -20,6 +21,8 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
     isFormSubmitted: boolean;
     page: string = ApplicationPage.role;
     error: string;
+
+    IsViewPermission: boolean = false;
 
     Permissions = [
         { permission: 'Dashboard', view: false, add: false, edit: false, delete: false },
@@ -46,7 +49,8 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
         private router: Router,
         private formBuilder: UntypedFormBuilder,
         private roleService: RoleService,
-        private notificationService: ToastrService
+        private notificationService: ToastrService,
+        private permissionService: PermissionService
     ) {
         this.createForm();
     }
@@ -54,6 +58,9 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.getRoleRoute();
         this.getPermissionDetails();
+
+        this.IsViewPermission = this.permissionService.hasPermission('Role (PER_ROLE) - View');
+
         // const transformedPermissions = this.transformPermissionsEdit(this.staticRolePermissions, this.staticPermissionData);
         // console.log('Transformed Permissions with Static Data:', transformedPermissions);
     }

@@ -6,7 +6,7 @@
           <h4 class="mb-0"><i class="icon-edit"></i> Add/Edit Downtime Tracking</h4>
         </div>
         <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end">
-          <a *authPermission="page + '_' + permissions.list" mat-flat-button color="primary" class="app-button"
+          <a *ngIf="IsViewPermission" mat-flat-button  class="app-button back-Green"
             (click)="cancel()">
             View List
           </a>
@@ -169,8 +169,8 @@
                   </div>
 
                   <div class="col-12 col-sm-12 col-md-2 col-lg-2 mb-3 p-1 d-flex align-items-center">
-                    <button type="button" mat-icon-button color="warn" (click)="addFinalDowntimeDetail()">
-                      <mat-icon>add</mat-icon>
+                    <button type="button" mat-icon-button  (click)="addFinalDowntimeDetail()">
+                      <mat-icon class="icon-green">add</mat-icon>
                     </button>
                   </div>
                 </div>
@@ -186,14 +186,14 @@
                 style="overflow:scroll;width:auto">
                 <thead class="bg-primary text-primary text-center">
                   <tr>
-                    <th style="width:10%">Start Date</th>
-                    <th style="width:10%">End Date</th>
-                    <th style="width:15%">Durations</th>
-                    <th style="width:15%">Shift</th>
-                    <th style="width:15%">Cause</th>
-                    <th style="width:20%">Action Taken</th>
-                    <th style="width:20%">Action Taken By</th>
-                    <th style="width:5%">Action</th>
+                    <th style="width:10%" class="back-Green">Start Date</th>
+                    <th style="width:10%" class="back-Green">End Date</th>
+                    <th style="width:15%" class="back-Green">Durations</th>
+                    <th style="width:15%" class="back-Green">Shift</th>
+                    <th style="width:15%" class="back-Green">Cause</th>
+                    <th style="width:20%" class="back-Green">Action Taken</th>
+                    <th style="width:20%" class="back-Green">Action Taken By</th>
+                    <th style="width:5%" class="back-Green">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -212,8 +212,8 @@
                     </td>
                     <td class="text-center">
                       <button (click)="onEditDetail(detail, i)" type="button"
-                        class="btn btn-primary btn-sm btnModifyRow">
-                        <i class="fa fa-pencil"></i>
+                        class="btn btn-primary btn-sm btnModifyRow back-Green">
+                        <i class="fa fa-pencil "></i>
                       </button>
                     </td>
                   </tr>
@@ -226,7 +226,7 @@
 
         <div class="row">
           <div class="col-lg-12 text-center">
-            <button type="submit" mat-flat-button color="primary" class="app-button mr-1">Save</button>
+            <button type="submit" mat-flat-button  class="app-button mr-1 back-Green">Save</button>
           </div>
         </div>
       </form>

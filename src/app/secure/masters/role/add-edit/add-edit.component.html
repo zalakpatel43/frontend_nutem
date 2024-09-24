@@ -6,7 +6,7 @@
                     <h4 class="mb-0"><i class="icon-edit"></i> Add/Edit Role</h4>
                 </div>
                 <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end">
-                    <a mat-flat-button color="primary" class="app-button" (click)="cancel()">
+                    <a *ngIf="IsViewPermission" mat-flat-button color="primary" class="app-button" (click)="cancel()">
                         View List
                     </a>
                 </div>

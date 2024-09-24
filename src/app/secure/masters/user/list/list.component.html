@@ -7,7 +7,7 @@
                 </div>
                 <div class="col-lg-5 col-sm-3 col-2 d-flex justify-content-end rightSideHeader mb10">
                     <div>
-                        <a mat-flat-button color="primary" class="app-button"
+                        <a mat-flat-button  class="app-button btn"
                         *ngIf="IsAddPemission"  [routerLink]="['../','add']">
                             <span>Add New</span>
                             <i class="icon-plus"></i>
@@ -39,23 +39,23 @@
                         </ngx-datatable-column>
                         <ngx-datatable-column name="Actions"  *ngIf="IsEditPermission || IsDeletePermission" >
                             <ng-template let-row="row" ngx-datatable-cell-template>
-                                <a  *ngIf="IsEditPermission" [routerLink]="['../','edit',row.id]"
-                                    title="Edit" class="button-padding">
+                                <a  *ngIf="IsEditPermission " [routerLink]="['../','edit',row.id]"
+                                    title="Edit" class="button-padding icon-green">
                                     <mat-icon>edit</mat-icon>
                                 </a>
-                               
-                                <ng-container  *ngIf="IsDeletePermission" class="ml-10">
+                                <button *ngIf="IsDeletePermission" (click)="toggleActivate(row.id)" type="button" style="border: none; background-color: white; color: red;">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <!-- <ng-container  *ngIf="IsDeletePermission" class="ml-10">
                                     <a href="#" *ngIf="row.isActive" (click)="toggleActivate(row.id)"
                                         title="Make Inactive" class="button-padding">
-                                        <!-- <mat-icon>delete</mat-icon> -->
-                                        <mat-icon>close</mat-icon> 
+                                        <mat-icon>delete</mat-icon>
                                     </a>
                                     <a href="#" *ngIf="!row.isActive" (click)="toggleActivate(row.id)"
                                         title="Make Active" class="button-padding">
-                                        <mat-icon>close</mat-icon> 
-                                        <!-- <mat-icon>delete</mat-icon> -->
+                                        <mat-icon>delete</mat-icon>
                                     </a>
-                                </ng-container>
+                                </ng-container> -->
                             </ng-template>
                         </ngx-datatable-column>
                     </ngx-datatable>

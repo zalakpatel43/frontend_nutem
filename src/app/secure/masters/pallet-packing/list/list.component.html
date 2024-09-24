@@ -6,7 +6,7 @@
                     <h4 class="mb20 float-left">Pallet Packing List</h4>
                 </div>
                 <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end rightSideHeader mb10">
-                    <a *ngIf="IsAddPemission" mat-flat-button color="primary" class="app-button" [routerLink]="['../','add']">
+                    <a *ngIf="IsAddPemission" mat-flat-button class="app-button btn" [routerLink]="['../','add']">
                         <span>Add New</span>
                         <i class="icon-plus"></i>
                     </a>
@@ -34,7 +34,7 @@
 
                         <ngx-datatable-column name="Actions" [sortable]="false"   *ngIf="IsEditPermission || IsDeletePermission">
                             <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                                <a *ngIf="IsEditPermission"  class="button-padding" color="primary" [routerLink]="['..','edit',row.id]">
+                                <a *ngIf="IsEditPermission"  class="button-padding  icon-green" [routerLink]="['..','edit',row.id]">
                                     <mat-icon>edit</mat-icon>
                                 </a>
                                 <button *ngIf="IsDeletePermission" (click)="removePalletPacking(row.id)" type="button" style="border: none; background-color: white; color: red;">

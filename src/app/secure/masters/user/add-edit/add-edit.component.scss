@@ -3,3 +3,19 @@
 .full-width {
     width: 100%;
 }
+
+.card-header {
+    background-color: rgb(23, 187, 88) !important;
+    border-bottom: 1px solid rgb(23, 187, 88) !important;
+    padding: 0.75rem 1.25rem;
+    color: white;
+}
+
+.back-Green{
+    background-color:  rgb(23, 187, 88) !important;
+    color: white !important ;              /* Text color */
+  }
+
+  .icon-green {
+    color: green;  /* Set the color for remove_circle_outline */
+  }

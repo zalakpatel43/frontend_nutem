@@ -1,7 +1,8 @@
 @use '@angular/material' as mat;
 
 @mixin custom-components-theme($theme) {
-    $background: mat.get-color-from-palette(mat.get-theme-color($theme, primary));
+   // $background: mat.get-color-from-palette(mat.get-theme-color($theme, primary));
+    $background: rgb(23, 187, 88);
     $warn: mat.get-color-from-palette(mat.get-theme-color($theme, warn));
 
     a,

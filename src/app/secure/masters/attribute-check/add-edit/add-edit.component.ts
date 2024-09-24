@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { AttributeCheckService } from '../attribute-check.service';
 import { ToastrService } from 'ngx-toastr';
 import { WeightCheckService } from '../../weight-check/weight-check.service';
+import { PermissionService } from 'src/app/core/service/permission.service';
 
 @Component({
   selector: 'app-add-edit',
@@ -35,15 +36,20 @@ export class AttributeCheckAddEditComponent implements OnInit, OnDestroy {
   AddedattributeCheckDetailsList: any[] = [];
   EditDetailsId: number = -1;
 
+  IsViewPermission: boolean = false;
+
   constructor(private activatedRoute: ActivatedRoute, private router: Router,
     private formBuilder: UntypedFormBuilder, private attributeCheckService: AttributeCheckService,
-    private notificationService: ToastrService, private weightCheckService: WeightCheckService) {
+    private notificationService: ToastrService, private weightCheckService: WeightCheckService,
+    private permissionService: PermissionService) {
    // this.createForm();
   }
 
   ngOnInit(): void {
     this.getRoute();
     this.loadDropdowns();
+    this.IsViewPermission = this.permissionService.hasPermission('Weight Check (PER_WEIGHTCHECK) - View');
+
   }
 
   private getRoute() {

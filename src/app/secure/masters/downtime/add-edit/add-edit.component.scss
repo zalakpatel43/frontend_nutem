@@ -3,11 +3,11 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.card-header {
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #e9ecef;
-    padding: 0.75rem 1.25rem;
-}
+// .card-header {
+//     background-color: #f8f9fa;
+//     border-bottom: 1px solid #e9ecef;
+//     padding: 0.75rem 1.25rem;
+// }
 
 .card-body {
     padding: 1.25rem;
@@ -66,4 +66,59 @@
   border-style: solid;
   border-radius: 50%;
 }
+
+.full-width {
+  width: 100%;
+}
+
+.readonly-input {
+  color: black; /* Ensure text color is black */
+  background-color: #f5f5f5; /* Light grey background */
+  cursor: not-allowed; /* Optional: Change cursor to indicate read-only state */
+  border: 1px solid #dcdcdc; /* Optional: Add border to differentiate from editable fields */
+}
+
+::ng-deep .mat-calendar {
+  margin-top:20px;
+  background-color: lightgray; // or any other color you prefer
+}
+
+::ng-deep .time-container{
+  background-color: lightgray; // Ensure the calendar itself has a background
+}
+::ng-deep .mat-calendar-body-selected {
+  background-color: #1976d2 !important; // Highlight color for selected date
+  color: white !important; // Text color for better visibility
+  border-radius: 50% !important; 
+}
+
+::ng-deep .mat-calendar-body-active {
+  background-color: #42a5f5 !important;
+  border-radius: 50% !important; 
+}
+
+::ng-deep .mat-calendar-body-today {
+  border-color: #ff9800 !important; // Mark today's date
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 50%;
+}
+
+.card-header {
+  background-color: rgb(23, 187, 88) !important;
+  border-bottom: 1px solid rgb(23, 187, 88) !important;
+  padding: 0.75rem 1.25rem;
+  color: white;
+}
+
+.back-Green{
+  background-color:  rgb(23, 187, 88) !important;
+  color: white !important ;              /* Text color */
+}
+
+.icon-green {
+  color: green;  /* Set the color for remove_circle_outline */
+}
+
+
   

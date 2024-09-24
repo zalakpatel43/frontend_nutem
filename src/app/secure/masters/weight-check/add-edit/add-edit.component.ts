@@ -6,6 +6,7 @@ import { List } from '@app-models';
 import { Subscription } from 'rxjs';
 import { WeightCheckService } from '../weight-check.service';
 import { ToastrService } from 'ngx-toastr';
+import { PermissionService } from 'src/app/core/service/permission.service';
 //import { start } from 'repl';
 
 @Component({
@@ -35,16 +36,20 @@ export class WeightCheckAddEditComponent implements OnInit, OnDestroy {
   EditNozzleDetailsId: number = -1;
   minEndDate: Date | null = null;
   trailerLoadingForm: any;
+  
+  IsViewPermission: boolean = false;
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router,
     private formBuilder: UntypedFormBuilder, private weightCheckService: WeightCheckService,
-    private notificationService: ToastrService) {
+    private notificationService: ToastrService,
+    private permissionService: PermissionService) {
     this.createForm();
   }
 
   ngOnInit(): void {
     this.getRoute();
     this.loadDropdowns();
+    this.IsViewPermission = this.permissionService.hasPermission('Weight Check (PER_WEIGHTCHECK) - View');
     // Subscribe to value changes
     this.WeightCheckForm.get('MinWeightRange')?.valueChanges.subscribe(() => this.onWeightRangeChange());
     this.WeightCheckForm.get('MaxWeightRange')?.valueChanges.subscribe(() => this.onWeightRangeChange());

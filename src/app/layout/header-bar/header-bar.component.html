@@ -1,6 +1,6 @@
 <div>
-    <mat-toolbar color="primary" class="app-header">
-        <mat-toolbar-row>
+    <mat-toolbar class="app-header custom-toolbar">
+        <mat-toolbar-row> 
             <!-- Logo and Dashboard -->
             <!-- <a mat-button routerLinkActive="active" [routerLink]="['/secure/dashboard']">
                 <img [src]="imagePath" class="img img-logo" />
@@ -15,7 +15,7 @@
 
                 <!-- Masters Menu -->
                 <button mat-button [matMenuTriggerFor]="mastersMenu" aria-label="Masters Menu"
-                    matTooltip="Masters Menu">
+                    matTooltip="Masters Menu" class="fnt-White">
                     Master
                     <mat-icon>arrow_drop_down</mat-icon>
                 </button>
@@ -27,7 +27,7 @@
                 </mat-menu>
 
                 <!-- Configuration Menu -->
-                <button mat-button [matMenuTriggerFor]="ProcessMenu" aria-label="Process Menu"
+                <button  class="fnt-White" mat-button [matMenuTriggerFor]="ProcessMenu" aria-label="Process Menu"
                     matTooltip="Process Menu">
                     Process
                     <mat-icon>arrow_drop_down</mat-icon>
@@ -93,7 +93,7 @@
             <span class="menu-spacer"></span>
 
             <!-- Profile Menu -->
-            <button mat-button [matMenuTriggerFor]="profileMenu" aria-label="User Profile"
+            <button class="fnt-White" mat-button [matMenuTriggerFor]="profileMenu" aria-label="User Profile"
                 matTooltip="User Profile Menu">
                 {{userName}}
                 <mat-icon>arrow_drop_down</mat-icon>

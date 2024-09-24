@@ -6,8 +6,8 @@
                     <h4 class="mb-0"><i class="icon-edit"></i> Add/Edit Attribute Check</h4>
                 </div>
                 <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end">
-                    <a *authPermission="page + '_' + permissions.list" mat-flat-button color="primary"
-                        class="app-button" (click)="cancel()">
+                    <a *ngIf="IsViewPermission" mat-flat-button 
+                        class="app-button back-Green" (click)="cancel()">
                         View List
                     </a>
                 </div>
@@ -199,7 +199,7 @@
                                     </div>
 
                                     <div class="col-12 col-sm-12 col-md-2 col-lg-2 mb-3 p-1 d-flex align-items-center">
-                                        <button type="button" mat-icon-button color="warn"
+                                        <button type="button" mat-icon-button class="icon-green"
                                             (click)="addFinalAttributeDetail()">
                                             <mat-icon>add</mat-icon>
                                         </button>
@@ -219,15 +219,15 @@
                                 style="overflow:scroll;width:auto">
                                 <thead class="bg-primary text-primary text-center">
                                     <tr>
-                                        <th style="width:8%">Time</th>
-                                        <th style="width:12%">Done By</th>
-                                        <th>Good Condition?</th>
-                                        <th>Cap Torque (Lb-In)</th>
-                                        <th>Empty Bottle Weight (G)</th>
-                                        <th>Lot No. Of Liquid</th>
-                                        <th>Leak Test (60 Min)</th>
-                                        <th>Is The Date, Code Correct And Visible?</th>
-                                        <th style="width:5%">Action</th>
+                                        <th style="width:8%"  class="back-Green">Time</th>
+                                        <th style="width:12%"  class="back-Green">Done By</th>
+                                        <th class="back-Green">Good Condition?</th>
+                                        <th class="back-Green">Cap Torque (Lb-In)</th>
+                                        <th class="back-Green">Empty Bottle Weight (G)</th>
+                                        <th class="back-Green">Lot No. Of Liquid</th>
+                                        <th class="back-Green">Leak Test (60 Min)</th>
+                                        <th class="back-Green">Is The Date, Code Correct And Visible?</th>
+                                        <th style="width:5%" class="back-Green">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -244,7 +244,7 @@
                                         <td> {{ detail.IsCorrect ? 'Yes' : 'No' }} </td>
                                         <td>
                                             <button (click)="onEditDetail(detail, i)" type="button"
-                                                class="btn btn-primary btn-sm btnModifyRow">
+                                                class="btn btn-primary btn-sm btnModifyRow back-Green">
                                                 <i class="fa fa-pencil"></i>
                                             </button>
                                             <!-- <button (click)="removeAttributeCheckDetail(i)" type="button" class="btn btn-danger btn-sm btnRemoveRow">
@@ -260,7 +260,7 @@
 
                 <div class="row">
                     <div class="col-lg-12 text-center">
-                        <button type="submit" mat-flat-button color="primary" class="app-button mr-1">Save</button>
+                        <button type="submit" mat-flat-button  class="app-button mr-1 back-Green">Save</button>
                     </div>
                 </div>
             </form>

@@ -26,8 +26,10 @@
               <th mat-header-cell *matHeaderCellDef> {{column | titlecase}} </th>
               <td mat-cell *matCellDef="let row">
                 <ng-container *ngIf="column === 'code'">
-                  <a mat-icon-button (click)="isRowExpanded(row)">
-                    <mat-icon>{{ isRowExpanded(row) ? 'remove_circle_outline' : 'control_point' }}</mat-icon>
+                  <a mat-icon-button (click)="isRowExpanded(row)" *ngIf="selectedStatus === 'Open'" >
+                    <mat-icon  [ngClass]="isRowExpanded(row) ? 'icon-red' : 'icon-green'">
+                      {{ isRowExpanded(row) ? 'remove_circle_outline' : 'control_point' }}
+                    </mat-icon>
                     <!-- <mat-icon>{{ isRowExpanded(row) ? 'remove' : 'add' }}</mat-icon> -->
 
                   </a>
@@ -42,7 +44,9 @@
                     <mat-icon>add</mat-icon>
                   </a> -->
                   <a mat-icon-button (click)="toggleStatus(row)">
-                    <mat-icon>{{ row.status === 'Open' ? 'lock_open' : 'lock' }}</mat-icon>
+                    <mat-icon  [ngClass]="row.status === 'Open' ? 'icon-green' : 'icon-red'">
+                      {{ row.status === 'Open' ? 'lock_open' : 'lock' }}
+                    </mat-icon>
                   </a>
                 </ng-container>
               </td>
@@ -89,7 +93,7 @@
                       <th mat-header-cell *matHeaderCellDef> Actions </th>
                       <td mat-cell *matCellDef="let data">
                         <a mat-icon-button (click)="editRelatedData(data)">
-                          <mat-icon>edit</mat-icon>
+                          <mat-icon class="icon-green">edit</mat-icon>
                         </a>
                       </td>
                     </ng-container>

@@ -6,8 +6,8 @@
                     <h4 class="mb20 float-left">Post-Check List</h4>
                 </div>
                 <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end rightSideHeader mb10">
-                    <a  *ngIf="IsAddPemission"   mat-flat-button color="primary"
-                        class="app-button" [routerLink]="['../', 'add']">
+                    <a  *ngIf="IsAddPemission"   mat-flat-button 
+                        class="app-button back-Green" [routerLink]="['../', 'add']">
                         <span>Add New</span>
                         <i class="icon-plus"></i>
                     </a>
@@ -46,8 +46,8 @@
 
                         <ngx-datatable-column name="Actions" [sortable]="false"   *ngIf="IsEditPermission || IsDeletePermission">
                             <ng-template let-row="row" ngx-datatable-cell-template>
-                                <a  *ngIf="IsEditPermission"  class="button-padding" color="primary" [routerLink]="['../', 'edit', row.id]">
-                                    <mat-icon>edit</mat-icon>
+                                <a  *ngIf="IsEditPermission"  class="button-padding"  [routerLink]="['../', 'edit', row.id]">
+                                    <mat-icon class="icon-green">edit</mat-icon>
                                 </a>
                                 <button  *ngIf="IsDeletePermission"  (click)="removePostCheck(row.id)" type="button" style="border: none; background-color: white; color: red;">
                                     <mat-icon>close</mat-icon>

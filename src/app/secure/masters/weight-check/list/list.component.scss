@@ -11,3 +11,17 @@
     text-decoration: none;
     color: inherit;
 }
+
+::ng-deep .ngx-datatable .datatable-header-cell {
+    background-color:  rgb(23, 187, 88) !important;
+    color: white !important ;              /* Text color */
+  }
+
+  .icon-green {
+    color: green;  /* Set the color for remove_circle_outline */
+  }
+
+  .btn{
+    background-color:  rgb(23, 187, 88) !important;
+    color: white !important ;              /* Text color */
+  }

@@ -6,7 +6,7 @@
                     <h4 class="mb-0"><i class="icon-edit"></i> Add/Edit Pre Check</h4>
                 </div>
                 <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end">
-                    <a mat-flat-button color="primary" class="app-button" (click)="cancel()">
+                    <a mat-flat-button *ngIf="IsViewPermission" class="app-button back-Green" (click)="cancel()">
                         View List
                     </a>
                 </div>
@@ -15,7 +15,7 @@
                 <!-- Basic Details Section -->
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h5 class="mb-0">BAsic Details</h5>
+                        <h5 class="mb-0">Basic Details</h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -178,7 +178,7 @@
                 <!-- Submit & Cancel Buttons -->
                 <div class="row">
                     <div class="col-12 d-flex justify-content-end">
-                        <button mat-flat-button color="primary" type="submit">Save</button>
+                        <button mat-flat-button class="back-Green" type="submit">Save</button>
                         <!-- <button mat-flat-button color="warn" type="button" (click)="cancel()">Cancel</button> -->
                     </div>
                 </div>

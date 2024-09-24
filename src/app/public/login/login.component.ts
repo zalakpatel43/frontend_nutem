@@ -5,6 +5,7 @@ import { UserAuthService, APIConstant, CommonUtility } from '@app-core';
 import { PublicService } from '../public.service';
 import { CookieService } from 'ngx-cookie-service';
 import { PermissionService } from 'src/app/core/service/permission.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     templateUrl: './login.component.html',
@@ -25,7 +26,8 @@ export class LoginComponent implements OnInit {
 
     constructor(private router: Router, private fb: UntypedFormBuilder, private activatedRoute: ActivatedRoute,
         private publicService: PublicService, private userAuthService: UserAuthService,
-        private permissionService: PermissionService, private cookieService: CookieService) {
+        private permissionService: PermissionService, private cookieService: CookieService,
+        private notificationService: ToastrService,) {
         this.createForm();
 
         const cookieExists: boolean = cookieService.check('Skyward_UserName');
@@ -94,6 +96,7 @@ export class LoginComponent implements OnInit {
                     }
                 }
                 else {
+             
                     this.error = { error: [result.message] }
                 }
             }, (error) => {
@@ -101,6 +104,11 @@ export class LoginComponent implements OnInit {
                 if (error && error.status === 400) {
                     this.error = error.error ? (error.error.modelState || null) : null;
                     console.log(this.error);
+                }
+                else if(error && error.status === 401){
+                    console.log("issuccess false");
+                    this.notificationService.error("Invalid Username or Password");
+                    this.router.navigateByUrl('login');
                 }
                 else if (error && error.status === 500) {
                     this.error = { error: ["Something went wrong. Please try again later."] };
