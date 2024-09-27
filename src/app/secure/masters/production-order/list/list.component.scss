@@ -65,3 +65,38 @@ table {
   .icon-green {
     color: green;  /* Set the color for remove_circle_outline */
   }
+
+  .loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30%; /* Adjust as needed */
+    color: green !important;
+    margin-left: 40%;
+}
+
+::ng-deep .mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic{
+  stroke: green !important;
+}
+
+.full-width {
+  width: 100%;
+}
+
+::ng-deep .ngx-datatable.material .datatable-body .progress-linear .container {
+  background-color: lightgreen;
+}
+
+::ng-deep .ngx-datatable.material .datatable-body .progress-linear .container .bar {
+  background-color: green;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+@media (max-width: 576px) {
+  .mat-form-field {
+    width: 100%; /* Ensures the form field takes full width on small screens */
+  }
+}

@@ -40,6 +40,8 @@ export class ProductionOrderListComponent implements OnInit {
     'itemName': 'Item Name',
     'actions': 'Actions'
   };
+
+  Childloading : boolean = false;
   
 
   constructor(private productionOrderService: ProductionOrderService,
@@ -80,9 +82,12 @@ export class ProductionOrderListComponent implements OnInit {
     if (this.expandedElement === row) {
       this.expandedElement = null; // Collapse if the same row is clicked
     } else {
+      this.relatedData = [];
+      this.Childloading = true;
       this.expandedElement = row; // Expand the clicked row
       this.productionOrderService.getByIdProductionOrder(row.id).subscribe((data: any) => {
         this.relatedData = this.getRelatedData(data);
+        this.Childloading = false;
       }, (error) => {
         this.notificationService.error("Failed to load related data.");
       });
@@ -171,7 +176,7 @@ export class ProductionOrderListComponent implements OnInit {
         endDate: '',
         productName: item.productName,
         shiftName: ' ',
-        totalcaseproduced:item.TotalCasesProduced
+        totalcaseproduced:item.totalCasesProduced
       }));
     }
 
@@ -202,7 +207,10 @@ export class ProductionOrderListComponent implements OnInit {
       this.router.navigate(['/secure/masters/post-check/edit', data.id]);
     } else if (data.type === 'Pallet Packing List') {
       this.router.navigate(['/secure/masters/pallet-packing/edit', data.id]);
-    } else {
+    }else if (data.type === 'Liquid Preparation') {
+      this.router.navigate(['/secure/masters/liquid-preparation/edit', data.id]);
+    }
+     else {
       console.error('Unknown type:', data.type);
     }
   }
@@ -216,14 +224,18 @@ export class ProductionOrderListComponent implements OnInit {
       const searchText = this.searchData.searchText ? this.searchData.searchText.toLowerCase() : '';
       const matchesCode = order.code.toLowerCase().includes(searchText);
       const matchesPONumber = order.poNumber.toLowerCase().includes(searchText);
-
+      const matchesplannedQty = order.plannedQty.toString().includes(searchText);
+      const matchesitemName = order.itemName.toLowerCase().includes(searchText);
+     // const matchesDate = order.poDateTimeFormatted.toLowerCase()().includes(searchText);
+      const formattedDate = new Date(order.poDateTimeFormatted).toLocaleDateString(); // You can customize the format as needed
+      const matchesDate = formattedDate.includes(searchText);
       // Status filter (if isActive is checked, we apply that as well)
       const matchesStatus = this.searchData.isActive
         ? order.status.toLowerCase() === this.searchData.isActive.toLowerCase()
         : true;
 
       // Combine all search filters
-      return (matchesCode || matchesPONumber) && matchesStatus;
+      return (matchesCode || matchesPONumber || matchesplannedQty || matchesitemName || matchesDate ) && matchesStatus;
     });
   }
 

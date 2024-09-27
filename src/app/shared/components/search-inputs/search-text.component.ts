@@ -5,11 +5,16 @@ import { debounceTime } from 'rxjs/operators';
 
 @Component({
     selector: 'search-text',
-    template: `<mat-form-field >
+    template: `<mat-form-field  appearance="outline"   >
                 <mat-label>{{placeHolder}}</mat-label>
                 <input matInput placeholder="Search"  [formControl]="searchBox">
             </mat-form-field>`,
-    styles: []
+    styles: [`
+        
+        ::ng-deep  .mat-mdc-form-field-bottom-align{
+            display: none !important;
+         }
+      `]
 })
 export class SearchTextComponent implements OnInit {
     searchBox: UntypedFormControl = new UntypedFormControl();

@@ -44,10 +44,10 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
      // Helper function to decode the token and get its expiration time
-     private getTokenExpiration(token: string): number {
-        const decodedToken: any = jwt_decode(token);
-        return decodedToken?.exp ? decodedToken.exp * 1000 : 0;  // 'exp' is in seconds, so convert to milliseconds
-    }
+    //  private getTokenExpiration(token: string): number {
+    //     const decodedToken: any = jwt_decode(token);
+    //     return decodedToken?.exp ? decodedToken.exp * 1000 : 0;  // 'exp' is in seconds, so convert to milliseconds
+    // }
 
     // Check if the token is expired
     private isTokenExpired(expiration: number): boolean {

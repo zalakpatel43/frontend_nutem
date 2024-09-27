@@ -36,7 +36,7 @@
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <mat-form-field appearance="fill">
                                     <input matInput [ngxMatDatetimePicker]="pickerProductionDateTime"
-                                        placeholder="Production Date Time" formControlName="ProductionDateTime"
+                                        placeholder="Production Date Time" formControlName="PackingDateTime"
                                         required>
                                     <button type="button" mat-icon-button (click)="pickerProductionDateTime.open()"
                                         matSuffix>
@@ -250,7 +250,7 @@
 
                                         <td>
                                             <button (click)="onEditDetail(detail, i)" type="button"
-                                                class="btn btn-primary back-Green btn-sm btnModifyRow">
+                                                class="btn btn-success back-Green btn-sm btnModifyRow">
                                                 <i class="fa fa-pencil"></i>
                                             </button>
                                         </td>

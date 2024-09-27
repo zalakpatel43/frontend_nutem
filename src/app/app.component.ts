@@ -13,7 +13,7 @@ import { filter, map } from 'rxjs/operators';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'skyward-Admin';
+  title = 'skyward-Nutem';
 
   @HostBinding('class') componentCssClass : any;
   theme: any = 'default-theme';

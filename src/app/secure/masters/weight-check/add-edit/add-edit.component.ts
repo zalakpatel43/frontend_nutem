@@ -50,9 +50,7 @@ export class WeightCheckAddEditComponent implements OnInit, OnDestroy {
     this.getRoute();
     this.loadDropdowns();
     this.IsViewPermission = this.permissionService.hasPermission('Weight Check (PER_WEIGHTCHECK) - View');
-    // Subscribe to value changes
-    this.WeightCheckForm.get('MinWeightRange')?.valueChanges.subscribe(() => this.onWeightRangeChange());
-    this.WeightCheckForm.get('MaxWeightRange')?.valueChanges.subscribe(() => this.onWeightRangeChange());
+  
   }
 
   private getRoute() {
@@ -98,6 +96,10 @@ export class WeightCheckAddEditComponent implements OnInit, OnDestroy {
     });
     this.WeightCheckForm.get('SAPProductionOrderId').disable();
     this.WeightCheckForm.get('ProductId').disable();
+
+      // Subscribe to value changes
+      this.WeightCheckForm.get('MinWeightRange')?.valueChanges.subscribe(() => this.onWeightRangeChange());
+      this.WeightCheckForm.get('MaxWeightRange')?.valueChanges.subscribe(() => this.onWeightRangeChange());
 
     const formatTimeWithAMPM = (dateTime: string): string => {
       const date = new Date(dateTime);

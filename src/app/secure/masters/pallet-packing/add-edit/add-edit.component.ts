@@ -353,6 +353,7 @@ export class PalletPackingAddEditComponent implements OnInit, OnDestroy {
     this.isFormSubmitted = true;
 
     if (this.palletPackingForm.invalid) {
+      const invalidFields = this.checkInvalidFields();
       return;
     }
 
@@ -373,6 +374,9 @@ export class PalletPackingAddEditComponent implements OnInit, OnDestroy {
     // Prepare form value and payload
     const formValue = this.palletPackingForm.value;
     formValue.palletPackingDetails = this.addedPalletPackingDetailsList;
+    const totalCases = this.palletPackingForm.controls.TotalCasesProduced.value;
+    formValue.totalcases = totalCases;
+    console.log(" totalCases pallet form value", totalCases);
     const payload = this.transformData(formValue);
 
     // Log payload for debugging
@@ -385,6 +389,18 @@ export class PalletPackingAddEditComponent implements OnInit, OnDestroy {
       this.createPalletPacking(payload);
     }
   }
+
+  checkInvalidFields() {
+    const invalidFields = [];
+    Object.keys(this.palletPackingForm.controls).forEach(field => {
+      const control = this.palletPackingForm.get(field);
+      if (control && control.invalid) {
+        invalidFields.push(field);
+      }
+    });
+    return invalidFields;
+  }
+
   transformData(originalData) {
     function formatToDateTime(dateStr) {
       if (!dateStr) return null;
@@ -413,8 +429,7 @@ export class PalletPackingAddEditComponent implements OnInit, OnDestroy {
       ProductId:this.isEditMode ? this.palletPackingData.productId : originalData.ProductId,
       FinishedCasesOnIncompletePalletAtStart: originalData.FinishedCasesOnIncompletePalletAtStart,
       FinishedCasesOnIncompletePalletAtEnd: originalData.FinishedCasesOnIncompletePalletAtEnd,
-      TotalCasesProduced: originalData.TotalCasesProduced,
-
+      TotalCasesProduced: this.isEditMode ? originalData.totalcases : originalData.TotalCasesProduced,
       SupervisedBy: originalData.SupervisedBy,
       Notes: originalData.Notes,
       palletPackingDetails: detailsArray.map(details => ({

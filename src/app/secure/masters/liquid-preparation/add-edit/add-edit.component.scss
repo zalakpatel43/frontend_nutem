@@ -69,5 +69,49 @@ mat-tab-group {
     border-style: solid;
     border-radius: 50%;
   }
+
+  .card-header {
+    background-color: rgb(23, 187, 88) !important;
+    border-bottom: 1px solid rgb(23, 187, 88) !important;
+    padding: 0.75rem 1.25rem;
+    color: white;
+}
+
+.back-Green{
+    background-color:  rgb(23, 187, 88) !important;
+    color: white !important ;              /* Text color */
+  }
+
+  .icon-green {
+    color: green;  /* Set the color for remove_circle_outline */
+  }
+
+  ::ng-deep .mat-mdc-tab-labels{
+    background-color:  rgb(23, 187, 88) !important;
+    color: white !important ; 
+  }
   
+  ::ng-deep .mat-mdc-tab .mdc-tab__text-label {
+    color: white !important;
+}
+
+::ng-deep .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+  color: #E91E63 !important;
+}
+
+::ng-deep .mat-mdc-tab-group, .mat-mdc-tab-nav-bar {
+  --mdc-tab-indicator-active-indicator-color: #E91E63 !important;
+  // --mat-tab-header-disabled-ripple-color: rgba(0, 0, 0, 0.38);
+  // --mat-tab-header-pagination-icon-color: black;
+  // --mat-tab-header-inactive-label-text-color: rgba(0, 0, 0, 0.6);
+  // --mat-tab-header-active-label-text-color: #3f51b5;
+  // --mat-tab-header-active-ripple-color: #3f51b5;
+  // --mat-tab-header-inactive-ripple-color: #3f51b5;
+  // --mat-tab-header-inactive-focus-label-text-color: rgba(0, 0, 0, 0.6);
+  // --mat-tab-header-inactive-hover-label-text-color: rgba(0, 0, 0, 0.6);
+  // --mat-tab-header-active-focus-label-text-color: #3f51b5;
+  // --mat-tab-header-active-hover-label-text-color: #3f51b5;
+  // --mat-tab-header-active-focus-indicator-color: #3f51b5;
+  // --mat-tab-header-active-hover-indicator-color: #3f51b5;
+}
   

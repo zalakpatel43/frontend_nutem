@@ -281,7 +281,9 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
 
       // Instruction 
       this.liquidPreparationData.liquidPreparationInstructionDetails.forEach(element => {
-        let diff = element.weight - element.weightAdded;
+      //  let diff = element.weight - element.weightAdded;
+      let diff =  (element.weightAdded  - element.weight);
+      console.log("difference", diff)
         let DoneByNames = this.usersList.filter(item => element.doneByIds?.includes(item.id)).map(item => item.name)
           .join(', ');
 
@@ -294,7 +296,7 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
           WeightAdded: element.weightAdded,
           DoneByIds: element.doneByIds.split(',').map(id => parseInt(id, 10)),
           AddedTime: element.addedTime,
-          diffWeight: diff ? diff : 0,
+          diffWeight: diff,
           DoneByNames: DoneByNames,
           InstructionName: this.productInstructionDetailsList.find(x => x.id == element.instructionId)?.instruction,
           MaterialName: this.materialMasterList.find(x => x.id == element.materialId)?.materialName
@@ -606,7 +608,7 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
     if (this.InstructionForm.valid) {
       let formvalue = this.InstructionForm.value;
       if (formvalue.Weight != formvalue.WeightAdded) {
-        formvalue["diffWeight"] = formvalue.Weight - formvalue.WeightAdded;
+        formvalue["diffWeight"] = formvalue.WeightAdded  - formvalue.Weight;
       }
       else {
         formvalue["diffWeight"] = 0;

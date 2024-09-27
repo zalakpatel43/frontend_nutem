@@ -1,52 +1,48 @@
-<div class="row justify-content-between align-items-center">
+<div class="row justify-content-center">
   <div class="col-xl-11 col-lg-12">
-    <div class="border p30 rounded">
-      <div class="row align-items-center">
-        <div class="col-lg-6 col-md-6 col-sm-12 d-flex align-items-end">
+    <div class="border p-3 rounded">
+      <div class="row align-items-center mb-3">
+        <div class="col-12 col-md-8 d-flex align-items-end mb-2 mb-md-0">
           <h4 class="mb-0">Production Order List</h4>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-12 d-flex justify-content-end">
-          <div style="margin-right: 8px;">
-            <mat-form-field appearance="outline">
-              <mat-label>Status</mat-label>
-              <mat-select [(ngModel)]="selectedStatus" (selectionChange)="GetPOBystatus()">
-                <mat-option *ngFor="let status of statusOptions" [value]="status">{{ status }}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div>
+        <div class="col-12 col-md-4 d-flex justify-content-end">
+          <div class="d-flex flex-column flex-md-row w-100">
+            <div class="me-2 flex-grow-1">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Status</mat-label>
+                <mat-select [(ngModel)]="selectedStatus" (selectionChange)="GetPOBystatus()">
+                  <mat-option *ngFor="let status of statusOptions" [value]="status">{{ status }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
             <production-order-search-panel (searchChanged)="updateSearch($event)"></production-order-search-panel>
           </div>
         </div>
       </div>
-      <!-- Add the search panel in the production order list -->
-      <!-- <production-order-search-panel (searchChanged)="updateSearch($event)"></production-order-search-panel> -->
+      
+
       <div class="row">
         <div class="col-12">
-          <table mat-table [dataSource]="filteredProductionOrderData" multiTemplateDataRows class="mat-elevation-z8">
+          <div class="table-responsive"> 
+          <table mat-table [dataSource]="filteredProductionOrderData" multiTemplateDataRows class="mat-elevation-z8" >
 
             <!-- Dynamic Columns -->
-            <ng-container *ngFor="let column of columnsToDisplay; let i = index" [matColumnDef]="column">
-              <th mat-header-cell *matHeaderCellDef>  {{ getHeaderLabel(column) }}</th>
+            <ng-container *ngFor="let column of columnsToDisplay" [matColumnDef]="column">
+              <th mat-header-cell *matHeaderCellDef [ngStyle]="{'padding-left': column === 'code' ? '5%' : '1%'}">
+                {{ getHeaderLabel(column) }}</th>
               <td mat-cell *matCellDef="let row">
                 <ng-container *ngIf="column === 'code'">
                   <a mat-icon-button (click)="isRowExpanded(row)" *ngIf="selectedStatus === 'Open'">
                     <mat-icon [ngClass]="isRowExpanded(row) ? 'icon-red' : 'icon-green'">
                       {{ isRowExpanded(row) ? 'remove_circle_outline' : 'control_point' }}
                     </mat-icon>
-                    <!-- <mat-icon>{{ isRowExpanded(row) ? 'remove' : 'add' }}</mat-icon> -->
-
                   </a>
-                  {{row[column]}}
-
+                  {{ row[column] }}
                 </ng-container>
                 <ng-container *ngIf="column !== 'code' && column !== 'actions'">
-                  {{row[column]}}
+                  {{ row[column] }}
                 </ng-container>
                 <ng-container *ngIf="column === 'actions'">
-                  <!-- <a mat-icon-button (click)="toggleExpandRow(row)">
-                    <mat-icon>add</mat-icon>
-                  </a> -->
                   <a mat-icon-button (click)="toggleStatus(row)">
                     <mat-icon [ngClass]="row.status === 'Open' ? 'icon-green' : 'icon-red'">
                       {{ row.status === 'Open' ? 'lock_open' : 'lock' }}
@@ -56,72 +52,65 @@
               </td>
             </ng-container>
 
-
             <!-- Expanded Content Column -->
             <ng-container matColumnDef="expandedDetail">
               <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplay.length">
-                <div class="matgrid-element-detail" [@detailExpand]="isRowExpanded(row) ? 'expanded' : 'collapsed'"
-                  style="margin-left: 3%;">
-                  <table mat-table [dataSource]="relatedData" class="mat-elevation-z8 nested-table">
+                <div class="matgrid-element-detail" [@detailExpand]="isRowExpanded(row) ? 'expanded' : 'collapsed'" style="margin-left: 3%;">
+                  <div *ngIf="Childloading" class="loader-container" style="text-align: center; margin-bottom: 20px;">
+                    <mat-progress-spinner diameter="40" mode="indeterminate"></mat-progress-spinner>
+                  </div>
+                  <div *ngIf="!Childloading" class="full-width">
+                    <table mat-table [dataSource]="relatedData" class="mat-elevation-z8 nested-table">
+                      <ng-container matColumnDef="type">
+                        <th mat-header-cell *matHeaderCellDef> Type </th>
+                        <td mat-cell *matCellDef="let data"> {{ data.type }} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="code">
+                        <th mat-header-cell *matHeaderCellDef> Code </th>
+                        <td mat-cell *matCellDef="let data"> {{ data.code }} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="date">
+                        <th mat-header-cell *matHeaderCellDef> Date </th>
+                        <td mat-cell *matCellDef="let data">
+                          {{ data.date | date: 'dd-MMM-yyyy HH:mm a' }}
+                          <span *ngIf="data.type === 'Weight Check' || data.type === 'Liquid Preparation'"> To
+                            {{ data.endDate | date: 'dd-MMM-yyyy HH:mm a' }} </span>
+                        </td>
+                      </ng-container>
+                      <ng-container matColumnDef="productName">
+                        <th mat-header-cell *matHeaderCellDef> Product Name </th>
+                        <td mat-cell *matCellDef="let data"> {{ data.productName }} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="shiftName">
+                        <th mat-header-cell *matHeaderCellDef> Shift Name </th>
+                        <td mat-cell *matCellDef="let data"> {{ data.shiftName }} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="totalcaseproduced">
+                        <th mat-header-cell *matHeaderCellDef> Total Cases Produced </th>
+                        <td mat-cell *matCellDef="let data"> {{ data.totalcaseproduced }} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef> Actions </th>
+                        <td mat-cell *matCellDef="let data">
+                          <a mat-icon-button (click)="editRelatedData(data)">
+                            <mat-icon class="icon-green">edit</mat-icon>
+                          </a>
+                        </td>
+                      </ng-container>
 
-                    <!-- Nested Columns -->
-                    <ng-container matColumnDef="type">
-                      <th mat-header-cell *matHeaderCellDef> Type </th>
-                      <td mat-cell *matCellDef="let data"> {{data.type}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="code">
-                      <th mat-header-cell *matHeaderCellDef> Code </th>
-                      <td mat-cell *matCellDef="let data"> {{data.code}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="date">
-                      <th mat-header-cell *matHeaderCellDef> Date </th>
-                      <td mat-cell *matCellDef="let data">
-                        {{data.date | date: 'dd-MMM-yyyy HH:mm a'}}
-                        <span *ngIf="data.type === 'Weight Check' ||data.type === 'Liquid Preparation' "> To
-                          {{data.endDate | date: 'dd-MMM-yyyy HH:mm a'}} </span>
-                      </td>
-                    </ng-container>
-                    <ng-container matColumnDef="productName">
-                      <th mat-header-cell *matHeaderCellDef> Product Name </th>
-                      <td mat-cell *matCellDef="let data"> {{data.productName}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="shiftName">
-                      <th mat-header-cell *matHeaderCellDef> Shift Name </th>
-                      <td mat-cell *matCellDef="let data"> {{data.shiftName}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="totalcaseproduced">
-                      <th mat-header-cell *matHeaderCellDef> Total Cases Produced </th>
-                      <td mat-cell *matCellDef="let data"> {{data.totalcaseproduced}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="actions">
-                      <th mat-header-cell *matHeaderCellDef> Actions </th>
-                      <td mat-cell *matCellDef="let data">
-                        <a mat-icon-button (click)="editRelatedData(data)">
-                          <mat-icon class="icon-green">edit</mat-icon>
-                        </a>
-                      </td>
-                    </ng-container>
-
-                    <!-- Nested Table Header and Rows -->
-                    <tr mat-header-row
-                      *matHeaderRowDef="['type', 'code', 'date', 'productName', 'shiftName','totalcaseproduced', 'actions']">
-                    </tr>
-                    <tr mat-row
-                      *matRowDef="let data; columns: ['type', 'code', 'date', 'productName', 'shiftName','totalcaseproduced',  'actions']">
-                    </tr>
-                  </table>
+                      <tr mat-header-row *matHeaderRowDef="['type', 'code', 'date', 'productName', 'shiftName','totalcaseproduced', 'actions']"></tr>
+                      <tr mat-row *matRowDef="let data; columns: ['type', 'code', 'date', 'productName', 'shiftName','totalcaseproduced',  'actions']"></tr>
+                    </table>
+                  </div>
                 </div>
               </td>
             </ng-container>
 
-
-            <!-- Main Table Header and Rows -->
             <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-            <tr mat-row *matRowDef="let row; columns: columnsToDisplay;" class="matgrid-element-row"
-              [class.matgrid-expanded-row]="expandedElement === row" (click)="toggleExpandRow(row)">
-            </tr>
+            <tr mat-row *matRowDef="let row; columns: columnsToDisplay;" class="matgrid-element-row" [class.matgrid-expanded-row]="expandedElement === row" (click)="toggleExpandRow(row)"></tr>
             <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="matgrid-detail-row"></tr>
           </table>
+        </div>
         </div>
       </div>
     </div>

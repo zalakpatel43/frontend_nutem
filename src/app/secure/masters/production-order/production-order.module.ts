@@ -17,6 +17,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {MatSortModule} from '@angular/material/sort';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import {MatSortModule} from '@angular/material/sort';
     MatTableModule,
     MatButtonModule,
     MatIconModule,
-    MatSortModule
+    MatSortModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     ProductionOrderService,

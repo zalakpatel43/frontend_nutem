@@ -7,7 +7,8 @@ import { PermissionService } from 'src/app/core/service/permission.service';
 
 
 @Component({
-    templateUrl: './list.component.html'
+    templateUrl: './list.component.html',
+    styleUrls: ['./list.component.scss']
 })
 
 export class RoleListComponent implements OnInit {

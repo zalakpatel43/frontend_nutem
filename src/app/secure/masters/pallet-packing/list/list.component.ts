@@ -17,7 +17,6 @@ export class PalletPackingListComponent implements OnInit {
     permissions = PermissionType;
     error: string;
     loading: boolean;
-
     searchData: { [key: string]: any } = {};
     showDeleteModal: boolean = false;
 

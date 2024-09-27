@@ -25,3 +25,12 @@
     background-color:  rgb(23, 187, 88) !important;
     color: white !important ;              /* Text color */
   }
+
+  
+  ::ng-deep .ngx-datatable.material .datatable-body .progress-linear .container {
+    background-color: lightgreen;
+  }
+  
+  ::ng-deep .ngx-datatable.material .datatable-body .progress-linear .container .bar {
+    background-color: green;
+  }

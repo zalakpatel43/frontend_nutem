@@ -113,8 +113,9 @@
     <mat-sidenav-container fxFlexFill>
         <mat-sidenav #sidenav position="end">
             <mat-nav-list>
-                <a *ngIf="UserPermission" routerLinkActive="active" mat-list-item (click)="sidenav.toggle()"
-                    [routerLink]="['/secure','dashboard']">Dashboard</a>
+                <a *ngIf="ProductionOrderPermission" routerLinkActive="active" mat-list-item (click)="sidenav.toggle()"
+                    [routerLink]="['/secure/masters', 'production-order']">Dashboard</a>
+
                 <a *ngIf="UserPermission" routerLinkActive="active" mat-list-item (click)="sidenav.toggle()"
                     [routerLink]="['/secure/masters','user']">User</a>
                 <a *ngIf="RolePermission" routerLinkActive="active" mat-list-item (click)="sidenav.toggle()"

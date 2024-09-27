@@ -6,15 +6,19 @@
                     <h4 class="mb-0"><i class="icon-edit"></i> Add/Edit Liquid Preparation</h4>
                 </div>
                 <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end">
-                    <a *ngIf="IsViewPermission" mat-flat-button color="primary"
-                        class="app-button" (click)="cancel()">
+                    <a *ngIf="IsViewPermission" mat-flat-button class="app-button back-Green" (click)="cancel()">
                         View List
                     </a>
                 </div>
             </div>
             <div class="tab-group-container">
                 <mat-tab-group [(selectedIndex)]="selectedIndex" class="tab-group-bordered">
-                    <mat-tab label="Basic">
+                    <mat-tab>
+                        <ng-template mat-tab-label>
+                            <mat-icon class="me-2">work</mat-icon> <!-- Replace with your desired icon -->
+                            Basic
+                            <!-- <mat-icon class="ms-2" style="color: #AAFF00;">check</mat-icon> -->
+                        </ng-template>
                         <ng-template matTabContent>
                             <form [formGroup]="basicForm" #form="ngForm" novalidate class="app-form">
                                 <!-- Basic Details Section -->
@@ -26,9 +30,9 @@
                                         <div class="row">
                                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                                 <mat-form-field appearance="fill">
-                                                    <input matInput [ngxMatDatetimePicker]="pickerStartDate" (dateChange)="onStartDateChange()"
-                                                        placeholder="Start Date" formControlName="StartDateTime"
-                                                        required>
+                                                    <input matInput [ngxMatDatetimePicker]="pickerStartDate"
+                                                        (dateChange)="onStartDateChange()" placeholder="Start Date"
+                                                        formControlName="StartDateTime" required>
                                                     <button type="button" mat-icon-button
                                                         (click)="pickerStartDate.open()" matSuffix>
                                                         <mat-icon>calendar_today</mat-icon>
@@ -51,10 +55,11 @@
 
                                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                                 <mat-form-field appearance="fill">
-                                                    <input matInput [ngxMatDatetimePicker]="pickerEndDate" (dateChange)="onEndDateChange()" 
-                                                        placeholder="End Date" formControlName="EndDateTime" required>
+                                                    <input matInput [ngxMatDatetimePicker]="pickerEndDate"
+                                                        (dateChange)="onEndDateChange()" placeholder="End Date"
+                                                        formControlName="EndDateTime" required>
                                                     <button type="button" mat-icon-button (click)="pickerEndDate.open()"
-                                                        matSuffix >
+                                                        matSuffix>
                                                         <mat-icon>calendar_today</mat-icon>
                                                     </button>
                                                     <ngx-mat-datetime-picker #pickerEndDate
@@ -180,7 +185,11 @@
                             </form>
                         </ng-template>
                     </mat-tab>
-                    <mat-tab label="Start Checklist" [disabled]="isstartChecklistDisable">
+                    <mat-tab [disabled]="isstartChecklistDisable">
+                        <ng-template mat-tab-label>
+                            <mat-icon class="me-2">check_circle_outline</mat-icon>
+                            Start Checklist
+                        </ng-template>
                         <ng-template matTabContent>
                             <form [formGroup]="StartCheckListForm" #form="ngForm" novalidate class="app-form">
                                 <div class="card mb-4">
@@ -237,11 +246,15 @@
                             </form>
                         </ng-template>
                     </mat-tab>
-                    <mat-tab label="Instructions" [disabled]="isInstructionsDisable">
+                    <mat-tab  [disabled]="isInstructionsDisable">
+                        <ng-template mat-tab-label>
+                            <mat-icon class="me-2">format_list_bulleted</mat-icon>
+                            Instructions
+                        </ng-template>
                         <ng-template matTabContent>
                             <form [formGroup]="InstructionForm" #form="ngForm" novalidate class="app-form">
                                 <!-- Basic Details Section -->
-                                <div class="card mb-4">
+                                <div class="card mb-4 mt-4">
                                     <div class="card-header">
                                         <h5 class="mb-0">Instruction Details</h5>
                                     </div>
@@ -295,8 +308,7 @@
                                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                                 <mat-form-field appearance="fill" class="full-width">
                                                     <mat-label>Weight</mat-label>
-                                                    <input matInput formControlName="Weight" type="number" 
-                                                    >
+                                                    <input matInput formControlName="Weight" type="number">
                                                     <mat-validation-message [control]="InstructionForm.controls.Weight"
                                                         [message]="'Weight'"
                                                         [formSubmitted]="isInstructionFormSubmitted"></mat-validation-message>
@@ -342,7 +354,7 @@
 
                                             <div
                                                 class="col-12 col-sm-12 col-md-1 col-lg-1 mb-3 p-1 d-flex align-items-center">
-                                                <button type="button" mat-icon-button color="warn"
+                                                <button type="button" mat-icon-button class="icon-green"
                                                     (click)="addInstruction()">
                                                     <mat-icon>add</mat-icon>
                                                 </button>
@@ -357,18 +369,17 @@
                                     <div class="col-md-12">
                                         <div class="table-responsive">
                                             <table id="gridNozzlewiseWeight"
-                                                class="table table-hover table-bordered display mb-30 fixed-table-scroll-inner"
-                                                >
+                                                class="table table-hover table-bordered display mb-30 fixed-table-scroll-inner">
                                                 <thead class="bg-primary text-primary text-center">
                                                     <tr>
-                                                        <th style="width:20%">Instruction</th>
-                                                        <th>Material & Part Code</th>
-                                                        <th>Lot Number </th>
-                                                        <th>Weight (kg)</th>
-                                                        <th>Weight Added (kg)</th>
-                                                        <th>Done By</th>
-                                                        <th> Added Time </th>
-                                                        <th>Action</th>
+                                                        <th style="width:20%" class="back-Green">Instruction</th>
+                                                        <th class="back-Green">Material & Part Code</th>
+                                                        <th class="back-Green">Lot Number </th>
+                                                        <th class="back-Green">Weight (kg)</th>
+                                                        <th class="back-Green">Weight Added (kg)</th>
+                                                        <th class="back-Green">Done By</th>
+                                                        <th class="back-Green"> Added Time </th>
+                                                        <th class="back-Green">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -382,10 +393,10 @@
                                                         <td> {{ins.AddedTime | date:'yyyy-MM-dd HH:mm:ss'}} </td>
                                                         <td>
                                                             <button (click)="onEditDetail(ins,i)" type="button"
-                                                                class="btn btn-primary btn-sm btnModifyRow"><i
+                                                                class="btn btn-success back-Green btn-sm btnModifyRow"><i
                                                                     class="fa fa-pencil"></i></button>
                                                             <button (click)="removeDetail(i)" type="button"
-                                                                class="btn btn-danger btn-sm btnRemoveRow"><i
+                                                                class="btn btn-danger btn-sm btnRemoveRow ms-1"><i
                                                                     class="fa fa-close"></i></button>
                                                         </td>
                                                     </tr>
@@ -403,7 +414,11 @@
                             </form>
                         </ng-template>
                     </mat-tab>
-                    <mat-tab label="End Checklist" [disabled]="isEndChecklistDisable">
+                    <mat-tab  [disabled]="isEndChecklistDisable">
+                        <ng-template mat-tab-label>
+                            <mat-icon class="me-2">check_circle_outline</mat-icon>
+                            End Checklist
+                        </ng-template>
                         <ng-template matTabContent>
                             <form [formGroup]="EndCheckListForm" #form="ngForm" novalidate class="app-form">
                                 <div class="card mb-4">
@@ -470,10 +485,14 @@
                             </form>
                         </ng-template>
                     </mat-tab>
-                    <mat-tab label="Quality" [disabled]="isQualityDisable">
+                    <mat-tab  [disabled]="isQualityDisable">
+                        <ng-template mat-tab-label>
+                             <mat-icon class="me-2">push_pin</mat-icon> 
+                            Quality
+                        </ng-template>
                         <ng-template matTabContent>
                             <form [formGroup]="QualityForm" #form="ngForm" novalidate class="app-form">
-                                <div class="card mb-4">
+                                <div class="card mb-4 mt-4">
                                     <div class="card-header">
                                         <h5 class="mb-0">Quality Details</h5>
                                     </div>
@@ -481,7 +500,8 @@
                                         <div class="row">
                                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                                 <mat-form-field appearance="fill">
-                                                    <input matInput [ngxMatDatetimePicker]="pickerTestingDateTime" (dateChange)="onTestingDateTimeChange()"
+                                                    <input matInput [ngxMatDatetimePicker]="pickerTestingDateTime"
+                                                        (dateChange)="onTestingDateTimeChange()"
                                                         placeholder="Date Tested" formControlName="TestingDateTime"
                                                         required>
                                                     <button type="button" mat-icon-button
@@ -512,7 +532,8 @@
                                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                                 <mat-form-field appearance="fill">
                                                     <input matInput [ngxMatDatetimePicker]="pickerSampleReceivedTime"
-                                                        placeholder="Sample Received At" (dateChange)="onRecieveDateChange()"
+                                                        placeholder="Sample Received At"
+                                                        (dateChange)="onRecieveDateChange()"
                                                         formControlName="SampleReceivedTime" required>
                                                     <button type="button" mat-icon-button
                                                         (click)="pickerSampleReceivedTime.open()" matSuffix>
@@ -526,7 +547,8 @@
                                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                                 <mat-form-field appearance="fill">
                                                     <input matInput [ngxMatDatetimePicker]="pickerSampleTestedTime"
-                                                        placeholder="Sample Tested At"  (dateChange)="onTestedDateChange()"
+                                                        placeholder="Sample Tested At"
+                                                        (dateChange)="onTestedDateChange()"
                                                         formControlName="SampleTestedTime" required>
                                                     <button type="button" mat-icon-button
                                                         (click)="pickerSampleTestedTime.open()" matSuffix>
@@ -569,7 +591,7 @@
 
                                             <div
                                                 class="col-12 col-sm-12 col-md-1 col-lg-1 mb-3 p-1 d-flex align-items-center">
-                                                <button type="button" mat-icon-button color="warn"
+                                                <button type="button" mat-icon-button class="icon-green"
                                                     (click)="addQuality()">
                                                     <mat-icon>add</mat-icon>
                                                 </button>
@@ -584,19 +606,18 @@
                                     <div class="col-md-12 full-width">
                                         <div class="table-responsive">
                                             <table id="gridQualityList"
-                                                class="table table-hover table-bordered display mb-30 fixed-table-scroll-inner"
-                                                >
+                                                class="table table-hover table-bordered display mb-30 fixed-table-scroll-inner">
                                                 <thead class="bg-primary text-primary text-center">
                                                     <tr>
-                                                        <th>Id</th>
-                                                        <th>Date Tested</th>
-                                                        <th>Analysis Done By</th>
-                                                        <th>Sample Received At</th>
-                                                        <th>Sample Tested At</th>
-                                                        <th>Specification Limit</th>
-                                                        <th>Result</th>
-                                                        <th>Comments</th>
-                                                        <th>Action</th>
+                                                        <th class="back-Green">Id</th>
+                                                        <th class="back-Green">Date Tested</th>
+                                                        <th class="back-Green">Analysis Done By</th>
+                                                        <th class="back-Green">Sample Received At</th>
+                                                        <th class="back-Green">Sample Tested At</th>
+                                                        <th class="back-Green">Specification Limit</th>
+                                                        <th class="back-Green">Result</th>
+                                                        <th class="back-Green">Comments</th>
+                                                        <th class="back-Green">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -612,10 +633,10 @@
                                                         <td> {{Qa.Test2}} </td>
                                                         <td>
                                                             <button (click)="onEditQualityDetail(Qa,i)" type="button"
-                                                                class="btn btn-primary btn-sm btnModifyRow"><i
+                                                                class="btn btn-success btn-sm btnModifyRow back-Green"><i
                                                                     class="fa fa-pencil"></i></button>
                                                             <button (click)="removeQualityDetail(i)" type="button"
-                                                                class="btn btn-danger btn-sm btnRemoveRow"><i
+                                                                class="btn btn-danger btn-sm btnRemoveRow ms-1"><i
                                                                     class="fa fa-close"></i></button>
                                                         </td>
                                                     </tr>
@@ -627,9 +648,13 @@
                             </form>
                         </ng-template>
                     </mat-tab>
-                    <mat-tab label="Adjustment" [disabled]="isAdjustmentDisable">
+                    <mat-tab  [disabled]="isAdjustmentDisable">
+                        <ng-template mat-tab-label>
+                            <mat-icon class="me-2">settings</mat-icon>
+                            Adjustment
+                       </ng-template>
                         <ng-template matTabContent>
-                            <div class="card mb-4">
+                            <div class="card mb-4 mt-4">
                                 <div class="card-header">
                                     <h5 class="mb-0">Adjustment Details</h5>
                                 </div>
@@ -642,22 +667,28 @@
                                                     style="overflow:scroll;width:auto">
                                                     <thead class="bg-primary text-primary text-center">
                                                         <tr class="full-width">
-                                                            <th style="width:25%">Material & Part Code</th>
-                                                            <th  style="width:25%">Weight </th>
-                                                            <th  style="width:20%">Adjustment</th>
-                                                            <th  style="width:25%">Total</th>
+                                                            <th style="width:25%" class="back-Green">Material & Part
+                                                                Code</th>
+                                                            <th style="width:25%" class="back-Green">Weight </th>
+                                                            <th style="width:20%" class="back-Green">Adjustment</th>
+                                                            <th style="width:25%" class="back-Green">Total</th>
                                                             <!-- <th>Action</th> -->
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr *ngFor="let ins of DiffWghInstructionList; let i = index">
                                                             <td> {{ins.MaterialName}} </td>
+                                                            <td> {{ins.Weight }} </td>
+                                                            <td> {{ins.diffWeight | number: '1.2-2'}} </td>
+                                                            <td> {{ins.WeightAdded}} </td>
+
+                                                            <!-- <td> {{ins.MaterialName}} </td>
                                                             <td> {{ins.WeightAdded}} </td>
                                                             <td> {{ins.diffWeight  | number: '1.2-2'}} </td>
-                                                            <td> {{ins.Weight}} </td>
+                                                            <td> {{ins.Weight}} </td> -->
                                                             <!-- <td>
                                                         <button (click)="onEditDetail(ins,i)" type="button"
-                                                            class="btn btn-primary btn-sm btnModifyRow"><i
+                                                            class="btn btn-success btn-sm btnModifyRow"><i
                                                                 class="fa fa-pencil"></i></button>
                                                         <button (click)="removeDetail(i)" type="button"
                                                             class="btn btn-danger btn-sm btnRemoveRow"><i
@@ -678,12 +709,12 @@
                 </mat-tab-group>
                 <!-- Navigation Buttons -->
                 <div style="margin-top: 20px;" class="d-flex justify-content-end">
-                    <button mat-raised-button color="primary" (click)="goToPreviousTab()"
+                    <button mat-raised-button class="back-Green" (click)="goToPreviousTab()"
                         [disabled]="selectedIndex === 0">Previous</button>
-                    <button mat-raised-button color="primary" class="ms-4" (click)="goToNextTab()"
-                        [disabled]="selectedIndex === tabCount - 1"  *ngIf ="selectedIndex != 5">Draft &Next</button>
-                    <button mat-raised-button color="primary" class="ms-4" (click)="Submit()"
-                        *ngIf ="selectedIndex === 5">Submit</button>
+                    <button mat-raised-button class="ms-4 back-Green" (click)="goToNextTab()"
+                        [disabled]="selectedIndex === tabCount - 1" *ngIf="selectedIndex != 5">Draft &Next</button>
+                    <button mat-raised-button class="ms-4 back-Green" (click)="Submit()"
+                        *ngIf="selectedIndex === 5">Submit</button>
                 </div>
             </div>
         </div>
