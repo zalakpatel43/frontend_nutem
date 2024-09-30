@@ -23,7 +23,8 @@
 }
 
 .mb-3 {
-    margin-bottom: 1rem; /* Adjust as needed */
+    margin-bottom: 1rem;
+    /* Adjust as needed */
 }
 
 .card-header {
@@ -33,19 +34,32 @@
     color: white;
 }
 
-.back-Green{
-    background-color:  rgb(23, 187, 88) !important;
-    color: white !important ;              /* Text color */
-  }
+.back-Green {
+    background-color: rgb(23, 187, 88) !important;
+    color: white !important;
+    /* Text color */
+}
 
-  .icon-green {
-    color: green;  /* Set the color for remove_circle_outline */
-  }
+.icon-green {
+    color: green;
+    /* Set the color for remove_circle_outline */
+}
 
-  ::ng-deep .ngx-datatable.material .datatable-body .progress-linear .container {
+::ng-deep .ngx-datatable.material .datatable-body .progress-linear .container {
     background-color: lightgreen;
-  }
-  
-  ::ng-deep .ngx-datatable.material .datatable-body .progress-linear .container .bar {
+}
+
+::ng-deep .ngx-datatable.material .datatable-body .progress-linear .container .bar {
     background-color: green;
-  }
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type='number'] {
+    -moz-appearance: textfield;
+    /* For Firefox */
+}

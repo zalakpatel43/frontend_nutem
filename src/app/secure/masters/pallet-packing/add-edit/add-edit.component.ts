@@ -265,6 +265,7 @@ export class PalletPackingAddEditComponent implements OnInit, OnDestroy {
         this.addedPalletPackingDetailsList.push(palletDetail);
       }
 
+      this.updateTotalCasesProduced();
       this.palletPackingDetails.clear();
       this.addPalletDetail();
 
