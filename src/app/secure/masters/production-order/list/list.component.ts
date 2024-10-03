@@ -62,7 +62,7 @@ export class ProductionOrderListComponent implements OnInit {
     this.productionOrderService.getPOByStatus(this.selectedStatus)
       .subscribe((result: any) => {
         this.productionOrderData = result; 
-        console.log("ProductionOrderdata:",this.productionOrderData);
+       // console.log("ProductionOrderdata:",this.productionOrderData);
         
         this.filteredProductionOrderData = result;
        // this.filterByStatus();

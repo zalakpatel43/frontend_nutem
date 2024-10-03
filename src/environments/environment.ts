@@ -3,13 +3,14 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
+  
 
   //API
+  production: false,
   serverPath: 'https://localhost:7032/',  //local
-  
- // serverPath: 'http://192.168.1.147:8989/',
-  //serverPath: 'https://peoapi.parkvantage.com/',
+
+//  production: true,
+//  serverPath: 'http://192.168.1.147:8989/',
 };
 
 /*

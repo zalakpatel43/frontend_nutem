@@ -36,7 +36,7 @@ export class PermissionListComponent implements OnInit {
       this.permissionService.getPermissionList()
           .subscribe((result: any) => {
               this.permissionData = result;
-              console.log("permission list", this.permissionData);
+            //  console.log("permission list", this.permissionData);
               this.loading = false;
           },
           (error) => {
@@ -59,7 +59,7 @@ export class PermissionListComponent implements OnInit {
 
   updateSearch(search: { [key: string]: any }) {
       this.searchData = Object.assign({}, search);
-      console.log("search data", this.searchData);
+    //  console.log("search data", this.searchData);
   }
 
   isActiveRow(row) {

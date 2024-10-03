@@ -13,7 +13,7 @@ export class ListService implements IListService {
     }
 
     getList(listName: string): Observable<List[]> {
-        console.log("listname ", listName)
+      //  console.log("listname ", listName)
         return this.baseService.get(`${APIConstant.list[listName]}`);
     }
 

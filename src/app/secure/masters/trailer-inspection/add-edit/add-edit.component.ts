@@ -53,7 +53,7 @@ export class TrailerInspectionAddEditComponent implements OnInit, OnDestroy {
       this.createForm();
       if (this.isEditMode) {
         this.trailerInspectionId = params.id//+params["id"];
-       // console.log("id",this.trailerInspectionId);
+        // console.log("id",this.trailerInspectionId);
         this.getTrailerInspectionById();
       }
     });
@@ -65,7 +65,7 @@ export class TrailerInspectionAddEditComponent implements OnInit, OnDestroy {
         this.trailerInspectionData = result;
         this.setWeightCheckData();
 
-        console.log("get by id data", result)
+        // console.log("get by id data", result)
       },
         (error) => {
           console.log(error);
@@ -85,10 +85,10 @@ export class TrailerInspectionAddEditComponent implements OnInit, OnDestroy {
       Date: this.trailerInspectionData.date, // Format date to yyyy-MM-dd
       CompanyId: this.trailerInspectionData.companyId,
       InspectedById: this.trailerInspectionData.inspectedById,
-      TimeIn: formatTimeWithAMPM(this.trailerInspectionData.timeIn) , // Extract time in HH:mm format
-      TimeOut: formatTimeWithAMPM(this.trailerInspectionData.timeOut) , // Extract time in HH:mm format
+      TimeIn: formatTimeWithAMPM(this.trailerInspectionData.timeIn), // Extract time in HH:mm format
+      TimeOut: formatTimeWithAMPM(this.trailerInspectionData.timeOut), // Extract time in HH:mm format
       TotalTime: this.trailerInspectionData.totalTime,
-      TimeOfInspection: formatTimeWithAMPM(this.trailerInspectionData.timeOfInspection) , // Extract time in HH:mm format
+      TimeOfInspection: formatTimeWithAMPM(this.trailerInspectionData.timeOfInspection), // Extract time in HH:mm format
       Mode: this.trailerInspectionData.mode,
       DriverName: this.trailerInspectionData.driverName,
       VehicleTypeId: this.trailerInspectionData.vehicleTypeId,
@@ -194,7 +194,7 @@ export class TrailerInspectionAddEditComponent implements OnInit, OnDestroy {
     const timeIn = this.trailerInspectionForm.get('TimeIn').value;
     const timeOut = this.trailerInspectionForm.get('TimeOut').value;
 
-    console.log("time in , timeout", timeIn, timeOut)
+    // console.log("time in , timeout", timeIn, timeOut)
 
     if (!timeIn) {
       this.notificationService.error("select Time in ");
@@ -323,13 +323,13 @@ export class TrailerInspectionAddEditComponent implements OnInit, OnDestroy {
     }
     else {
       let formvalue = this.trailerInspectionForm.value;
-      console.log("formvalue", formvalue)
+      // console.log("formvalue", formvalue)
       let isValid: boolean = this.validateFOrm(formvalue);
-     
-      console.log("isValid", isValid)
+
+      //  console.log("isValid", isValid)
       if (isValid) {
         let Playload = this.transformData(formvalue);
-        console.log("Playload", Playload)
+        //   console.log("Playload", Playload)
 
         if (this.isEditMode) {
           this.updateTrailerInspection(Playload);
@@ -382,10 +382,10 @@ export class TrailerInspectionAddEditComponent implements OnInit, OnDestroy {
       this.notificationService.error("enter Temperature Setting Used Notes");
       return false;
     }
-     if(formvalue.VehicleStatus === 'Rejected' && (formvalue.RejectionReason.length == 0 || !formvalue.RejectionReason.trim()) ){
-        this.notificationService.error("Reason for Rejection required");
-        return false;
-     }
+    if (formvalue.VehicleStatus === 'Rejected' && (formvalue.RejectionReason.length == 0 || !formvalue.RejectionReason.trim())) {
+      this.notificationService.error("Reason for Rejection required");
+      return false;
+    }
     return true;
   }
 
@@ -446,15 +446,15 @@ export class TrailerInspectionAddEditComponent implements OnInit, OnDestroy {
       return result;
     }
 
-   
+
     const result = {
-      
+
       Id: this.isEditMode ? this.trailerInspectionData.id : 0,
       Code: this.isEditMode ? this.trailerInspectionData.code : '',
       Date: formatToDateTime(formValue.Date),
       CompanyId: formValue.CompanyId,
       InspectedById: formValue.InspectedById,
-      TimeIn:this.isEditMode ? this.trailerInspectionData.timeIn : formatToTime(formValue.TimeIn),
+      TimeIn: this.isEditMode ? this.trailerInspectionData.timeIn : formatToTime(formValue.TimeIn),
       TimeOut: this.isEditMode ? this.trailerInspectionData.timeOut : formatToTime(formValue.TimeOut),
       TotalTime: this.isEditMode ? this.trailerInspectionData.totalTime : formValue.TotalTime.toString(),
       TimeOfInspection: this.isEditMode ? this.trailerInspectionData.timeOfInspection : formatToTime(formValue.TimeOfInspection),

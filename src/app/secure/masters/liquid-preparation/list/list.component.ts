@@ -46,7 +46,7 @@ export class LiquidPreparationListComponent implements OnInit {
             .subscribe((result: any) => {
                 // this.cancel();
                 this.liquidPreparationData = result;
-                console.log("liquidPreparationData list", this.liquidPreparationData);
+              //  console.log("liquidPreparationData list", this.liquidPreparationData);
                 this.loading = false;
             },
                 (error) => {
@@ -69,7 +69,7 @@ export class LiquidPreparationListComponent implements OnInit {
   
     updateSearch(search: { [key: string]: any }) {
         this.searchData = Object.assign({}, search);
-        console.log("serach data", this.searchData);
+       // console.log("serach data", this.searchData);
     }
   
     isActiveRow(row) {

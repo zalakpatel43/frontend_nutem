@@ -167,7 +167,7 @@ export class DowntimeTrackingAddEditComponent implements OnInit, OnDestroy {
     this.downtimeTrackingService.getProductionOrderList()
       .subscribe((result: any) => {
         this.productionOrderList = result;
-        console.log('Data', this, this.productionOrderList)
+        // console.log('Data', this, this.productionOrderList)
       });
 
     this.downtimeTrackingService.getProductList()
@@ -313,7 +313,7 @@ export class DowntimeTrackingAddEditComponent implements OnInit, OnDestroy {
     formValue.downtimeTrackingDetails = this.addedDowntimeTrackingDetailsList;
 
     const payload = this.transformData(formValue);
-    console.log('Transformed Payload:', payload);
+    // console.log('Transformed Payload:', payload);
 
     if (this.isEditMode) {
       this.updateDowntimeTracking(payload);
@@ -329,7 +329,7 @@ export class DowntimeTrackingAddEditComponent implements OnInit, OnDestroy {
 
   transformData(originalData: any) {
     // Add console log to debug the data
-    console.log('Original Data:', originalData);
+    // console.log('Original Data:', originalData);
 
     function formatToDateTime(dateStr: string): string {
       const date = new Date(dateStr);
@@ -401,11 +401,11 @@ export class DowntimeTrackingAddEditComponent implements OnInit, OnDestroy {
   }
 
   private createDowntimeTracking(payload: any) {
-    console.log('Creating Downtime Tracking:', payload);
+    // console.log('Creating Downtime Tracking:', payload);
     this.downtimeTrackingService.addDowntimeTracking(payload)
       .subscribe(
         (response) => {
-          console.log('Create Response:', response);
+          //  console.log('Create Response:', response);
           // You may want to navigate or refresh data based on response
           this.cancel();
           this.notificationService.success("Downtime Tracking created successfully.");
@@ -419,11 +419,11 @@ export class DowntimeTrackingAddEditComponent implements OnInit, OnDestroy {
   }
 
   private updateDowntimeTracking(payload: any) {
-    console.log('Updating Downtime Tracking:', payload);
+    // console.log('Updating Downtime Tracking:', payload);
     this.downtimeTrackingService.updateDowntimeTracking(payload)
       .subscribe(
         (response) => {
-          console.log('Update Response:', response);
+          //  console.log('Update Response:', response);
           this.cancel();
           this.notificationService.success("Downtime Tracking updated successfully.");
         },
@@ -455,18 +455,25 @@ export class DowntimeTrackingAddEditComponent implements OnInit, OnDestroy {
       const start = this.parseTime(startTime);
       const end = this.parseTime(endTime);
 
-      // Calculate the difference in minutes
-      const durationInMinutes = Math.round((end.getTime() - start.getTime()) / (1000 * 60));
+      if (start > end) {
+        this.notificationService.error("End time shoud be greater than start time");
+        this.downtimeTrackingDetails.at(0).get('EndDate')?.setValue('');
+      } else {
+        // Calculate the difference in minutes
+        const durationInMinutes = Math.round((end.getTime() - start.getTime()) / (1000 * 60));
 
-      // Convert minutes to hours and minutes
-      const hours = Math.floor(durationInMinutes / 60);
-      const minutes = durationInMinutes % 60;
+        // Convert minutes to hours and minutes
+        const hours = Math.floor(durationInMinutes / 60);
+        const minutes = durationInMinutes % 60;
 
-      // Format duration
-      const formattedDuration = `${hours}hr ${minutes}min`;
+        // Format duration
+        const formattedDuration = `${hours}hr ${minutes}min`;
 
-      // Set the duration in the form
-      this.downtimeTrackingDetails.at(0).get('Durations')?.setValue(formattedDuration);
+        // Set the duration in the form
+        this.downtimeTrackingDetails.at(0).get('Durations')?.setValue(formattedDuration);
+      }
+
+
     }
   }
 

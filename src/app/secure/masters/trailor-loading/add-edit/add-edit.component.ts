@@ -47,7 +47,7 @@ export class TrailerLoadingAddEditComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getRoute();
     this.loadDropdowns();
-    this.addTrailerLoadingDetail(); 
+    this.addTrailerLoadingDetail();
     this.IsViewPermission = this.permissionService.hasPermission('Trailer Loading (PER_TRAILERLOADING) - View');
 
   }
@@ -68,9 +68,9 @@ export class TrailerLoadingAddEditComponent implements OnInit, OnDestroy {
         this.trailerLoadingData = result;
         this.setTrailerLoadingData();
       },
-      (error) => {
-        console.log(error);
-      });
+        (error) => {
+          console.log(error);
+        });
   }
 
   private setTrailerLoadingData() {
@@ -83,15 +83,15 @@ export class TrailerLoadingAddEditComponent implements OnInit, OnDestroy {
       SupervisedBy: this.trailerLoadingData.supervisedBy,
       SupervisedOn: this.trailerLoadingData.supervisedOn,
     });
-  
+
     // this.TrailerLoadingForm.get('BOLNo').disable();
-  
+
     // Format time with AM/PM
     const formatTimeWithAMPM = (dateTime: string): string => {
       const date = new Date(dateTime);
       return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
     };
-  
+
     setTimeout(() => {
       this.trailerLoadingData.trailerLoadingDetails?.forEach(element => {
         const detailData = {
@@ -103,10 +103,10 @@ export class TrailerLoadingAddEditComponent implements OnInit, OnDestroy {
           Id: element.id,
           HeaderId: element.headerId,
         };
-  
+
         this.AddedTrailerLoadingDetailsList.push(detailData);
       });
-      console.log("added trailer loading details", this.AddedTrailerLoadingDetailsList);
+      //  console.log("added trailer loading details", this.AddedTrailerLoadingDetailsList);
     }, 500);
   }
   productMap: Map<number, string> = new Map();
@@ -115,23 +115,23 @@ export class TrailerLoadingAddEditComponent implements OnInit, OnDestroy {
 
   private loadDropdowns() {
     this.trailerLoadingService.getUserList()
-    .subscribe((result: any) => {
-      this.usersList = result;
-      this.userMap = new Map(result.map(user => [user.id, user.name]));
-    });
+      .subscribe((result: any) => {
+        this.usersList = result;
+        this.userMap = new Map(result.map(user => [user.id, user.name]));
+      });
     this.trailerLoadingService.getProductionOrderList()
-    .subscribe((result: any) => {
-      this.productionOrderList = result;
-      this.productionOrderMap = new Map(result.map(order => [order.id.toString(), order.poNumber])); // Ensure keys are strings if necessary
-      console.log('Production Order Map after loading:', Array.from(this.productionOrderMap.entries()));
-    });
-  
-  this.trailerLoadingService.getProductList()
-    .subscribe((result: any) => {
-      this.productList = result;
-      this.productMap = new Map(result.map(product => [product.id, product.productName]));
-    });
-}
+      .subscribe((result: any) => {
+        this.productionOrderList = result;
+        this.productionOrderMap = new Map(result.map(order => [order.id.toString(), order.poNumber])); // Ensure keys are strings if necessary
+        // console.log('Production Order Map after loading:', Array.from(this.productionOrderMap.entries()));
+      });
+
+    this.trailerLoadingService.getProductList()
+      .subscribe((result: any) => {
+        this.productList = result;
+        this.productMap = new Map(result.map(product => [product.id, product.productName]));
+      });
+  }
 
 
   createForm() {
@@ -146,43 +146,43 @@ export class TrailerLoadingAddEditComponent implements OnInit, OnDestroy {
       TrailerLoadingDetails: this.formBuilder.array([])
     });
   }
-  
+
   addTrailerLoadingDetail() {
     // Clear existing details
     this.TrailerLoadingDetails = this.TrailerLoadingForm.get('TrailerLoadingDetails') as FormArray;
     this.TrailerLoadingDetails.clear();
     this.EditDetailId = -1;
-  
+
     // Create a new form group
     const item = this.formBuilder.group({});
-    console.log("ProductList", this.productList); // Assuming this is your API response for products
-    
+    //  console.log("ProductList", this.productList); // Assuming this is your API response for products
+
     // Dynamically add ProductId control based on the API response
     this.productList.forEach((product) => {
       item.addControl(product.id, this.formBuilder.control(""));
     });
-  
+
     // Add the remaining static controls
     item.addControl('ProductId', this.formBuilder.control(""));
     item.addControl('PalletQty', this.formBuilder.control(""));
     item.addControl('ProductionOrder', this.formBuilder.control(""));
     item.addControl('ActionTakenBy', this.formBuilder.control(""));
-   
+
     // Push the dynamically created item form group into the TrailerLoadingDetails form array
     this.TrailerLoadingDetails.push(item);
-    console.log("TrailerLoadingDetails", this.TrailerLoadingDetails);
+    // console.log("TrailerLoadingDetails", this.TrailerLoadingDetails);
   }
-  
+
   addFinalTrailerLoadingDetail() {
     const trailerDetail = this.TrailerLoadingDetails.at(0).value;
     trailerDetail.ProductionOrder = String(trailerDetail.ProductionOrder);
-console.log("Trailer loading", trailerDetail)
-    
+    //console.log("Trailer loading", trailerDetail)
+
     // Perform validation checks
     if (!trailerDetail.ActionTakenBy) {
       this.notificationService.error('Please select Action Taken By');
     }
-    else if(trailerDetail.PalletQty < 0) {
+    else if (trailerDetail.PalletQty < 0) {
       this.notificationService.error('Qty can not be leass than 0');
     } else {
       // If editing an existing entry, update it in the list
@@ -193,53 +193,53 @@ console.log("Trailer loading", trailerDetail)
         // If adding a new entry, push it to the list
         this.AddedTrailerLoadingDetailsList.push(trailerDetail);
       }
-  
+
       // Add an empty form group for additional entries
       this.addTrailerLoadingDetail();
     }
-  
-    console.log("Added Trailer Loading Details List:", this.AddedTrailerLoadingDetailsList);
+
+    // console.log("Added Trailer Loading Details List:", this.AddedTrailerLoadingDetailsList);
   }
-  
+
 
   onEditDetail(trailerDetail, i) {
     this.populateFormWithValues([trailerDetail]);
-    console.log("Editing detail:", trailerDetail);
+    //  console.log("Editing detail:", trailerDetail);
     this.EditDetailId = i;
   }
-  
+
 
   populateFormWithValues(data: any | any[]) {
     // Ensure data is in array format
     const dataArray = Array.isArray(data) ? data : [data];
-  
+
     // Retrieve the FormArray
     this.TrailerLoadingDetails = this.TrailerLoadingForm.get('TrailerLoadingDetails') as FormArray;
-  
+
     // Clear existing FormArray
     this.TrailerLoadingDetails.clear();
-    
-  
+
+
     // Populate each FormGroup in the FormArray
     dataArray.forEach(dataItem => {
       // Create a new FormGroup for each item
       const item = this.formBuilder.group({});
-  
+
       // Add static controls with data
       item.addControl('ProductId', this.formBuilder.control(dataItem.ProductId || ''));
       item.addControl('PalletQty', this.formBuilder.control(dataItem.PalletQty || ''));
-        // Convert ProductionOrder to integer
-        const productionOrderValue = parseInt(dataItem.ProductionOrder, 10);
-        item.addControl('ProductionOrder', this.formBuilder.control(isNaN(productionOrderValue) ? '' : productionOrderValue));
+      // Convert ProductionOrder to integer
+      const productionOrderValue = parseInt(dataItem.ProductionOrder, 10);
+      item.addControl('ProductionOrder', this.formBuilder.control(isNaN(productionOrderValue) ? '' : productionOrderValue));
       item.addControl('ActionTakenBy', this.formBuilder.control(dataItem.ActionTakenBy || ''));
 
       // Push the populated FormGroup into the FormArray
       this.TrailerLoadingDetails.push(item);
     });
-  
-    console.log("Populated TrailerLoadingDetails:", this.TrailerLoadingDetails);
+
+    // console.log("Populated TrailerLoadingDetails:", this.TrailerLoadingDetails);
   }
-  
+
 
   removeTrailerLoadingDetail(i: number) {
     this.AddedTrailerLoadingDetailsList.splice(i, 1);
@@ -252,9 +252,9 @@ console.log("Trailer loading", trailerDetail)
         this.cancel();
         this.notificationService.success("Trailer Loading created successfully.");
       },
-      (error) => {
-        this.error = error;
-      });
+        (error) => {
+          this.error = error;
+        });
   }
 
   private updateTrailerLoading(Playload) {
@@ -263,32 +263,32 @@ console.log("Trailer loading", trailerDetail)
         this.cancel();
         this.notificationService.success("Trailer Loading updated successfully.");
       },
-      (error) => {
-        this.error = error;
-      });
+        (error) => {
+          this.error = error;
+        });
   }
 
   save() {
     this.isFormSubmitted = true;
-  
+
     const endDateControl = this.TrailerLoadingForm.get('SupervisedOn');
     const startDateControl = this.TrailerLoadingForm.get('TLDateTime');
-  
+
     const endDate = endDateControl?.value;
     const startDate = startDateControl?.value;
-  
+
     // console.log('End Date:', endDate, 'Type:', typeof endDate);
     // console.log('Start Date:', startDate, 'Type:', typeof startDate);
-  
+
     if (this.TrailerLoadingForm.invalid) {
       return;
     } else {
       const endDateObj = new Date(endDate);
       const startDateObj = new Date(startDate);
-  
+
       // console.log('Parsed End Date:', endDateObj);
       // console.log('Parsed Start Date:', startDateObj);
-  
+
       if (endDateObj <= startDateObj) {
         this.notificationService.error("Supervised On date should be greater than TL Date Time");
         return;
@@ -300,9 +300,9 @@ console.log("Trailer loading", trailerDetail)
         formvalue.TrailerLoadingDetails = this.AddedTrailerLoadingDetailsList;
         let Playload = this.transformData(formvalue);
 
-        console.log('Form Value:', formvalue);
-        console.log('Transformed Payload:', Playload);
-  
+        // console.log('Form Value:', formvalue);
+        // console.log('Transformed Payload:', Playload);
+
         if (this.isEditMode) {
           this.updateTrailerLoading(Playload);
         } else {
@@ -311,7 +311,7 @@ console.log("Trailer loading", trailerDetail)
       }
     }
   }
-  
+
   transformData(originalData) {
     function formatToDateTime(dateStr) {
       const date = new Date(dateStr);

@@ -68,7 +68,7 @@ export class UserListComponent implements OnInit {
 
     updateSearch(search: { [key: string]: any }) {
         this.searchData = { ...search };
-        console.log("search", search);
+       // console.log("search", search);
     }
 
     isActiveRow(row) {

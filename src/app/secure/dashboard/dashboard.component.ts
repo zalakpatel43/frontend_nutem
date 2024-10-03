@@ -7,19 +7,19 @@ import { Component, OnInit } from '@angular/core';
 
 })
 export class DashboardComponent implements OnInit {
-    
-    
+
+
     constructor() {
-      
+
     }
 
     ngOnInit() {
-       
-console.log("dashboard called")
-    }
-   
-   
 
-    
+        // console.log("dashboard called")
+    }
+
+
+
+
 
 }

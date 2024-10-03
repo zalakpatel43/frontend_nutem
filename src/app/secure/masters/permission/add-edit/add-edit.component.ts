@@ -81,7 +81,7 @@ page: any;
 
     const formData = this.permissionForm.value;
     // Example: Submit formData to backend or perform necessary actions
-    console.log(formData);
+   // console.log(formData);
 
     // Example: Redirect to permission list after save
     this.router.navigate(['../'], { relativeTo: this.route });

@@ -48,7 +48,7 @@ export class TrailerInspectionListComponent  implements OnInit {
           .subscribe((result: any) => {
               // this.cancel();
               this.trailerInspectionData = result;
-              console.log("TrailerInspection list", this.trailerInspectionData);
+            //  console.log("TrailerInspection list", this.trailerInspectionData);
               this.loading = false;
           },
               (error) => {
@@ -71,7 +71,7 @@ export class TrailerInspectionListComponent  implements OnInit {
 
   updateSearch(search: { [key: string]: any }) {
       this.searchData = Object.assign({}, search);
-      console.log("serach data", this.searchData);
+     // console.log("serach data", this.searchData);
   }
 
   isActiveRow(row) {

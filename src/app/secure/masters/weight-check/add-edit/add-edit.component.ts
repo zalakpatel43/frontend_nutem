@@ -36,7 +36,7 @@ export class WeightCheckAddEditComponent implements OnInit, OnDestroy {
   EditNozzleDetailsId: number = -1;
   minEndDate: Date | null = null;
   trailerLoadingForm: any;
-  
+
   IsViewPermission: boolean = false;
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router,
@@ -50,13 +50,13 @@ export class WeightCheckAddEditComponent implements OnInit, OnDestroy {
     this.getRoute();
     this.loadDropdowns();
     this.IsViewPermission = this.permissionService.hasPermission('Weight Check (PER_WEIGHTCHECK) - View');
-  
+
   }
 
   private getRoute() {
     this.routerSub = this.activatedRoute.params.subscribe((params) => {
       this.isEditMode = !CommonUtility.isEmpty(params["id"]);
-      console.log("iseditmode", this.isEditMode)
+      //  console.log("iseditmode", this.isEditMode)
       this.createForm();
       if (this.isEditMode) {
         this.weightCheckId = params.id//+params["id"];
@@ -71,7 +71,7 @@ export class WeightCheckAddEditComponent implements OnInit, OnDestroy {
         this.weightCheckData = result;
         this.setWeightCheckData();
 
-        console.log("get by id data", result)
+        //  console.log("get by id data", result)
       },
         (error) => {
           console.log(error);
@@ -97,9 +97,9 @@ export class WeightCheckAddEditComponent implements OnInit, OnDestroy {
     this.WeightCheckForm.get('SAPProductionOrderId').disable();
     this.WeightCheckForm.get('ProductId').disable();
 
-      // Subscribe to value changes
-      this.WeightCheckForm.get('MinWeightRange')?.valueChanges.subscribe(() => this.onWeightRangeChange());
-      this.WeightCheckForm.get('MaxWeightRange')?.valueChanges.subscribe(() => this.onWeightRangeChange());
+    // Subscribe to value changes
+    this.WeightCheckForm.get('MinWeightRange')?.valueChanges.subscribe(() => this.onWeightRangeChange());
+    this.WeightCheckForm.get('MaxWeightRange')?.valueChanges.subscribe(() => this.onWeightRangeChange());
 
     const formatTimeWithAMPM = (dateTime: string): string => {
       const date = new Date(dateTime);
@@ -118,7 +118,7 @@ export class WeightCheckAddEditComponent implements OnInit, OnDestroy {
         const doneByArray: number[] = element.doneByUserIds.split(',').map(item => Number(item.trim())).filter(value => !isNaN(value));
         let DoneByNames = this.usersList.filter(item => element.doneByUserIds?.includes(item.id)).map(item => item.name)
           .join(', ');
-        console.log("nozzle weight ", nozzleWeights)
+        //  console.log("nozzle weight ", nozzleWeights)
         let DetailsData = {
           Time: formatTimeWithAMPM(element.tDateTime),
           DoneBy: doneByArray,
@@ -135,7 +135,7 @@ export class WeightCheckAddEditComponent implements OnInit, OnDestroy {
 
         this.AddedWeightCheckDetailsList.push(DetailsData);
       });
-      console.log("added nozzle data", this.AddedWeightCheckDetailsList)
+      // console.log("added nozzle data", this.AddedWeightCheckDetailsList)
       //         let item :any;
     }, 500);
 
@@ -195,12 +195,12 @@ export class WeightCheckAddEditComponent implements OnInit, OnDestroy {
   onWeightRangeChange() {
     const minWeight = this.WeightCheckForm.get('MinWeightRange')?.value;
     const maxWeight = this.WeightCheckForm.get('MaxWeightRange')?.value;
-  
+
     if (minWeight != null && maxWeight != null) {
       // Convert values to numbers
       const minWeightNum = Number(minWeight);
       const maxWeightNum = Number(maxWeight);
-  
+
       // Check if minWeight is greater than maxWeight
       if (minWeightNum > maxWeightNum) {
         this.notificationService.error("Max Weight Range should be greater than Min Weight Range");
@@ -210,19 +210,19 @@ export class WeightCheckAddEditComponent implements OnInit, OnDestroy {
       }
     }
   }
-  
+
   weightRangeValidator: ValidatorFn = (formGroup: AbstractControl): { [key: string]: any } | null => {
     const minWeight = formGroup.get('MinWeightRange')?.value;
     const maxWeight = formGroup.get('MaxWeightRange')?.value;
-  
+
     // Check if both values are present and minWeight is greater than maxWeight
     if (minWeight != null && maxWeight != null && minWeight !== '' && maxWeight !== '') {
       return minWeight > maxWeight ? { 'rangeError': true } : null;
     }
-  
+
     return null; // Return null if validation should not be triggered
   };
-  
+
   endDateValidator: ValidatorFn = (control: AbstractControl): { [key: string]: any } | null => {
     const start = control.get('StartDateTime')?.value;
     const end = control.get('EndDateTime')?.value;
@@ -260,7 +260,7 @@ export class WeightCheckAddEditComponent implements OnInit, OnDestroy {
     this.WeightCheckDetails?.clear();
     this.EditNozzleDetailsId = -1;
     const item = this.formBuilder.group({});
-    console.log("NozzleList", this.NozzleList)
+    // console.log("NozzleList", this.NozzleList)
     // Dynamically add NozzleName controls based on the API response
     this.NozzleList.forEach((nozzle, index) => {
       item.addControl(nozzle.nozzelName, this.formBuilder.control(""));
@@ -274,7 +274,7 @@ export class WeightCheckAddEditComponent implements OnInit, OnDestroy {
     // Push the dynamically created item form group into the ItemList form array
     this.WeightCheckDetails = this.WeightCheckForm?.get('WeightCheckDetails') as FormArray;
     this.WeightCheckDetails.push(item);
-    console.log("weightDeatilsList", this.WeightCheckDetails)
+    // console.log("weightDeatilsList", this.WeightCheckDetails)
   }
 
 
@@ -282,11 +282,17 @@ export class WeightCheckAddEditComponent implements OnInit, OnDestroy {
 
     const weightDetail = this.WeightCheckDetails.at(0).value;
 
+    console.log("details",this.WeightCheckDetails.at(0))
+
+   
     if (!weightDetail.Time) {
       this.notificationService.error("please select time");
     }
     else if (!weightDetail.DoneBy) {
       this.notificationService.error("please select Done by");
+    }
+   else if(this.WeightCheckDetails.at(0).status === "INVALID"){
+      this.notificationService.error("weight should be greater than zero");
     }
     else {
       if (this.EditNozzleDetailsId >= 0) {
@@ -314,7 +320,7 @@ export class WeightCheckAddEditComponent implements OnInit, OnDestroy {
         this.addWeightDetail();
 
         // Log the updated list with averages
-        console.log("Added nozzle with average:", this.AddedWeightCheckDetailsList);
+        //  console.log("Added nozzle with average:", this.AddedWeightCheckDetailsList);
       }
 
     }
@@ -333,9 +339,9 @@ export class WeightCheckAddEditComponent implements OnInit, OnDestroy {
   }
 
   onEditDetail(weight, i) {
-    console.log("weight", weight);
-    console.log("i", i)
-    console.log("details selected for edit", this.AddedWeightCheckDetailsList[i]);
+    //  console.log("weight", weight);
+    //  console.log("i", i)
+    //  console.log("details selected for edit", this.AddedWeightCheckDetailsList[i]);
 
     this.populateFormWithValues(this.AddedWeightCheckDetailsList[i]);
     this.EditNozzleDetailsId = i;
@@ -369,7 +375,7 @@ export class WeightCheckAddEditComponent implements OnInit, OnDestroy {
       this.WeightCheckDetails.push(item);
     });
 
-    console.log("Populated WeightCheckDetails:", this.WeightCheckDetails);
+    // console.log("Populated WeightCheckDetails:", this.WeightCheckDetails);
   }
 
 
@@ -378,8 +384,8 @@ export class WeightCheckAddEditComponent implements OnInit, OnDestroy {
     // control.removeAt(i);
 
     this.AddedWeightCheckDetailsList.splice(i, 1);
-    console.log("control", this.AddedWeightCheckDetailsList)
-    console.log("items", this.AddedWeightCheckDetailsList);
+    // console.log("control", this.AddedWeightCheckDetailsList)
+    //  console.log("items", this.AddedWeightCheckDetailsList);
   }
 
 
@@ -426,10 +432,10 @@ export class WeightCheckAddEditComponent implements OnInit, OnDestroy {
     else {
       let formvalue = this.WeightCheckForm.value;
       formvalue.WeightCheckDetails = this.AddedWeightCheckDetailsList;
-      console.log("formvalue", formvalue)
+      //  console.log("formvalue", formvalue)
       let Playload = this.transformData(formvalue);
-      console.log("Playload", Playload)
-      console.log("json stringyfy", JSON.stringify(Playload, null, 2))
+      // console.log("Playload", Playload)
+      // console.log("json stringyfy", JSON.stringify(Playload, null, 2))
 
       if (this.isEditMode) {
         this.updateWeightCheck(Playload);
@@ -542,11 +548,13 @@ export class WeightCheckAddEditComponent implements OnInit, OnDestroy {
   }
 
   cancel() {
-    if (this.isEditMode) {
-      this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
-    } else {
-      this.router.navigate(['..', 'list'], { relativeTo: this.activatedRoute });
-    }
+    this.router.navigate(['/secure/masters', 'production-order']);
+
+    // if (this.isEditMode) {
+    //   this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
+    // } else {
+    //    this.router.navigate(['..', 'list'], { relativeTo: this.activatedRoute });
+    // }
   }
 
   ngOnDestroy(): void {

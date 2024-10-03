@@ -78,7 +78,7 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
         this.roleService.getPermission(this.permissionId)
             .subscribe((result: any) => {
                 this.PermissionData = result;
-                console.log("Permission Data:", this.PermissionData);
+               // console.log("Permission Data:", this.PermissionData);
     
                 if (this.roleData) {
                     const transformedPermissions = this.transformPermissionsEdit(this.roleData.rolePermissions, this.PermissionData);
@@ -96,7 +96,7 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
         this.roleService.getRoleById(this.roleId)
             .subscribe((result: any) => {
                 this.roleData = result;
-                console.log("Role Data:", this.roleData);
+             //   console.log("Role Data:", this.roleData);
     
                 // Ensure roleData is fetched before fetching and transforming permissions
                 if (this.roleData && this.PermissionData) {
@@ -128,7 +128,7 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
             });
         });
     
-        console.log('Permission Map:', Array.from(permissionMap.entries()));
+       // console.log('Permission Map:', Array.from(permissionMap.entries()));
     
         // Initialize default permissions with actions set to false
         const transformedPermissions = this.Permissions.map(permission => ({
@@ -156,7 +156,7 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
             }
         });
     
-        console.log('Transformed Permissions:', transformedPermissions);
+      //  console.log('Transformed Permissions:', transformedPermissions);
         return transformedPermissions;
     }
     
@@ -184,7 +184,7 @@ export class RoleAddEditComponent implements OnInit, OnDestroy {
             );
         });
     
-        console.log(this.frmRole.value); // Debugging: Check form value
+      //  console.log(this.frmRole.value); // Debugging: Check form value
     }
 
     // private createRole() {

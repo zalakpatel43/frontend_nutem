@@ -508,7 +508,7 @@ mat-toolbar {
 
 .app-container,
 .app-router-outlet + ng-component{
-	min-height: calc(100vh - 129px);
+	min-height: calc(100vh - 135px);
 }
   
 @media only screen and (max-width: 896px) {
@@ -566,4 +566,3 @@ mat-toolbar {
 .mat-toolbar-row {
 	height: 70px !important;
 }
-

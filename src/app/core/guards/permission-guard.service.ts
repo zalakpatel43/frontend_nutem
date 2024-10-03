@@ -11,7 +11,7 @@ constructor(private permissionService: PermissionService, private router: Router
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
       const requiredPermission = route.data['permission'];
-      console.log("permission", requiredPermission)
+     // console.log("permission", requiredPermission)
       if (this.permissionService.hasPermission(requiredPermission)) {
         return true;
       } else {

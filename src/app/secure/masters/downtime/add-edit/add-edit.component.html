@@ -42,6 +42,20 @@
                 </mat-form-field>
               </div>
 
+              <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                <mat-form-field appearance="fill" class="full-width">
+                  <mat-label>Production Order</mat-label>
+                  <mat-select formControlName="SAPProductionOrderId" [disabled]="isEditMode">
+                    <mat-option *ngFor="let order of productionOrderList" [value]="order.id">
+                      {{ order.poNumber }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="downtimeTrackingForm.get('ProductionOrderId').invalid && isFormSubmitted">
+                    Production Order is required
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
               <!-- Product -->
               <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                 <mat-form-field appearance="fill" class="full-width">
@@ -73,19 +87,7 @@
               </div>
 
 
-              <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
-                <mat-form-field appearance="fill" class="full-width">
-                  <mat-label>Production Order</mat-label>
-                  <mat-select formControlName="SAPProductionOrderId" [disabled]="isEditMode">
-                    <mat-option *ngFor="let order of productionOrderList" [value]="order.id">
-                      {{ order.poNumber }}
-                    </mat-option>
-                  </mat-select>
-                  <mat-error *ngIf="downtimeTrackingForm.get('ProductionOrderId').invalid && isFormSubmitted">
-                    Production Order is required
-                  </mat-error>
-                </mat-form-field>
-              </div>
+              
             </div>
           </div>
         </div>
@@ -105,7 +107,7 @@
                     <mat-form-field appearance="fill" class="full-width">
                       <mat-label>Start Time</mat-label>
                       <input matInput [ngxTimepicker]="startDatePicker" placeholder="Select time"
-                        formControlName="StartDate">
+                        formControlName="StartDate"  (ngModelChange)="calculateDuration()">
                       <ngx-material-timepicker #startDatePicker></ngx-material-timepicker>
 
                     </mat-form-field>

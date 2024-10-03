@@ -10,6 +10,6 @@ export class ProductionOrderComponent {
 
   onSearchChanged(searchData: any) {
     // Handle search data changes, e.g., filter the list
-    console.log('Search data:', searchData);
+   // console.log('Search data:', searchData);
   }
 }

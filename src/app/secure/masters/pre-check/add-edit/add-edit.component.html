@@ -32,7 +32,7 @@
                                 </mat-form-field> -->
                                 <mat-form-field appearance="fill">
                                     <input matInput [ngxMatDatetimePicker]="pickerStartDate" placeholder="Start Date"
-                                        formControlName="StartDate" required>
+                                        formControlName="StartDate" required [max]="getToday()">
                                     <button type="button" mat-icon-button (click)="pickerStartDate.open()" matSuffix>
                                         <mat-icon>calendar_today</mat-icon>
                                     </button>

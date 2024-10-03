@@ -20,7 +20,7 @@ export class AppComponent {
   constructor(location: PlatformLocation, private router: Router, private activatedRoute: ActivatedRoute,
     private titleService: Title, public overlayContainer: OverlayContainer, public userAuthService: UserAuthService) {
     location.onPopState(() => {
-      console.log('Back Button Clicked');
+     // console.log('Back Button Clicked');
       history.forward();
     });
 

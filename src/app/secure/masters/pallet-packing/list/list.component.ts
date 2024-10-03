@@ -41,7 +41,7 @@ export class PalletPackingListComponent implements OnInit {
         this.palletPackingService.getPalletPackingList()
             .subscribe((result: any) => {
                 this.palletPackingData = result;
-                console.log("Pallet Packing list", this.palletPackingData);
+              //  console.log("Pallet Packing list", this.palletPackingData);
                 this.loading = false;
             },
             (error) => {
@@ -64,7 +64,7 @@ export class PalletPackingListComponent implements OnInit {
 
     updateSearch(search: { [key: string]: any }) {
         this.searchData = Object.assign({}, search);
-        console.log("search data", this.searchData);
+      //  console.log("search data", this.searchData);
     }
 
     isActiveRow(row) {

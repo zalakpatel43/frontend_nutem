@@ -29,9 +29,9 @@ export class AttributeCheckAddEditComponent implements OnInit, OnDestroy {
   productionOrderList: any[] = [];
   productList: any[] = [];
   usersList: any[] = [];
- // GoodConditionList: [{ Field: 'Yes', value: true },{ Field: 'No', value: false } ];
+  // GoodConditionList: [{ Field: 'Yes', value: true },{ Field: 'No', value: false } ];
   //LeakTestList: [{ Field: 'None', value: 0 },{ Field: 'Yes', value: 1 },{ Field: 'No', value: 2 } ];
- // IsCorrect : [{ Field: 'Yes', value: true },{ Field: 'No', value: false } ];
+  // IsCorrect : [{ Field: 'Yes', value: true },{ Field: 'No', value: false } ];
   attributeCheckDetails: FormArray;
   AddedattributeCheckDetailsList: any[] = [];
   EditDetailsId: number = -1;
@@ -42,7 +42,7 @@ export class AttributeCheckAddEditComponent implements OnInit, OnDestroy {
     private formBuilder: UntypedFormBuilder, private attributeCheckService: AttributeCheckService,
     private notificationService: ToastrService, private weightCheckService: WeightCheckService,
     private permissionService: PermissionService) {
-   // this.createForm();
+    // this.createForm();
   }
 
   ngOnInit(): void {
@@ -70,7 +70,7 @@ export class AttributeCheckAddEditComponent implements OnInit, OnDestroy {
         this.attributeCheckData = result;
         this.setAttirbuteCheckData();
 
-        console.log("get by id data", result)
+        //  console.log("get by id data", result)
       },
         (error) => {
           console.log(error);
@@ -102,7 +102,7 @@ export class AttributeCheckAddEditComponent implements OnInit, OnDestroy {
         const doneByArray: number[] = element.doneByUserIds.split(',').map(item => Number(item.trim())).filter(value => !isNaN(value));
         let DoneByNames = this.usersList.filter(item => element.doneByUserIds?.includes(item.id)).map(item => item.name)
 
-        console.log("done by array", doneByArray);
+        // console.log("done by array", doneByArray);
         let DetailsData = {
           TDateTime: formatTimeWithAMPM(element.tDateTime),
           IsGoodCondition: element.isGoodCondition,
@@ -118,7 +118,7 @@ export class AttributeCheckAddEditComponent implements OnInit, OnDestroy {
 
         this.AddedattributeCheckDetailsList.push(DetailsData);
       });
-      console.log("added nozzle data", this.AddedattributeCheckDetailsList)
+      // console.log("added nozzle data", this.AddedattributeCheckDetailsList)
       //         let item :any;
     }, 500);
 
@@ -144,20 +144,20 @@ export class AttributeCheckAddEditComponent implements OnInit, OnDestroy {
 
   createForm() {
     this.attributeCheckForm = this.formBuilder.group({
-  ACCode: [{ value: '', disabled: true },, [Validators.required]],
-  ACDate: ['', [Validators.required]],
-  ProductionOrderId: ['', [Validators.required]],
-  ProductId: ['', [Validators.required]],
-  BottleDateCode: ['', [Validators.required]],
-  PackSize: ['', [Validators.required]],
-  IsWeightRange: [false], // assuming default false is fine
-  Note: [''],
-  attributeCheckDetails: this.formBuilder.array([])
+      ACCode: [{ value: '', disabled: true }, , [Validators.required]],
+      ACDate: ['', [Validators.required]],
+      ProductionOrderId: ['', [Validators.required]],
+      ProductId: ['', [Validators.required]],
+      BottleDateCode: ['', [Validators.required]],
+      PackSize: ['', [Validators.required]],
+      IsWeightRange: [false], // assuming default false is fine
+      Note: [''],
+      attributeCheckDetails: this.formBuilder.array([])
     });
     this.attributeCheckForm.controls["ACDate"].setValue(new Date().toISOString().split('T')[0]);
   }
 
-  
+
 
   getToday() {
     return new Date().toISOString().split('T')[0];
@@ -179,15 +179,15 @@ export class AttributeCheckAddEditComponent implements OnInit, OnDestroy {
     attributeCheckItem.addControl('IsCorrect', this.formBuilder.control(true));
     attributeCheckItem.addControl('LeakTest', this.formBuilder.control(0));
     attributeCheckItem.addControl('DoneByUserIds', this.formBuilder.control(''));
-    
+
     // Get the FormArray from the parent form
     this.attributeCheckDetails = this.attributeCheckForm?.get('attributeCheckDetails') as FormArray;
-    
+
     // Push the newly created FormGroup into the FormArray
     this.attributeCheckDetails.push(attributeCheckItem);
-    
+
     // Log to verify
-    console.log("attributeCheckDetails", this.attributeCheckDetails);
+    // console.log("attributeCheckDetails", this.attributeCheckDetails);
 
 
   }
@@ -215,23 +215,33 @@ export class AttributeCheckAddEditComponent implements OnInit, OnDestroy {
         this.addAttributeDetail();
 
         // Log the updated list with averages
-        console.log("Added nozzle with average:", this.AddedattributeCheckDetailsList);
+        // console.log("Added nozzle with average:", this.AddedattributeCheckDetailsList);
       }
 
     }
 
   }
   onEditDetail(Attribute, i) {
-    console.log("weight", Attribute);
-    console.log("i", i)
-     console.log("details selected for edit", this.AddedattributeCheckDetailsList[i]);
+    // console.log("weight", Attribute);
+    // console.log("i", i)
+    //  console.log("details selected for edit", this.AddedattributeCheckDetailsList[i]);
 
-     this.populateFormWithValues(this.AddedattributeCheckDetailsList[i]);
-     this.EditDetailsId = i;
+    this.populateFormWithValues(this.AddedattributeCheckDetailsList[i]);
+    this.EditDetailsId = i;
+  }
+
+  
+  removeAttributeCheckDetail(i: number) {
+    // const control = <FormArray>this.WeightCheckForm?.controls['ItemList'];
+    // control.removeAt(i);
+
+    this.AddedattributeCheckDetailsList.splice(i, 1);
+    // console.log("control", this.AddedWeightCheckDetailsList)
+    //  console.log("items", this.AddedWeightCheckDetailsList);
   }
 
   populateFormWithValues(data: any | any[]) {
-   // Ensure data is in array format
+    // Ensure data is in array format
     const dataArray = Array.isArray(data) ? data : [data];
 
     // Retrieve the FormArray
@@ -257,9 +267,9 @@ export class AttributeCheckAddEditComponent implements OnInit, OnDestroy {
 
       // Push the populated FormGroup into the FormArray
       this.attributeCheckDetails.push(item);
-  });
+    });
 
-   console.log("Populated WeightCheckDetails:", this.attributeCheckDetails);
+    // console.log("Populated WeightCheckDetails:", this.attributeCheckDetails);
   }
 
 
@@ -268,7 +278,7 @@ export class AttributeCheckAddEditComponent implements OnInit, OnDestroy {
     // control.removeAt(i);
 
     this.AddedattributeCheckDetailsList.splice(i, 1);
-    console.log("control", this.AddedattributeCheckDetailsList)
+    // console.log("control", this.AddedattributeCheckDetailsList)
   }
 
   private createAttributeCheck(Playload) {
@@ -313,9 +323,9 @@ export class AttributeCheckAddEditComponent implements OnInit, OnDestroy {
     else {
       let formvalue = this.attributeCheckForm.value;
       formvalue.attributeCheckDetails = this.AddedattributeCheckDetailsList;
-      console.log("formvalue", formvalue)
+      // console.log("formvalue", formvalue)
       let Playload = this.transformData(formvalue);
-      console.log("Playload", Playload)
+      // console.log("Playload", Playload)
 
       if (this.isEditMode) {
         this.updateAttributeCheck(Playload);
@@ -395,8 +405,8 @@ export class AttributeCheckAddEditComponent implements OnInit, OnDestroy {
       aCDate: formatToDateTime(originalData.ACDate),
       productionOrderId: this.isEditMode ? this.attributeCheckData.productionOrderId : originalData.ProductionOrderId,
       productId: this.isEditMode ? this.attributeCheckData.productId : originalData.ProductId,
-      bottleDateCode: originalData.BottleDateCode.toString(), 
-      packSize: originalData.PackSize.toString(), 
+      bottleDateCode: originalData.BottleDateCode.toString(),
+      packSize: originalData.PackSize.toString(),
       isWeightRange: originalData.IsWeightRange,
       note: originalData.Note, // Capitalize first letter
 
@@ -407,13 +417,13 @@ export class AttributeCheckAddEditComponent implements OnInit, OnDestroy {
         tDateTime: formatToTime(details.TDateTime), // Assuming Time is the timestamp
         isGoodCondition: details.IsGoodCondition,
         capTorque: details.CapTorque,
-        emptyBottleWeight: (details.EmptyBottleWeight? details.EmptyBottleWeight : 0).toString(),
-        lotNoOfLiquid : details.LotNoOfLiquid,
-        isCorrect : details.IsCorrect,
-        leakTest : details.LeakTest,
-        DoneByUserIdList : details.DoneByUserIds,
-       // DoneByUserNames : details.Usernames
-       
+        emptyBottleWeight: (details.EmptyBottleWeight ? details.EmptyBottleWeight : 0).toString(),
+        lotNoOfLiquid: details.LotNoOfLiquid,
+        isCorrect: details.IsCorrect,
+        leakTest: details.LeakTest,
+        DoneByUserIdList: details.DoneByUserIds,
+        // DoneByUserNames : details.Usernames
+
       })) : []
     };
 
@@ -421,11 +431,12 @@ export class AttributeCheckAddEditComponent implements OnInit, OnDestroy {
   }
 
   cancel() {
-    if (this.isEditMode) {
-      this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
-    } else {
-      this.router.navigate(['..', 'list'], { relativeTo: this.activatedRoute });
-    }
+    this.router.navigate(['/secure/masters', 'production-order']);
+    // if (this.isEditMode) {
+    //   this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
+    // } else {
+    //   this.router.navigate(['..', 'list'], { relativeTo: this.activatedRoute });
+    // }
   }
 
   ngOnDestroy(): void {

@@ -32,7 +32,7 @@
                                                 <mat-form-field appearance="fill">
                                                     <input matInput [ngxMatDatetimePicker]="pickerStartDate"
                                                         (dateChange)="onStartDateChange()" placeholder="Start Date"
-                                                        formControlName="StartDateTime" required>
+                                                        formControlName="StartDateTime" required [max]="getToday()">
                                                     <button type="button" mat-icon-button
                                                         (click)="pickerStartDate.open()" matSuffix>
                                                         <mat-icon>calendar_today</mat-icon>
@@ -167,7 +167,7 @@
                                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                                 <mat-form-field appearance="fill" class="full-width">
                                                     <mat-label>Standard Batch Weight</mat-label>
-                                                    <input matInput formControlName="StandardBatchWeight" type="number">
+                                                    <input matInput formControlName="StandardBatchWeight" type="number" min="0" >
                                                     <mat-validation-message
                                                         [control]="basicForm.controls.StandardBatchWeight"
                                                         [message]="'Standard Batch Weight'"
@@ -308,7 +308,7 @@
                                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                                 <mat-form-field appearance="fill" class="full-width">
                                                     <mat-label>Weight</mat-label>
-                                                    <input matInput formControlName="Weight" type="number">
+                                                    <input matInput formControlName="Weight" type="number" min="0">
                                                     <mat-validation-message [control]="InstructionForm.controls.Weight"
                                                         [message]="'Weight'"
                                                         [formSubmitted]="isInstructionFormSubmitted"></mat-validation-message>
@@ -318,7 +318,7 @@
                                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                                 <mat-form-field appearance="fill" class="full-width">
                                                     <mat-label>Weight Added</mat-label>
-                                                    <input matInput formControlName="WeightAdded" type="number">
+                                                    <input matInput formControlName="WeightAdded" type="number" min="0">
                                                     <mat-validation-message
                                                         [control]="InstructionForm.controls.WeightAdded"
                                                         [message]="'Weight Added'"
@@ -503,7 +503,7 @@
                                                     <input matInput [ngxMatDatetimePicker]="pickerTestingDateTime"
                                                         (dateChange)="onTestingDateTimeChange()"
                                                         placeholder="Date Tested" formControlName="TestingDateTime"
-                                                        required>
+                                                        required [max]="getToday()">
                                                     <button type="button" mat-icon-button
                                                         (click)="pickerTestingDateTime.open()" matSuffix>
                                                         <mat-icon>calendar_today</mat-icon>

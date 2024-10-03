@@ -105,7 +105,7 @@ export class PostCheckAddEditComponent implements OnInit, OnDestroy {
                 console.error(err);
             }
         });
-        
+
 
         this.postCheckService.getAllProducts().subscribe({
             next: (result: any) => {
@@ -132,7 +132,7 @@ export class PostCheckAddEditComponent implements OnInit, OnDestroy {
         this.postCheckService.getAllQuestions().subscribe({
             next: (result: any) => {
                 this.questionList = result.filter((question: any) => question.type === 2);
-                console.log("Questions", this.questionList);
+                //  console.log("Questions", this.questionList);
 
                 // Initialize form array based on the number of questions
                 const controls = this.questionList.map(question => this.formBuilder.group({
@@ -153,13 +153,13 @@ export class PostCheckAddEditComponent implements OnInit, OnDestroy {
     private getPostCheckById() {
         this.postCheckService.getByIdPostCheck(this.postCheckId).subscribe({
             next: (result: any) => {
-                console.log('Incoming Post Check Data:', result);
+                // console.log('Incoming Post Check Data:', result);
                 // Convert fillerUserIds to an array
-            let fillerUserIds: number[] = [];
-            if (result.fillerUserIds) {
-                // Handle single value or comma-separated string
-                fillerUserIds = result.fillerUserIds.split(',').map(id => +id);
-            }
+                let fillerUserIds: number[] = [];
+                if (result.fillerUserIds) {
+                    // Handle single value or comma-separated string
+                    fillerUserIds = result.fillerUserIds.split(',').map(id => +id);
+                }
 
                 this.postCheckForm.patchValue({
                     EndDate: result.endDateTime,
@@ -191,7 +191,7 @@ export class PostCheckAddEditComponent implements OnInit, OnDestroy {
                 id: [detail.id],
                 questionId: [detail.questionId, [Validators.required]],
                 answer: [detail.answer, [Validators.required]],
-                reason: [detail.reason ||'']
+                reason: [detail.reason || '']
             }));
         });
     }
@@ -221,73 +221,75 @@ export class PostCheckAddEditComponent implements OnInit, OnDestroy {
 
     save() {
         this.isFormSubmitted = true;
-      
+
         if (this.postCheckForm.invalid) {
-          return;
+            return;
         }
-      
+
         // Extract the first non-null questionId from postCheckListDetails
         const detailsArray = this.postCheckDetails.controls as UntypedFormGroup[];
         const firstQuestionId = detailsArray.find(detail => detail.get('questionId').value)?.get('questionId').value;
-      
+
         // Create payload
         const payload = {
-          Id: this.isEditMode ? this.postCheckId : 0, // Assuming Id is 0 for new entries
-          Code: '', // Add Code if needed
-          EndDateTime: this.postCheckForm.get('EndDate').value,
-          ProductionOrderId: this.postCheckForm.get('ProductionOrderId').value,
-          ProductId: this.postCheckForm.get('ProductId').value,
-          ShiftId: this.postCheckForm.get('ShiftId').value,
-          FillingLine: this.postCheckForm.get('FillingLineId').value,
-          FillerUserIds: this.postCheckForm.get('FillerOperatorIds').value.join(','), // Assuming FillerOperatorIds is an array
-          Comments: this.postCheckForm.get('Comments').value,
-          IsActive: this.postCheckForm.get('isActive').value,
-          PrePostQuestionId: firstQuestionId, 
-      
-          PostCheckListDetails: this.postCheckForm.get('postCheckListDetails').value.map(detail => ({
-            id: detail.id || 0, 
-            questionId: detail.questionId,
-            answer: detail.answer,
-            reason: detail.reason
-          }))
+            Id: this.isEditMode ? this.postCheckId : 0, // Assuming Id is 0 for new entries
+            Code: '', // Add Code if needed
+            EndDateTime: this.postCheckForm.get('EndDate').value,
+            ProductionOrderId: this.postCheckForm.get('ProductionOrderId').value,
+            ProductId: this.postCheckForm.get('ProductId').value,
+            ShiftId: this.postCheckForm.get('ShiftId').value,
+            FillingLine: this.postCheckForm.get('FillingLineId').value,
+            FillerUserIds: this.postCheckForm.get('FillerOperatorIds').value.join(','), // Assuming FillerOperatorIds is an array
+            Comments: this.postCheckForm.get('Comments').value,
+            IsActive: this.postCheckForm.get('isActive').value,
+            PrePostQuestionId: firstQuestionId,
+
+            PostCheckListDetails: this.postCheckForm.get('postCheckListDetails').value.map(detail => ({
+                id: detail.id || 0,
+                questionId: detail.questionId,
+                answer: detail.answer,
+                reason: detail.reason
+            }))
         };
-      
-        console.log('Outgoing payload:', payload);
-      
+
+        // console.log('Outgoing payload:', payload);
+
         if (this.isEditMode) {
-          this.postCheckService.updatePostCheck(payload).subscribe({
-            next: () => {
-              this.notificationService.success('Post Check updated successfully.');
-              this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
-            },
-            error: (err) => {
-              this.notificationService.error('Failed to update Post Check.');
-              this.error = err;
-              console.error(err);
-            }
-          });
+            this.postCheckService.updatePostCheck(payload).subscribe({
+                next: () => {
+                    this.notificationService.success('Post Check updated successfully.');
+                    this.router.navigate(['/secure/masters', 'production-order']);
+                  //  this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
+                },
+                error: (err) => {
+                    this.notificationService.error('Failed to update Post Check.');
+                    this.error = err;
+                    console.error(err);
+                }
+            });
         } else {
-          this.postCheckService.addPostCheck(payload).subscribe({
-            next: () => {
-              this.notificationService.success('Post Check created successfully.');
-              this.router.navigate(['..', 'list'], { relativeTo: this.activatedRoute });
-            },
-            error: (err) => {
-              this.notificationService.error('Failed to create Post Check.');
-              this.error = err;
-              console.error(err);
-            }
-          });
+            this.postCheckService.addPostCheck(payload).subscribe({
+                next: () => {
+                    this.notificationService.success('Post Check created successfully.');
+                    this.router.navigate(['/secure/masters', 'production-order']);
+                   // this.router.navigate(['..', 'list'], { relativeTo: this.activatedRoute });
+                },
+                error: (err) => {
+                    this.notificationService.error('Failed to create Post Check.');
+                    this.error = err;
+                    console.error(err);
+                }
+            });
         }
-      }
-      
-      cancel() {
+    }
+
+    cancel() {
         if (this.isEditMode) {
-          this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
+            this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
         } else {
-          this.router.navigate(['..', 'list'], { relativeTo: this.activatedRoute });
+            this.router.navigate(['..', 'list'], { relativeTo: this.activatedRoute });
         }
-      }
+    }
 
     ngOnDestroy(): void {
         if (this.routerSub) {

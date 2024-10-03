@@ -46,7 +46,7 @@ export class AttributeCheckListComponent implements OnInit {
           .subscribe((result: any) => {
               // this.cancel();
               this.attributeCheckData = result;
-              console.log("attribute check list", this.attributeCheckData);
+            //  console.log("attribute check list", this.attributeCheckData);
               this.loading = false;
           },
               (error) => {
@@ -69,7 +69,7 @@ export class AttributeCheckListComponent implements OnInit {
 
   updateSearch(search: { [key: string]: any }) {
       this.searchData = Object.assign({}, search);
-      console.log("serach data", this.searchData);
+     // console.log("serach data", this.searchData);
   }
 
   isActiveRow(row) {

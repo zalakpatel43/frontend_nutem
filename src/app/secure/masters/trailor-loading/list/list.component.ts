@@ -44,7 +44,7 @@ export class TrailerLoadingListComponent implements OnInit {
         this.trailerLoadingService.getTrailerLoadingList()
             .subscribe((result: any) => {
                 this.trailerLoadingData = result;
-                console.log("Trailer loading list", result);
+              //  console.log("Trailer loading list", result);
                 this.loading = false;
             },
             (error) => {
@@ -67,7 +67,7 @@ export class TrailerLoadingListComponent implements OnInit {
 
     updateSearch(search: { [key: string]: any }) {
         this.searchData = Object.assign({}, search);
-        console.log("search data", this.searchData);
+       // console.log("search data", this.searchData);
     }
 
     isActiveRow(row) {

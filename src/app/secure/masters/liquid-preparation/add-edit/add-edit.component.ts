@@ -72,8 +72,8 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
   productInstructionDetailsList: any[] = [];
   qCTSpecificationMasterList: any[] = [];
   tankList: any[] = [];
-  IsValidTestedDate : boolean = true;
-  IsValidQualitydDate : boolean = true;
+  IsValidTestedDate: boolean = true;
+  IsValidQualitydDate: boolean = true;
   StartDateOfBasicForm: any;
 
   IsViewPermission: boolean = false;
@@ -113,7 +113,7 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
   goToNextTab() {
     if (this.selectedIndex === 0) {
       this.isBasicFormSubmitted = true;
-      console.log("basic form value", this.basicForm.value);
+      // console.log("basic form value", this.basicForm.value);
       if (this.basicForm.valid && this.isEndDateOk) {
         this.draftBasicFormValue = this.basicForm.value;
         this.isstartChecklistDisable = false;
@@ -124,7 +124,7 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
     }
     else if (this.selectedIndex === 1) {
       this.isStartCheckListFormSubmitted = true;
-      console.log("start check form value", this.StartCheckListForm.value);
+      //  console.log("start check form value", this.StartCheckListForm.value);
       let IsValid = this.StartCheckListValidation();
       if (this.StartCheckListForm.valid && IsValid) {
         this.draftStartCheckListFormValue = this.StartCheckListForm.value;
@@ -160,7 +160,7 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
     }
     else if (this.selectedIndex === 3) {
       this.isEndCheckListFormSubmitted = true;
-      console.log("end check form value", this.EndCheckListForm.value);
+      // console.log("end check form value", this.EndCheckListForm.value);
       let IsValid = this.EndCheckListValidation();
       if (this.EndCheckListForm.valid && IsValid) {
         this.draftEndCheckListFormValue = this.EndCheckListForm.value;
@@ -183,7 +183,7 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
       }
     }
     else if (this.selectedIndex === 5) {
-      console.log("added adjustment", this.DiffWghInstructionList);
+      //  console.log("added adjustment", this.DiffWghInstructionList);
     }
     // if (this.selectedIndex < this.tabCount - 1) {
     //   this.selectedIndex++;
@@ -212,7 +212,7 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
         this.liquidPreparationData = result;
         this.setLiquidPreparationkData();
 
-        console.log("get by id data", result)
+        //  console.log("get by id data", result)
       },
         (error) => {
           console.log(error);
@@ -281,13 +281,13 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
 
       // Instruction 
       this.liquidPreparationData.liquidPreparationInstructionDetails.forEach(element => {
-      //  let diff = element.weight - element.weightAdded;
-      let diff =  (element.weightAdded  - element.weight);
-      console.log("difference", diff)
+        //  let diff = element.weight - element.weightAdded;
+        let diff = (element.weightAdded - element.weight);
+        // console.log("difference", diff)
         let DoneByNames = this.usersList.filter(item => element.doneByIds?.includes(item.id)).map(item => item.name)
           .join(', ');
 
-          
+
         let data = {
           InstructionId: element.instructionId,
           MaterialId: element.materialId,
@@ -330,7 +330,7 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
       });
 
 
-      console.log("EditPrechecklistData", EditPrechecklistData)
+      // console.log("EditPrechecklistData", EditPrechecklistData)
       //console.log("formArray",formArray);
 
     }, 1000);
@@ -477,14 +477,14 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
   }
 
   onAnswerChange(event, i) {
-    console.log("ebent & i", event, i);
+    //  console.log("ebent & i", event, i);
     if (event.value === "No") {
       this.notificationService.error("You can't select NO");
 
       const questionsArray = this.StartCheckListForm.get('questions') as FormArray;
       if (i >= 0) {
         const questionGroup = questionsArray?.at(i) as FormGroup;
-        console.log("questiongroup", questionGroup)
+        // console.log("questiongroup", questionGroup)
         if (questionGroup) {
           questionGroup.controls['answer']?.setValue('Yes', { emitEvent: true });
           this.cdr.detectChanges();
@@ -538,14 +538,14 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
   }
 
   onEndAnswerChange(event, i) {
-    console.log("ebent & i", event, i);
+    // console.log("ebent & i", event, i);
     if (event.value === "No") {
       this.notificationService.error("You can't select NO");
 
       const questionsArray = this.EndCheckListForm.get('questions') as FormArray;
       if (i >= 0) {
         const questionGroup = questionsArray?.at(i) as FormGroup;
-        console.log("questiongroup", questionGroup)
+        //  console.log("questiongroup", questionGroup)
         if (questionGroup) {
           questionGroup.controls['answer']?.setValue('Yes', { emitEvent: true });
           this.cdr.detectChanges();
@@ -592,7 +592,7 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
 
 
   onInstructionChange(event) {
-    console.log("inst change", event);
+    // console.log("inst change", event);
 
     let weight = this.productInstructionDetailsList.find(x => x.id == event.value).weight;
     //  this.InstructionForm.get('Weight').disable();
@@ -608,7 +608,7 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
     if (this.InstructionForm.valid) {
       let formvalue = this.InstructionForm.value;
       if (formvalue.Weight != formvalue.WeightAdded) {
-        formvalue["diffWeight"] = formvalue.WeightAdded  - formvalue.Weight;
+        formvalue["diffWeight"] = formvalue.WeightAdded - formvalue.Weight;
       }
       else {
         formvalue["diffWeight"] = 0;
@@ -622,8 +622,8 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
       formvalue["InstructionName"] = this.productInstructionDetailsList.find(x => x.id == formvalue.InstructionId).instruction;
       formvalue["MaterialName"] = this.materialMasterList.find(x => x.id == formvalue.MaterialId).materialName;
       const now = new Date();
-      formvalue.AddedTime = now.toISOString(); 
-      console.log("Instruction form value", formvalue)
+      formvalue.AddedTime = now.toISOString();
+      // console.log("Instruction form value", formvalue)
 
       if (this.EditInstructionId >= 0) {
         this.AddedInstructionList[this.EditInstructionId] = formvalue;
@@ -641,10 +641,9 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
         this.CreateInstructionForm();
       }
     }
-    console.log("AddedInstructionList", this.AddedInstructionList)
+    // console.log("AddedInstructionList", this.AddedInstructionList)
   }
-
-
+ 
   calculateTotals() {
     this.totalWeight = this.AddedInstructionList
       .reduce((sum, ins) => sum + (ins.Weight || 0), 0);
@@ -654,7 +653,7 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
   }
 
   onEditDetail(instruction, i) {
-    console.log("details selected for edit", this.AddedInstructionList[i]);
+    //  console.log("details selected for edit", this.AddedInstructionList[i]);
 
     let value = this.AddedInstructionList[i]
 
@@ -673,19 +672,19 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
 
   removeDetail(i: number) {
     this.AddedInstructionList.splice(i, 1);
-    console.log("AddedInstructionList", this.AddedInstructionList);
+    // console.log("AddedInstructionList", this.AddedInstructionList);
   }
 
-  onStartDateChange(){
+  onStartDateChange() {
     const StartDate = this.basicForm.get('StartDateTime')?.value;
     this.StartDateOfBasicForm = new Date(StartDate);
   }
 
-  onTestingDateTimeChange(){
+  onTestingDateTimeChange() {
     const testingQualityDate = this.QualityForm.get('TestingDateTime')?.value;
     const TestDateObj = new Date(testingQualityDate);
 
-    if (TestDateObj  && TestDateObj < this.StartDateOfBasicForm) {
+    if (TestDateObj && TestDateObj < this.StartDateOfBasicForm) {
       this.notificationService.error("Test date should be greated than Basic Start date");
       this.QualityForm.get('TestingDateTime')?.reset();
       this.IsValidQualitydDate = false;
@@ -695,11 +694,11 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  onRecieveDateChange(){
+  onRecieveDateChange() {
     const sampleReciveDate = this.QualityForm.get('SampleReceivedTime')?.value;
     const ReciveDateObj = new Date(sampleReciveDate);
 
-    if (ReciveDateObj  && ReciveDateObj < this.StartDateOfBasicForm) {
+    if (ReciveDateObj && ReciveDateObj < this.StartDateOfBasicForm) {
       this.notificationService.error("Sample received date should be greated than Basic Start date");
       this.QualityForm.get('SampleReceivedTime')?.reset();
       this.IsValidQualitydDate = false;
@@ -709,7 +708,7 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  onTestedDateChange(){
+  onTestedDateChange() {
     const TestDate = this.QualityForm.get('SampleTestedTime')?.value;
     const recieveDate = this.QualityForm.get('SampleReceivedTime')?.value;
 
@@ -721,7 +720,7 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
       this.QualityForm.get('SampleTestedTime')?.reset();
       this.IsValidTestedDate = false;
     }
-   else if (recieveDate && TestDate && TestDateObj < recieveDateObj) {
+    else if (recieveDate && TestDate && TestDateObj < recieveDateObj) {
       this.notificationService.error("Sample tested date should be greated than sample recieved date");
       this.QualityForm.get('SampleTestedTime')?.reset();
       this.IsValidTestedDate = false;
@@ -734,12 +733,12 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
 
   addQuality() {
     this.isQualityFormSubmitted = true;
-    if( !this.IsValidTestedDate){
+    if (!this.IsValidTestedDate) {
       this.notificationService.error("Pl correct tested Date");
     }
     else if (this.QualityForm.valid) {
       let formvalue = this.QualityForm.value;
-      console.log("quality formvalue", formvalue)
+      // console.log("quality formvalue", formvalue)
       let DoneByNames = this.usersList
         .filter(item => formvalue.AnalysisDoneByIds.includes(item.id))
         .map(item => item.name)
@@ -760,14 +759,14 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
         this.CreateQualityForm();
       }
     }
-    else{
+    else {
       this.notificationService.error("Invalid Data");
     }
-    console.log("AddedQualityList", this.AddedQualityList)
+    // console.log("AddedQualityList", this.AddedQualityList)
   }
 
   onEditQualityDetail(Quality, i) {
-    console.log("Quaitydetails selected for edit", this.AddedQualityList[i]);
+    // console.log("Quaitydetails selected for edit", this.AddedQualityList[i]);
 
     let value = this.AddedQualityList[i]
 
@@ -786,7 +785,7 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
 
   removeQualityDetail(i: number) {
     this.AddedQualityList.splice(i, 1);
-    console.log("AddedQualityList", this.AddedQualityList);
+    // console.log("AddedQualityList", this.AddedQualityList);
   }
 
   getToday() {
@@ -819,15 +818,15 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
 
   Submit() {
 
-    console.log("draftBasicFormValue", this.draftBasicFormValue);
-    console.log("draftStartCheckListFormValue", this.draftStartCheckListFormValue);
-    console.log("AddedInstructionList", this.AddedInstructionList);
-    console.log("draftEndCheckListFormValue", this.draftEndCheckListFormValue);
-    console.log("AddedQualityList", this.AddedQualityList);
-    console.log("DiffWghInstructionList", this.DiffWghInstructionList);
+    //  console.log("draftBasicFormValue", this.draftBasicFormValue);
+    //  console.log("draftStartCheckListFormValue", this.draftStartCheckListFormValue);
+    //  console.log("AddedInstructionList", this.AddedInstructionList);
+    // console.log("draftEndCheckListFormValue", this.draftEndCheckListFormValue);
+    // console.log("AddedQualityList", this.AddedQualityList);
+    //  console.log("DiffWghInstructionList", this.DiffWghInstructionList);
 
     let Playload = this.TransFormData();
-    console.log("Playload", Playload)
+    // console.log("Playload", Playload)
 
     if (this.isEditMode) {
       this.updateliquidPreparation(Playload);
@@ -895,7 +894,7 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
         LotNumber: item.LotNumber.toString(),
         Weight: item.Weight,
         WeightAdded: item.WeightAdded,
-        DoneByList: item.DoneByIds.map(id => `${id}`), 
+        DoneByList: item.DoneByIds.map(id => `${id}`),
         AddedTime: item.AddedTime,// Adjust as needed
         IsActive: true,
       })),
@@ -918,11 +917,12 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
 
 
   cancel() {
-    if (this.isEditMode) {
-      this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
-    } else {
-      this.router.navigate(['..', 'list'], { relativeTo: this.activatedRoute });
-    }
+    this.router.navigate(['/secure/masters', 'production-order']);
+    // if (this.isEditMode) {
+    //   this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
+    // } else {
+    //   this.router.navigate(['..', 'list'], { relativeTo: this.activatedRoute });
+    // }
   }
 
   ngOnDestroy(): void {

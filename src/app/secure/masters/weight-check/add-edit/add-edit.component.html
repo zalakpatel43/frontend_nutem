@@ -25,7 +25,7 @@
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <mat-form-field appearance="fill" class="full-width">
                                     <mat-label>Start Date</mat-label>
-                                    <input matInput [matDatepicker]="pickerStart" [min]="getToday()"
+                                    <input matInput [matDatepicker]="pickerStart" [max]="getToday()"
                                         (dateChange)="onStartDateChange()" formControlName="StartDateTime">
                                     <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
                                     <mat-datepicker #pickerStart></mat-datepicker>
@@ -109,7 +109,7 @@
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <mat-form-field appearance="fill" class="full-width">
                                     <mat-label>Pack Size</mat-label>
-                                    <input matInput formControlName="PackSize" type="number">
+                                    <input matInput formControlName="PackSize" type="number" >
                                     <mat-validation-message [control]="WeightCheckForm.controls.PackSize"
                                         [message]="'Pack Size'"
                                         [formSubmitted]="isFormSubmitted"></mat-validation-message>
@@ -120,7 +120,7 @@
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <mat-form-field appearance="fill" class="full-width">
                                     <mat-label>Standard Weight</mat-label>
-                                    <input matInput formControlName="StandardWeight" type="number">
+                                    <input matInput formControlName="StandardWeight" type="number" min="0">
                                     <mat-validation-message [control]="WeightCheckForm.controls.StandardWeight"
                                         [message]="'Standard Weight'"
                                         [formSubmitted]="isFormSubmitted"></mat-validation-message>
@@ -134,15 +134,18 @@
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <mat-form-field appearance="fill" class="full-width">
                                     <mat-label>Min Weight Range</mat-label>
-                                    <input matInput formControlName="MinWeightRange" type="number">
-                                    <mat-error
+                                    <input matInput formControlName="MinWeightRange" type="number" min="0" (change)="onWeightRangeChange()" >
+                                    <mat-validation-message [control]="WeightCheckForm.controls.MinWeightRange"
+                                    [message]="'Min Weight Range'"
+                                    [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                    <!-- <mat-error
                                         *ngIf="WeightCheckForm.get('MinWeightRange').hasError('required') && isFormSubmitted">
                                         Min Weight Range is required.
                                     </mat-error>
                                     <mat-error
                                         *ngIf="WeightCheckForm.get('MinWeightRange').hasError('min') && isFormSubmitted">
                                         Min Weight Range must be a non-negative number.
-                                    </mat-error>
+                                    </mat-error> -->
                                 </mat-form-field>
                             </div>
 
@@ -150,11 +153,14 @@
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <mat-form-field appearance="fill" class="full-width">
                                     <mat-label>Max Weight Range</mat-label>
-                                    <input matInput formControlName="MaxWeightRange" type="number">
-                                    <mat-error
+                                    <input matInput formControlName="MaxWeightRange" type="number" min="0" (change)="onWeightRangeChange()">
+                                    <mat-validation-message [control]="WeightCheckForm.controls.MaxWeightRange"
+                                        [message]="'Max Weight Range'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                    <!-- <mat-error
                                         *ngIf="WeightCheckForm.get('MaxWeightRange').hasError('required') && isFormSubmitted">
                                         Max Weight Range is required.
-                                    </mat-error>
+                                    </mat-error> -->
 
                                 </mat-form-field>
                             </div>
@@ -212,7 +218,7 @@
                                         class="col-12 col-sm-12 col-md-1 col-lg-1 mb-3 ">
                                         <mat-form-field class="full-width">
                                             <mat-label>{{ nozzle.nozzelName }}</mat-label>
-                                            <input type="number" matInput [formControlName]="nozzle.nozzelName">
+                                            <input type="number" matInput [formControlName]="nozzle.nozzelName" min="0">
                                         </mat-form-field>
                                     </div>
 
@@ -246,8 +252,7 @@
                     <div class="col-md-12">
                         <div class="table-responsive">
                             <table id="gridNozzlewiseWeight"
-                                class="table table-hover table-bordered display mb-30 fixed-table-scroll-inner"
-                                style="overflow:scroll;width:auto">
+                                class="table table-hover table-bordered display mb-30 fixed-table-scroll-inner" >
                                 <thead class="bg-primary text-primary text-center ">
                                     <tr>
                                         <th style="width:8%" class="back-Green"></th>

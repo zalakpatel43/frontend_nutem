@@ -48,7 +48,7 @@ export class WeightCheckListComponent implements OnInit {
             .subscribe((result: any) => {
                 // this.cancel();
                 this.weightCheckData = result;
-                console.log("Weight checl list", this.weightCheckData);
+               // console.log("Weight checl list", this.weightCheckData);
                 this.loading = false;
             },
                 (error) => {
@@ -71,7 +71,7 @@ export class WeightCheckListComponent implements OnInit {
 
     updateSearch(search: { [key: string]: any }) {
         this.searchData = Object.assign({}, search);
-        console.log("serach data", this.searchData);
+      //  console.log("serach data", this.searchData);
     }
 
     isActiveRow(row) {

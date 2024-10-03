@@ -20,7 +20,7 @@ export class UserSearchPanelComponent {
         this.searchData['isActive'] = isActive;
 
         this.searchData[key] = value;
-        console.log("search data for inactive", this.searchData)
+       // console.log("search data for inactive", this.searchData)
         this.searchChanged.emit(this.searchData);
     }
 }

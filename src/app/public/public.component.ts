@@ -23,7 +23,7 @@ export class PublicComponent {
                 this.themeData = themeData;
                 this.overlayContainer.getContainerElement().classList.add(this.theme);
                 this.componentCssClass = this.themeData.onlineTheme;
-                console.log(this.themeData.onlineTheme);
+               // console.log(this.themeData.onlineTheme);
             }
 
         });

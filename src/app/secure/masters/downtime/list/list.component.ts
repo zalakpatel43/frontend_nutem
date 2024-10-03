@@ -43,7 +43,7 @@ export class DowntimeTrackingListComponent implements OnInit {
       this.downtimeTrackingService.getDowntimeTrackingList()
           .subscribe((result: any) => {
               this.downtimeTrackingData = result;
-              console.log("Downtime tracking list", this.downtimeTrackingData);
+             // console.log("Downtime tracking list", this.downtimeTrackingData);
               this.loading = false;
           },
           (error) => {
@@ -66,7 +66,7 @@ export class DowntimeTrackingListComponent implements OnInit {
 
   updateSearch(search: { [key: string]: any }) {
       this.searchData = Object.assign({}, search);
-      console.log("Search data", this.searchData);
+     // console.log("Search data", this.searchData);
   }
 
   isActiveRow(row) {

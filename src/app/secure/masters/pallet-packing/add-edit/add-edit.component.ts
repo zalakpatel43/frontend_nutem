@@ -127,7 +127,7 @@ export class PalletPackingAddEditComponent implements OnInit, OnDestroy {
     this.palletPackingService.getProductionOrderList()
       .subscribe((result: any) => {
         this.productionOrderList = result;
-        console.log('data', this.productionOrderList)
+        // console.log('data', this.productionOrderList)
       });
 
     this.palletPackingService.getProductList()
@@ -178,9 +178,9 @@ export class PalletPackingAddEditComponent implements OnInit, OnDestroy {
     const finishedCasesAtEnd = this.palletPackingForm.get('FinishedCasesOnIncompletePalletAtEnd')?.value || 0;
 
 
-    console.log('NoOfPalletsCompleted:', noOfPalletsCompleted);
-    console.log('FinishedCasesAtStart:', finishedCasesAtStart);
-    console.log('FinishedCasesAtEnd:', finishedCasesAtEnd);
+    // console.log('NoOfPalletsCompleted:', noOfPalletsCompleted);
+    // console.log('FinishedCasesAtStart:', finishedCasesAtStart);
+    //  console.log('FinishedCasesAtEnd:', finishedCasesAtEnd);
 
     // Apply the formula
     const totalCasesProduced = (noOfPalletsCompleted * 64) + (finishedCasesAtEnd - finishedCasesAtStart);
@@ -210,7 +210,7 @@ export class PalletPackingAddEditComponent implements OnInit, OnDestroy {
     item.addControl('DoneByIds', this.formBuilder.control([]));  // Initialize as an array
 
     this.palletPackingDetails.push(item);
-    console.log("PalletPackingDetails", this.palletPackingDetails.controls);
+    // console.log("PalletPackingDetails", this.palletPackingDetails.controls);
   }
 
   private formatToDateTime(dateStr: string | null): string | null {
@@ -269,13 +269,13 @@ export class PalletPackingAddEditComponent implements OnInit, OnDestroy {
       this.palletPackingDetails.clear();
       this.addPalletDetail();
 
-      console.log("Added pallet details:", this.addedPalletPackingDetailsList);
+      //  console.log("Added pallet details:", this.addedPalletPackingDetailsList);
     }
   }
 
   getUserNames(userIds: number[]): string {
-    console.log('User IDs:', userIds);
-    console.log('User Map:', this.userMap);
+    //  console.log('User IDs:', userIds);
+    //  console.log('User Map:', this.userMap);
     if (!userIds || !Array.isArray(userIds)) {
       return 'Unknown';
     }
@@ -286,7 +286,7 @@ export class PalletPackingAddEditComponent implements OnInit, OnDestroy {
   onEditDetail(detail: any, index: number) {
     // Populate form with the details of the selected row
     this.populateFormWithValues([detail]);
-    console.log("Editing detail:", detail);
+    // console.log("Editing detail:", detail);
     // Set the index for the edit operation
     this.editPalletDetailsId = index;
   }
@@ -309,7 +309,7 @@ export class PalletPackingAddEditComponent implements OnInit, OnDestroy {
       this.palletPackingDetails.push(item);
     });
 
-    console.log("Populated PalletPackingDetails:", this.palletPackingDetails.controls);
+    // console.log("Populated PalletPackingDetails:", this.palletPackingDetails.controls);
   }
 
 
@@ -375,13 +375,14 @@ export class PalletPackingAddEditComponent implements OnInit, OnDestroy {
     // Prepare form value and payload
     const formValue = this.palletPackingForm.value;
     formValue.palletPackingDetails = this.addedPalletPackingDetailsList;
+    formValue.FinishedCasesOnIncompletePalletAtEnd = formValue.FinishedCasesOnIncompletePalletAtEnd ? formValue.FinishedCasesOnIncompletePalletAtEnd : null;
     const totalCases = this.palletPackingForm.controls.TotalCasesProduced.value;
     formValue.totalcases = totalCases;
-    console.log(" totalCases pallet form value", totalCases);
+     console.log(" formValue.FinishedCasesOnIncompletePalletAtEnd", formValue.FinishedCasesOnIncompletePalletAtEnd);
     const payload = this.transformData(formValue);
 
     // Log payload for debugging
-    console.log("Transformed Payload:", JSON.stringify(payload, null, 2));
+    // console.log("Transformed Payload:", JSON.stringify(payload, null, 2));
 
     // Decide whether to create or update
     if (this.isEditMode) {
@@ -426,8 +427,8 @@ export class PalletPackingAddEditComponent implements OnInit, OnDestroy {
       Id: this.isEditMode ? this.palletPackingData.id : 0,
       Code: this.isEditMode ? this.palletPackingData.code : "",
       PackingDateTime: formatToDateTime(originalData.PackingDateTime),
-      SAPProductionOrderId: this.isEditMode?this.palletPackingData.sapProductionOrderId : originalData.SAPProductionOrderId,
-      ProductId:this.isEditMode ? this.palletPackingData.productId : originalData.ProductId,
+      SAPProductionOrderId: this.isEditMode ? this.palletPackingData.sapProductionOrderId : originalData.SAPProductionOrderId,
+      ProductId: this.isEditMode ? this.palletPackingData.productId : originalData.ProductId,
       FinishedCasesOnIncompletePalletAtStart: originalData.FinishedCasesOnIncompletePalletAtStart,
       FinishedCasesOnIncompletePalletAtEnd: originalData.FinishedCasesOnIncompletePalletAtEnd,
       TotalCasesProduced: this.isEditMode ? originalData.totalcases : originalData.TotalCasesProduced,
@@ -444,11 +445,12 @@ export class PalletPackingAddEditComponent implements OnInit, OnDestroy {
   }
 
   cancel() {
-    if (this.isEditMode) {
-      this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
-    } else {
-      this.router.navigate(['..', 'list'], { relativeTo: this.activatedRoute });
-    }
+    this.router.navigate(['/secure/masters', 'production-order']);
+    // if (this.isEditMode) {
+    //   this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
+    // } else {
+    //   this.router.navigate(['..', 'list'], { relativeTo: this.activatedRoute });
+    // }
   }
 
   ngOnDestroy(): void {

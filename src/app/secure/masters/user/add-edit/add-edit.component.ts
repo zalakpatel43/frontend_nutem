@@ -49,7 +49,7 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
 
     private getUserRoute() {
         this.routerSub = this.activatedRoute.params.subscribe((params) => {
-            console.log("Edit params ", params)
+            //  console.log("Edit params ", params)
             this.isEditMode = !CommonUtility.isEmpty(params["id"]);
             this.createForm();
             if (this.isEditMode) {
@@ -66,7 +66,7 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
 
 
     private getUserDetails() {
-        console.log("user id ", this.userId)
+        // console.log("user id ", this.userId)
         this.userService.getById(this.userId)
             .subscribe((result: User) => {
                 this.userData = result;
@@ -96,7 +96,7 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
         this.roleService.getRole()
             .subscribe((result: any) => {
                 this.roleData = result;
-                console.log("ROLE:", this.roleData);
+                //  console.log("ROLE:", this.roleData);
 
                 this.createRolesControl();
             }, (error) => {
@@ -181,7 +181,7 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
                         // Show the first error message from the array
                         const errorMessage = error.error[0].description;
                         this.notificationService.error(errorMessage);
-                  //  this.error = error.error.modelState[''][0];
+                        //  this.error = error.error.modelState[''][0];
                     }
                 } else {
                     this.error = 'Something went wrong';
@@ -220,10 +220,10 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
     //     this.userService.update(this.userData.id, this.userData)
     //         .subscribe((result: any) => {
     //             if (result.isSuccess) {
-                    
+
     //                 this.notificationService.success("User updated successfully.");
     //                 this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
-                    
+
     //             }
     //             else {
     //                 this.notificationService.warning(result.message);
@@ -238,20 +238,20 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
     // }
     private updateUser() {
         let user: User = this.frmUser.value;
-    
+
         this.userData = Object.assign(this.userData, user);
-    
+
         this.userService.update(this.userData.id, this.userData)
             .subscribe(
                 (result: any) => {
                     this.cancel();
                     // console.log('Update Response:', result);
                     if (result) {
-                        
-                         // Safely access result.message
-                         const errorMessage = result?.message || 'An unexpected error occurred.';
-                         this.notificationService.warning(errorMessage);
-                        
+
+                        // Safely access result.message
+                        const errorMessage = result?.message || 'An unexpected error occurred.';
+                        this.notificationService.warning(errorMessage);
+
                     } else {
                         this.notificationService.success("User updated successfully.");
                         this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
@@ -268,29 +268,29 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
                 }
             );
     }
-    
-    
+
+
 
     save() {
         this.isFormSubmitted = true;
-    
+
         if (this.frmUser.invalid) {
             return;
         }
-    
+
         if (this.isEditMode) {
             this.updateUser(); // Update user
         } else {
             this.createUser(); // Create new user
         }
-        
+
         // After creating/updating the user, assign the role
         const selectedRole = this.frmUser.get('role').value;
         if (selectedRole) {
             this.handleRoleAssignment(selectedRole);
         }
     }
-    
+
     private handleRoleAssignment(newRole: string) {
         if (this.isEditMode) {
             this.userService.getRoles(this.userId)
@@ -317,14 +317,14 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
             this.assignRoleToUser(this.userId, newRole);
         }
     }
-    
+
     // Method to assign role to the user
     assignRoleToUser(userId: number, role: string) {
         this.userService.assignRole(userId, role).subscribe(
             (result: any) => {
                 this.notificationService.success(`Role '${role}' assigned successfully to user.`);
             },
-            
+
         );
     }
 
@@ -350,11 +350,11 @@ export class UserAddEditComponent implements OnInit, OnDestroy {
 
     cancel() {
         if (this.isEditMode) {
-          this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
+            this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
         } else {
-          this.router.navigate(['..', 'list'], { relativeTo: this.activatedRoute });
+            this.router.navigate(['..', 'list'], { relativeTo: this.activatedRoute });
         }
-      }
+    }
 
     ngOnDestroy(): void {
         this.routerSub.unsubscribe();
