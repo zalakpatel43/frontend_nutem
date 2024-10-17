@@ -171,9 +171,13 @@ export class PostCheckAddEditComponent implements OnInit, OnDestroy {
                     Comments: result.comments,
                     isActive: result.isActive
                 });
-
+                setTimeout(() => {
+                    if (result.postCheckListDetails.length > 0) {
+                        // Set preCheckListDetails if available
+                        this.setPostCheckListDetails(result.postCheckListDetails);
+                    }
+                }, 1000);
                 // Set postCheckListDetails if available
-                this.setPostCheckListDetails(result.postCheckListDetails);
             },
             error: (err) => {
                 this.notificationService.error('Failed to load Post Check details.');

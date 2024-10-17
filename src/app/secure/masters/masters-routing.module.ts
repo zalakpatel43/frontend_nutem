@@ -108,6 +108,12 @@ const routes: Routes = [
                 data: { page: ApplicationPage.postCheck },
                 loadChildren: () => import('./post-check/post-check.module').then(m => m.PostCheckModule)
             },
+            {
+                path: 'labor-variance',
+                canActivate: [PageAuthGuard],
+                data: { page: ApplicationPage.laborVariance },
+                loadChildren: () => import('./labor-variance/labor-variance.module').then(m => m.LaborVarianceModule)
+            },
         ]
     }
 ];

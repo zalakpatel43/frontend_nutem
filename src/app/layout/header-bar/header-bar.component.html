@@ -53,6 +53,9 @@
                     <a *ngIf="PrecheckPermission" routerLinkActive="active" mat-menu-item
                         [routerLink]="['/secure/masters', 'pre-check']">
                         Pre Check</a>
+                    <a *ngIf="ProductionOrderPermission" routerLinkActive="active" mat-menu-item
+                        [routerLink]="['/secure/masters', 'labor-variance']">
+                        Labor Variance</a>
                     <!-- <a *ngIf="ProductionOrderPermission" routerLinkActive="active" mat-menu-item
                         [routerLink]="['/secure/masters', 'production-order']">
                         Production Order

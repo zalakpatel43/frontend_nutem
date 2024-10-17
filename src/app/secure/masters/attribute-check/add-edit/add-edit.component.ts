@@ -230,7 +230,7 @@ export class AttributeCheckAddEditComponent implements OnInit, OnDestroy {
     this.EditDetailsId = i;
   }
 
-  
+
   removeAttributeCheckDetail(i: number) {
     // const control = <FormArray>this.WeightCheckForm?.controls['ItemList'];
     // control.removeAt(i);

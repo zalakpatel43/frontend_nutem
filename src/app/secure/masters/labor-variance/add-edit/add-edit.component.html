@@ -1,0 +1,385 @@
+<div class="row justify-content-center">
+    <div class="col-xl-11 col-lg-12">
+        <div class="border p30 rounded">
+            <div class="row align-items-center mb-4">
+                <div class="col-lg-7 col-sm-9 col-xs-10 d-flex align-items-end">
+                    <h4 class="mb-0"><i class="icon-edit"></i> Add/Edit Labor Variance</h4>
+                </div>
+                <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end">
+                    <a *ngIf="IsViewPermission" mat-flat-button color="primary" class="app-button back-Green"
+                        (click)="cancel()">
+                        View List
+                    </a>
+                </div>
+            </div>
+            <form [formGroup]="laborVarianceForm" (submit)="save()" #form="ngForm" novalidate class="app-form">
+                <!-- Basic Details Section -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Basic Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+
+                            <!-- Start Date Time -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Date</mat-label>
+                                    <input matInput [matDatepicker]="pickerStart" [max]="getToday()"
+                                        formControlName="DateTime">
+                                    <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+                                    <mat-datepicker #pickerStart></mat-datepicker>
+                                    <mat-validation-message [control]="laborVarianceForm.controls.DateTime"
+                                        [message]="'Date Time'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Shift -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Shift</mat-label>
+                                    <mat-select formControlName="ShiftId">
+                                        <mat-option *ngFor="let shift of shiftList" [value]="shift.id">
+                                            {{ shift.shiftName }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-validation-message [control]="laborVarianceForm.controls.ShiftId"
+                                        [message]="'Shift'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Product Line</mat-label>
+                                    <mat-select formControlName="ProductLineId">
+                                        <mat-option *ngFor="let line of fillingLineList" [value]="line.id">
+                                            {{ line.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-validation-message [control]="laborVarianceForm.controls.ProductLineId"
+                                        [message]="'Product Line'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- employees -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Employees </mat-label>
+                                    <input matInput formControlName="Employees" type="number">
+                                    <mat-validation-message [control]="laborVarianceForm.controls.Employees"
+                                        [message]="'Employees'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- TempEmployee -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Temporary </mat-label>
+                                    <input matInput formControlName="TempEmployee" type="number">
+                                    <mat-validation-message [control]="laborVarianceForm.controls.TempEmployee"
+                                        [message]="'Temp Employee'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- TotalEmployee -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Total</mat-label>
+                                    <input matInput formControlName="TotalEmployee" type="number" readonly>
+                                    <mat-validation-message [control]="laborVarianceForm.controls.TotalEmployee"
+                                        [message]="'Total Employee'"
+                                        [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Note -->
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-12 mb-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Note</mat-label>
+                                    <textarea matInput formControlName="Note"></textarea>
+                                    <mat-validation-message [control]="laborVarianceForm.controls.Note"
+                                        [message]="'Note'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Labor Variance Detail Section -->
+                <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h5 class="mb-0">Labor Variance Details</h5>
+                        <!-- <button type="button" mat-flat-button color="primary" (click)="addCustomerDetail()">Add Address</button> -->
+                    </div>
+                    <div class="card-body">
+                        <div formArrayName="LaborVarianceDetails">
+
+                            <div *ngFor="let detail of  LaborVarianceDetails?.controls; let i = index"
+                                [formGroupName]="i" class="row mt-3">
+                                <div class="row">
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Production Order</mat-label>
+                                            <mat-select formControlName="SAPProductionOrderId">
+                                                <mat-option *ngFor="let order of productionOrderList"
+                                                    [value]="order.id">
+                                                    {{ order.poNumber }}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Product</mat-label>
+                                            <mat-select formControlName="ProductId" >
+                                                <mat-option *ngFor="let product of productList" [value]="product.id">
+                                                    {{ product.productName }}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Start Time</mat-label>
+                                            <input matInput [ngxTimepicker]="Starttimepicker" placeholder="Select time"
+                                                formControlName="StartDateTime">
+                                            <ngx-material-timepicker #Starttimepicker></ngx-material-timepicker>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>End Time</mat-label>
+                                            <input matInput [ngxTimepicker]="Endtimepicker" placeholder="Select time"
+                                                formControlName="EndDateTime">
+                                            <ngx-material-timepicker #Endtimepicker></ngx-material-timepicker>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Late Start Reason</mat-label>
+                                            <input matInput formControlName="LateStartReason">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Change Over Time</mat-label>
+                                            <input matInput [ngxTimepicker]="changetimepicker" placeholder="Select time"
+                                                formControlName="ChangeOverTime">
+                                            <ngx-material-timepicker #changetimepicker></ngx-material-timepicker>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Actual Bottle Produced</mat-label>
+                                            <input matInput formControlName="ActualBottleProduced" type="number">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Total Run Time(Mins)</mat-label>
+                                            <input matInput formControlName="TotalRunTImeMins" type="number">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Shift Comments</mat-label>
+                                            <input matInput formControlName="ShiftComments" >
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Downtime (Mins)</mat-label>
+                                            <input matInput formControlName="DownTimeMins" type="number">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Downtime Comments</mat-label>
+                                            <input matInput formControlName="DownTImeComments" >
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>HC</mat-label>
+                                            <input matInput formControlName="HC" type="number" readonly>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Case Attainment</mat-label>
+                                            <input matInput formControlName="CaseAttainment" type="number">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Case Target</mat-label>
+                                            <input matInput formControlName="CaseTarget" type="number">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>%</mat-label>
+                                            <input matInput formControlName="Percentage" type="number" readonly>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Bottle Target</mat-label>
+                                            <input matInput formControlName="BottleTarget" type="number">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Shift Index</mat-label>
+                                            <input matInput formControlName="ShiftIndex" >
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Criteria</mat-label>
+                                            <input matInput formControlName="Criteria" >
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Missing FG Items</mat-label>
+                                            <input matInput formControlName="MissingFGItems" type="number">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Non Production Time</mat-label>
+                                            <input matInput formControlName="NonProductionTime" type="number">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Additional Comments</mat-label>
+                                            <input matInput formControlName="AdditionalComments" >
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Time Per Person </mat-label>
+                                            <input matInput formControlName="TimePerPerson" type="number">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Total Mins</mat-label>
+                                            <input matInput formControlName="TotalMins" type="number">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                        <mat-form-field appearance="fill" class="full-width">
+                                            <mat-label>Description</mat-label>
+                                            <input matInput formControlName="Description" >
+                                        </mat-form-field>
+                                    </div>
+
+
+
+                                    <div class="col-12 col-sm-12 col-md-2 col-lg-2 mb-3 p-1 d-flex align-items-center">
+                                        <button type="button" mat-icon-button class="icon-green"
+                                            (click)="addFinallaborVarianceDetail()">
+                                            <mat-icon>add</mat-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table id="gridLaborVarince"
+                                class="table table-hover table-bordered display mb-30 fixed-table-scroll-inner">
+                                <thead class="bg-primary text-primary text-center">
+                                    <tr>
+                                        <th class="back-Green">PO No</th>
+                                        <th class="back-Green">Item no</th>
+                                        <th style="width:10%" class="back-Green">Start Time</th>
+                                        <th style="width:10%" class="back-Green">End Time</th>
+                                        <th style="width:15%" class="back-Green">Late Start Reason</th>
+                                        <th style="width:10%" class="back-Green">Change Over Time</th>
+                                        <th class="back-Green">Actual Bottle Produced</th>
+                                        <th class="back-Green">Total Run Time (Mins)</th>
+                                        <th class="back-Green">Shift Comments</th>
+                                        <th class="back-Green">Down Time (Mins)</th>
+                                        <th class="back-Green">DT Comments</th>
+                                        <th class="back-Green">HC</th>
+                                        <th class="back-Green">Case Attainment</th>
+                                        <th class="back-Green">Case Target</th>
+                                        <th class="back-Green">%</th>
+                                        <th class="back-Green">Bottle Target</th>
+                                        <th class="back-Green">Shift Index</th>
+                                        <th class="back-Green">Criteria</th>
+                                        <th class="back-Green">Missing FG Items</th>
+                                        <th class="back-Green">Non Production Time</th>
+                                        <th class="back-Green">Additional Comments</th>
+                                        <th class="back-Green">Time Per Person</th>
+                                        <th class="back-Green">Total Mins</th>
+                                        <th class="back-Green">Description</th>
+                                        <th style="width:8%" class="back-Green">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let detail of AddedlaborVarianceDetailsList; let i = index">
+                                        <td>{{ detail.SAPProductionOrderId }}</td>
+                                        <td>{{ detail.ProductId }}</td>
+                                        <td>{{ detail.StartDateTime }}</td>
+                                        <td>{{ detail.EndDateTime }}</td>
+                                        <td>{{ detail.LateStartReason }}</td>
+                                        <td>{{ detail.ChangeOverTime }}</td>
+                                        <td>{{ detail.ActualBottleProduced }}</td>
+                                        <td>{{ detail.TotalRunTImeMins }}</td>
+                                        <td>{{ detail.ShiftComments }}</td>
+                                        <td>{{ detail.DownTimeMins }}</td>
+                                        <td>{{ detail.DownTImeComments }}</td>
+                                        <td>{{ detail.HC }}</td>
+                                        <td>{{ detail.CaseAttainment }}</td>
+                                        <td>{{ detail.CaseTarget }}</td>
+                                        <td>{{ detail.Percentage }} %</td>
+                                        <td>{{ detail.BottleTarget }}</td>
+                                        <td>{{ detail.ShiftIndex }}</td>
+                                        <td>{{ detail.Criteria }}</td>
+                                        <td>{{ detail.MissingFGItems }}</td>
+                                        <td>{{ detail.NonProductionTime }}</td>
+                                        <td>{{ detail.AdditionalComments }}</td>
+                                        <td>{{ detail.TimePerPerson }}</td>
+                                        <td>{{ detail.TotalMins }}</td>
+                                        <td>{{ detail.Description }}</td>
+                                        <td>
+                                            <button (click)="onEditDetail(detail, i)" type="button"
+                                                class="btn btn-success btn-sm btnModifyRow back-Green">
+                                                <i class="fa fa-pencil"></i>
+                                            </button>
+                                            <button (click)="removeLaborVarianceDetail(i)" type="button"
+                                                class="btn btn-danger btn-sm btnRemoveRow ms-1">
+                                                <i class="fa fa-close"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <button type="submit" mat-flat-button class="app-button mr-1 back-Green">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

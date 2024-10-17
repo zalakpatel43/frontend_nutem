@@ -72,6 +72,12 @@ export const APIConstant = {
     trailerLoadingGetById: `${basePath}TrailerLoading/GetByIdAsync`,
     trailerLoadingDelete: `${basePath}TrailerLoading/DeleteTrailerLoading`,
 
+     //laborVariance
+     laborVarinceList: `${basePath}LaborVariance/GetAllLaborVariance`,
+     laborVarinceAdd: `${basePath}LaborVariance/AddLaborVariance`,
+     laborVarinceEdit: `${basePath}LaborVariance/EditLaborVariance`,
+     laborVarinceGetById: `${basePath}LaborVariance/GetByIdAsync`,
+     laborVarinceDelete: `${basePath}LaborVariance/DeleteLaborVariance`,
 
     //Company
     CompanyMasterList: `${basePath}CompanyMaster/GetAllCompany`,  //TrailerInspection service 

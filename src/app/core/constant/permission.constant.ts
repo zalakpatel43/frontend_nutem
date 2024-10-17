@@ -21,6 +21,7 @@ export const ApplicationPage = {
     productionOrder:'adm_ProductionOrder',
     liquidPreparation:'adm_liquid_Preparation',
     postCheck:'adm_PostCheckList',
+    laborVariance: 'adm_labor-variance',
     bom: 'adm_bom',
     moduleGroup: 'adm_module_group',
     termsAndConditions: 'adm_terms_conditions',

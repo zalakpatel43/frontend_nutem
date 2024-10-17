@@ -75,6 +75,15 @@ table {
     margin-left: 40%;
 }
 
+.loader-container-Parent{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30%; /* Adjust as needed */
+  color: green !important;
+ // margin-left: 40%;
+}
+
 ::ng-deep .mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic{
   stroke: green !important;
 }

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -26,6 +26,7 @@ export class PreCheckAddEditComponent implements OnInit, OnDestroy {
     error: string;
 
     IsViewPermission: boolean = false;
+    isLoadingQuestions: boolean = true;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -33,13 +34,14 @@ export class PreCheckAddEditComponent implements OnInit, OnDestroy {
         private formBuilder: UntypedFormBuilder,
         private preCheckService: PreCheckService,
         private notificationService: ToastrService,
-        private permissionService: PermissionService
+        private permissionService: PermissionService,
+        private cdRef: ChangeDetectorRef
     ) { }
 
     ngOnInit(): void {
+        this.loadQuestions();
         this.getRoute();
         this.loadDropdowns();
-        this.loadQuestions();
         this.IsViewPermission = this.permissionService.hasPermission('PreCheck List (PER_PRECHEKLIST) - View');
 
     }
@@ -52,6 +54,7 @@ export class PreCheckAddEditComponent implements OnInit, OnDestroy {
     private getRoute() {
         this.routerSub = this.activatedRoute.params.subscribe((params) => {
             this.isEditMode = !!params['id'];
+
             this.createForm();
             if (this.isEditMode) {
                 this.preCheckId = +params['id'];
@@ -130,26 +133,28 @@ export class PreCheckAddEditComponent implements OnInit, OnDestroy {
         this.preCheckService.getAllQuestions().subscribe({
             next: (result: any) => {
                 this.questionList = result.filter((question: any) => question.type === 1);
-                // console.log("Questions", this.questionList);
+                console.log("Questions", this.questionList);
+                if (this.questionList && this.questionList.length > 0) {
+                    const controls = this.questionList.map(question => this.formBuilder.group({
+                        questionId: [question.id, [Validators.required]],
+                        answer: [1],
+                        reason: ['']
+                    }));
+                    this.preCheckForm.setControl('preCheckListDetails', this.formBuilder.array(controls));
 
-                // Initialize form array based on the number of questions
-                const controls = this.questionList.map(question => this.formBuilder.group({
-                    questionId: [question.id, [Validators.required]],
-                    answer: [1],
-                    reason: ['']
-                }));
-                this.preCheckForm.setControl('preCheckListDetails', this.formBuilder.array(controls));
+                }
             },
             error: (err) => {
                 this.notificationService.error('Failed to load Questions.');
                 console.error(err);
+                this.isLoadingQuestions = false;
             }
         });
     }
 
     getToday() {
         return new Date().toISOString().split('T')[0];
-      }
+    }
 
 
     private getPreCheckById() {
@@ -173,9 +178,14 @@ export class PreCheckAddEditComponent implements OnInit, OnDestroy {
                     Comments: result.comments,
                     isActive: result.isActive
                 });
+                setTimeout(() => {
+                    if (result.preCheckListDetails.length > 0) {
+                        // Set preCheckListDetails if available
+                        this.setPreCheckListDetails(result.preCheckListDetails);
+                    }
+                }, 1000);
 
-                // Set preCheckListDetails if available
-                this.setPreCheckListDetails(result.preCheckListDetails);
+
             },
             error: (err) => {
                 this.notificationService.error('Failed to load Pre Check details.');
@@ -185,17 +195,21 @@ export class PreCheckAddEditComponent implements OnInit, OnDestroy {
     }
 
     private setPreCheckListDetails(details: any[]) {
-        const formArray = this.preCheckDetails;
-        formArray.clear();
+        if (details) {
+            console.log("Preque details", details)
+            const formArray = this.preCheckDetails;
+            formArray.clear();
 
-        details.forEach(detail => {
-            formArray.push(this.formBuilder.group({
-                id: [detail.id],
-                questionId: [detail.questionId, [Validators.required]],
-                answer: [detail.answer, [Validators.required]],
-                reason: [detail.reason || '']
-            }));
-        });
+            details.forEach(detail => {
+                formArray.push(this.formBuilder.group({
+                    id: [detail.id],
+                    questionId: [detail.questionId, [Validators.required]],
+                    answer: [detail.answer, [Validators.required]],
+                    reason: [detail.reason || '']
+                }));
+            });
+        }
+
     }
 
     onAnswerChange(index: number) {
@@ -261,7 +275,7 @@ export class PreCheckAddEditComponent implements OnInit, OnDestroy {
                 next: () => {
                     this.notificationService.success('Pre Check updated successfully.');
                     this.router.navigate(['/secure/masters', 'production-order']);
-                  //  this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
+                    //  this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
                 },
                 error: (err) => {
                     this.notificationService.error('Failed to update Pre Check.');
@@ -274,7 +288,7 @@ export class PreCheckAddEditComponent implements OnInit, OnDestroy {
                 next: () => {
                     this.notificationService.success('Pre Check created successfully.');
                     this.router.navigate(['/secure/masters', 'production-order']);
-                  //  this.router.navigate(['..', 'list'], { relativeTo: this.activatedRoute });
+                    //  this.router.navigate(['..', 'list'], { relativeTo: this.activatedRoute });
                 },
                 error: (err) => {
                     this.notificationService.error('Failed to create Pre Check.');

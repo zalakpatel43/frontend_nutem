@@ -6,9 +6,9 @@
           <h4 class="mb-0">Production Order List</h4>
         </div>
         <div class="col-12 col-md-4 d-flex justify-content-end">
-          <div class="d-flex flex-column flex-md-row w-100">
+          <div class="d-flex flex-column flex-md-row ">
             <div class="me-2 flex-grow-1">
-              <mat-form-field appearance="outline" class="w-100">
+              <mat-form-field appearance="outline" >
                 <mat-label>Status</mat-label>
                 <mat-select [(ngModel)]="selectedStatus" (selectionChange)="GetPOBystatus()">
                   <mat-option *ngFor="let status of statusOptions" [value]="status">{{ status }}</mat-option>
@@ -23,9 +23,12 @@
 
       <div class="row">
         <div class="col-12">
-          <div class="table-responsive"> 
+          
+          <div class="table-responsive">
+            <div *ngIf="isParentDataLoading"  class="loader-container-Parent" style="text-align: center; margin-bottom: 20px;">
+              <mat-progress-spinner diameter="40" mode="indeterminate"></mat-progress-spinner>
+            </div>
           <table mat-table [dataSource]="filteredProductionOrderData" multiTemplateDataRows class="mat-elevation-z8" >
-
             <!-- Dynamic Columns -->
             <ng-container *ngFor="let column of columnsToDisplay" [matColumnDef]="column">
               <th mat-header-cell *matHeaderCellDef [ngStyle]="{'padding-left': column === 'code' ? '5%' : '1%'}">
@@ -111,6 +114,8 @@
             <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="matgrid-detail-row"></tr>
           </table>
         </div>
+        <mat-paginator [pageSize]="50" [pageSizeOptions]="[10,50, 100, 200]" (page)="pageChanged($event)">
+        </mat-paginator>
         </div>
       </div>
     </div>

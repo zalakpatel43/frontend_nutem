@@ -1,0 +1,77 @@
+<div class="row justify-content-center">
+    <div class="col-xl-11 col-lg-12">
+        <div class="border p30 rounded">
+            <div class="row align-items-center">
+                <div class="col-lg-7 col-sm-9 col-xs-10 d-flex align-items-end leftSideHeader">
+                    <h4 class="mb20 float-left">Labor Varince List</h4>
+                </div>
+                <div class="col-lg-5 col-sm-3 col-xs-2 d-flex justify-content-end rightSideHeader mb10">
+                    <a *ngIf="IsAddPemission" mat-flat-button
+                        class="app-button btn" [routerLink]="['../','add']">
+                        <span>Add New</span>
+                        <i class="icon-plus"></i>
+                    </a>
+                    <!-- <a *authPermission="page + '_' + permissions.create" mat-flat-button color="primary"
+                        class="app-button" [routerLink]="['../','add']">
+                        <span>Add New</span>
+                        <i class="icon-plus"></i>
+                    </a> -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <!-- <weight-check-search-panel (searchChanged)="updateSearch($event)"></weight-check-search-panel> -->
+                    <ngx-datatable class="material" [rows]="LaborVarianceData | searchtable : searchData" [columnMode]="'force'"
+                        [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10"
+                        [loadingIndicator]="loading" [scrollbarH]="true" 
+                        [messages]="{emptyMessage:'No Data to Display',totalMessage:'Total'}">
+                       
+                        <ngx-datatable-column name="Date" prop="dateTime">
+                            <ng-template let-value="value" ngx-datatable-cell-template>
+                                <span>{{value | date: 'dd/MM/yyyy hh:mm a'}}</span>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Product Line" prop="productLineName">
+                            <ng-template let-value="value" ngx-datatable-cell-template>
+                                <span>{{value}}</span>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Shift" prop="shiftName">
+                            <ng-template let-value="value" ngx-datatable-cell-template>
+                                <span>{{value }}</span>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Total Employee" prop="totalEmployee">
+                            <ng-template let-value="value" ngx-datatable-cell-template>
+                                <span>{{value }}</span>
+                            </ng-template>
+                        </ngx-datatable-column>
+
+                        <ngx-datatable-column name="Actions" [sortable]="false" *ngIf="IsEditPermission || IsDeletePermission">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                <a *ngIf="IsEditPermission" class="button-padding icon-green" [routerLink]="['..','edit',row.id]">
+                                    <mat-icon>edit</mat-icon>
+                                </a>
+                                <button *ngIf="IsDeletePermission" (click)="removeLaborVarince(row.id)" type="button" style="border: none; background-color: white; color: red;" >
+                                    <mat-icon>close</mat-icon> 
+                                     <!-- <i class="fa fa-close"></i>  -->
+                                </button>
+                                <!-- <ng-container *authPermission="page + '_' + permissions.active" class="ml-10">
+                                    <a *ngIf="row.isActive" class="button-padding" color="primary"
+                                        (click)="activateToggleCustomer(row, false)">
+                                        <mat-icon>lock</mat-icon>
+                                    </a>
+                                    <a *ngIf="!row.isActive" class="button-padding" color="primary"
+                                        (click)="activateToggleCustomer(row, true)">
+                                        <mat-icon>lock_open</mat-icon>
+                                    </a>
+                                </ng-container> -->
+                            </ng-template>
+                        </ngx-datatable-column>
+                    </ngx-datatable>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

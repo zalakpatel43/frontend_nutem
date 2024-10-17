@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApplicationPage, PermissionType } from '@app-core';
 import { ProductionOrderService } from '../production-order.service';
 import { ToastrService } from 'ngx-toastr';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
 import { PermissionService } from 'src/app/core/service/permission.service';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-production-order-list',
@@ -21,7 +23,8 @@ import { PermissionService } from 'src/app/core/service/permission.service';
 export class ProductionOrderListComponent implements OnInit {
 
   productionOrderData: any[] = [];
-  filteredProductionOrderData: any[] = [];
+ // filteredProductionOrderData: any[] = [];
+   filteredProductionOrderData = new MatTableDataSource<any>([]);
   columnsToDisplay: string[] = ['code', 'poNumber', 'poDateTimeFormatted', 'plannedQty', 'itemName', 'actions'];
   expandedElement: any | null = null;
   relatedData: any[] = [];
@@ -42,8 +45,9 @@ export class ProductionOrderListComponent implements OnInit {
   };
 
   Childloading : boolean = false;
+  isParentDataLoading : boolean = false;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   
-
   constructor(private productionOrderService: ProductionOrderService,
               private notificationService: ToastrService,private router: Router,
               private permissionService: PermissionService) { }
@@ -59,17 +63,22 @@ export class ProductionOrderListComponent implements OnInit {
   }
 
   private getProductionOrderData(): void {
+    this.filteredProductionOrderData.data = [];
+    this.isParentDataLoading = true;
     this.productionOrderService.getPOByStatus(this.selectedStatus)
       .subscribe((result: any) => {
         this.productionOrderData = result; 
        // console.log("ProductionOrderdata:",this.productionOrderData);
         
-        this.filteredProductionOrderData = result;
+        this.filteredProductionOrderData.data = result;
+        this.filteredProductionOrderData.paginator = this.paginator;
+        this.isParentDataLoading = false;
        // this.filterByStatus();
         // .filter((list: any) => list.status == "Open")
       },
       (error) => {
         this.notificationService.error('Failed to load production orders.');
+        this.isParentDataLoading = false;
       });
   }
 
@@ -106,6 +115,10 @@ export class ProductionOrderListComponent implements OnInit {
         this.notificationService.error(`Failed to update status for Production Order: ${row.code}`);
       }
     );
+  }
+
+  pageChanged(event: any) {
+    // Handle page changes if necessary
   }
   
   isRowExpanded(row: any): boolean {
@@ -197,8 +210,16 @@ export class ProductionOrderListComponent implements OnInit {
   }
 
   editRelatedData(data: any): void {
+    const navigateTo = (route: string) => {
+      this.router.navigate([route]);
+      setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 100); // Adjust the timeout as necessary
+  };
+
     if (data.type === 'Weight Check') {
-      this.router.navigate(['/secure/masters/weight-check/edit', data.id]);
+      navigateTo(`/secure/masters/weight-check/edit/${data.id}`);
+    //  this.router.navigate(['/secure/masters/weight-check/edit', data.id]);
     } else if (data.type === 'Attribute Check') {
       this.router.navigate(['/secure/masters/attribute-check/edit', data.id]);
     } else if (data.type === 'Pre Check List') {
@@ -213,6 +234,8 @@ export class ProductionOrderListComponent implements OnInit {
      else {
       console.error('Unknown type:', data.type);
     }
+
+
   }
 
    // Method to update search results based on emitted data from the search panel
@@ -220,7 +243,7 @@ export class ProductionOrderListComponent implements OnInit {
     this.searchData = { ...search };  // Store the search data
 
     // Filtering logic based on code, poNumber, and status
-    this.filteredProductionOrderData = this.productionOrderData.filter(order => {
+    this.filteredProductionOrderData.data = this.productionOrderData.filter(order => {
       const searchText = this.searchData.searchText ? this.searchData.searchText.toLowerCase() : '';
       const matchesCode = order.code.toLowerCase().includes(searchText);
       const matchesPONumber = order.poNumber.toLowerCase().includes(searchText);
