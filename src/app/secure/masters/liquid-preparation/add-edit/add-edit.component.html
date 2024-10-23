@@ -30,7 +30,7 @@
                                         <div class="row">
                                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                                 <mat-form-field appearance="fill">
-                                                    <input matInput [ngxMatDatetimePicker]="pickerStartDate"
+                                                    <input matInput [ngxMatDatetimePicker]="pickerStartDate" style="font-size: 14px !important;"
                                                         (dateChange)="onStartDateChange()" placeholder="Start Date"
                                                         formControlName="StartDateTime" required [max]="getToday()">
                                                     <button type="button" mat-icon-button
@@ -55,7 +55,7 @@
 
                                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                                 <mat-form-field appearance="fill">
-                                                    <input matInput [ngxMatDatetimePicker]="pickerEndDate"
+                                                    <input matInput [ngxMatDatetimePicker]="pickerEndDate" style="font-size: 14px !important;"
                                                         (dateChange)="onEndDateChange()" placeholder="End Date"
                                                         formControlName="EndDateTime" required>
                                                     <button type="button" mat-icon-button (click)="pickerEndDate.open()"
@@ -98,7 +98,8 @@
                                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                                 <mat-form-field appearance="fill" class="full-width">
                                                     <mat-label>Product</mat-label>
-                                                    <mat-select formControlName="ProductId" [disabled]="isEditMode">
+                                                    <mat-select formControlName="ProductId" 
+                                                    (selectionChange)="onProductChange($event)"  [disabled]="isEditMode">
                                                         <mat-option *ngFor="let product of productList"
                                                             [value]="product.id">
                                                             {{ product.productName }}
@@ -263,13 +264,14 @@
                                             <div class="col-12 col-sm-12 col-md-6 col-lg-6 ">
                                                 <mat-form-field appearance="fill" class="full-width">
                                                     <mat-label>Instruction</mat-label>
-                                                    <mat-select formControlName="InstructionId"
+                                                    <input matInput formControlName="InstructionName" readonly>
+                                                    <!-- <mat-select formControlName="InstructionId"
                                                         (selectionChange)="onInstructionChange($event)">
                                                         <mat-option *ngFor="let ins of productInstructionDetailsList"
                                                             [value]="ins.id">
                                                             {{ ins.instruction }}
                                                         </mat-option>
-                                                    </mat-select>
+                                                    </mat-select> -->
                                                     <mat-validation-message
                                                         [control]="InstructionForm.controls.InstructionId"
                                                         [message]="'Instruction'"
@@ -281,7 +283,8 @@
                                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 ">
                                                 <mat-form-field appearance="fill" class="full-width">
                                                     <mat-label>Material</mat-label>
-                                                    <mat-select formControlName="MaterialId">
+                                                    <input matInput formControlName="MaterialName" readonly>
+                                                    <!-- <mat-select formControlName="MaterialId">
                                                         <mat-option>
                                                             <input type="text" matInput placeholder="Search Material..." 
                                                                    (keyup)="filterMaterials($event)" [(ngModel)]="searchKeyword"
@@ -291,7 +294,7 @@
                                                             [value]="mat.id">
                                                             {{ mat.materialName }}
                                                         </mat-option>
-                                                    </mat-select>
+                                                    </mat-select> -->
                                                     <mat-validation-message
                                                         [control]="InstructionForm.controls.MaterialId"
                                                         [message]="'Material'"
@@ -313,7 +316,7 @@
                                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 ">
                                                 <mat-form-field appearance="fill" class="full-width">
                                                     <mat-label>Weight</mat-label>
-                                                    <input matInput formControlName="Weight" type="number" min="0">
+                                                    <input matInput formControlName="Weight" type="number" min="0" readonly>
                                                     <mat-validation-message [control]="InstructionForm.controls.Weight"
                                                         [message]="'Weight'"
                                                         [formSubmitted]="isInstructionFormSubmitted"></mat-validation-message>
@@ -400,9 +403,9 @@
                                                             <button (click)="onEditDetail(ins,i)" type="button"
                                                                 class="btn btn-success back-Green btn-sm btnModifyRow"><i
                                                                     class="fa fa-pencil"></i></button>
-                                                            <button (click)="removeDetail(i)" type="button"
+                                                            <!-- <button (click)="removeDetail(i)" type="button"
                                                                 class="btn btn-danger btn-sm btnRemoveRow ms-1"><i
-                                                                    class="fa fa-close"></i></button>
+                                                                    class="fa fa-close"></i></button> -->
                                                         </td>
                                                     </tr>
                                                     <tr>

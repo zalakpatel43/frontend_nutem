@@ -51,6 +51,7 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
   totalWeight: number = 0;
   totalWeightAdded: number = 0;
   searchKeyword: string = '';
+  InstructionDataByProductId: any[] = [];
 
   isEndCheckListFormSubmitted: boolean;
   EndCheckListForm: UntypedFormGroup;
@@ -237,6 +238,15 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
     this.basicForm.get('ProductId').disable();
 
 
+    this.liquidPreparationService.getInstructionByProductId(this.liquidPreparationData.productId)
+    .subscribe((result: any) => {
+      this.InstructionDataByProductId = result;
+       console.log("InstructionDataByProductId", result);
+    },
+      (error) => {
+        console.log(error);
+      });
+
     setTimeout(() => {
       // Start checklist
       let EditPrechecklistData = [];
@@ -397,6 +407,8 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
         this.productInstructionDetailsList = result;
       });
 
+      
+
   }
 
   createForm() {
@@ -433,7 +445,9 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
 
     this.InstructionForm = this.formBuilder.group({
       InstructionId: ['', [Validators.required]],
+      InstructionName: ['', [Validators.required]],
       MaterialId: ['', [Validators.required]], // Required
+      MaterialName: ['', [Validators.required]],
       LotNumber: ['', [Validators.required]], // Required
       Weight: ['', [Validators.required]], // Required and numeric
       WeightAdded: ['', [Validators.required]], // Required and numeric
@@ -593,6 +607,38 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
 
   }
 
+  onProductChange(event) {
+
+    if(!this.isEditMode){
+      this.liquidPreparationService.getInstructionByProductId(event.value)
+      .subscribe((result: any) => {
+        this.InstructionDataByProductId = result;
+         console.log("InstructionDataByProductId", result);
+
+         this.InstructionDataByProductId.forEach(element => {
+          let data = {
+            InstructionId: element.id,
+            MaterialId: element.materialId,
+            LotNumber: 0, // null,
+            Weight: element.weight,
+            WeightAdded: 0, // null,
+            DoneByIds: '',
+            AddedTime: new Date(),
+            diffWeight:  - element.weight ,
+            DoneByNames: '',
+            InstructionName: element.instruction,
+            MaterialName: element.materialName
+          }
+          this.AddedInstructionList.push(data);
+        });
+        this.calculateTotals();
+      },
+        (error) => {
+          console.log(error);
+        });
+    }
+
+  }
 
   onInstructionChange(event) {
     // console.log("inst change", event);
@@ -637,11 +683,13 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
 
       }
       else {
-        this.AddedInstructionList.push(formvalue);
-        this.calculateTotals();
-        this.InstructionForm.reset();
-        this.isInstructionFormSubmitted = false;
-        this.CreateInstructionForm();
+      this.notificationService.error("You can not add new details");
+
+        // this.AddedInstructionList.push(formvalue);
+        // this.calculateTotals();
+        // this.InstructionForm.reset();
+        // this.isInstructionFormSubmitted = false;
+        // this.CreateInstructionForm();
       }
     }
     // console.log("AddedInstructionList", this.AddedInstructionList)
@@ -671,7 +719,9 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
 
     this.InstructionForm.patchValue({
       InstructionId: value.InstructionId,
+      InstructionName: value.InstructionName,
       MaterialId: value.MaterialId,
+      MaterialName: value.MaterialName,
       LotNumber: value.LotNumber,
       Weight: value.Weight,
       WeightAdded: value.WeightAdded,
@@ -906,7 +956,7 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
         LotNumber: item.LotNumber.toString(),
         Weight: item.Weight,
         WeightAdded: item.WeightAdded,
-        DoneByList: item.DoneByIds.map(id => `${id}`),
+        DoneByList: item.DoneByIds?.map(id => `${id}`),
         AddedTime: item.AddedTime,// Adjust as needed
         IsActive: true,
       })),

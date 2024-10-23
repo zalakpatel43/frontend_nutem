@@ -49,4 +49,8 @@ export class LiquidPreparationService {
     DeleteLiquidPreparation(id : number){
       return this.http.get(`${APIConstant.LiquidPreparationDelete}` + "?id=" + id);
     }
+
+    getInstructionByProductId(id : number){
+      return this.http.get(`${APIConstant.GetProductInstructionDetailsByProductId}` + "?productId=" + id);
+    }
 }
