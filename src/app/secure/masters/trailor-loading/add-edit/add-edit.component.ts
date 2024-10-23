@@ -289,7 +289,7 @@ export class TrailerLoadingAddEditComponent implements OnInit, OnDestroy {
       // console.log('Parsed End Date:', endDateObj);
       // console.log('Parsed Start Date:', startDateObj);
 
-      if (endDateObj <= startDateObj) {
+      if (endDateObj < startDateObj) {
         this.notificationService.error("Supervised On date should be greater than TL Date Time");
         return;
       } else if (this.AddedTrailerLoadingDetailsList.length === 0) {

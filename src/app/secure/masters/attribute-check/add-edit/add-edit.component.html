@@ -98,7 +98,8 @@
                             <!-- Is Weight Range -->
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <mat-form-field appearance="fill" class="full-width">
-                                    <mat-label>Is Weight Range</mat-label>
+                                    <!-- <mat-label>Is Weight Range</mat-label> -->
+                                    <mat-label> Is the Scale Check Weight in Range</mat-label>
                                     <mat-select formControlName="IsWeightRange">
                                         <mat-option [value]="true">Yes</mat-option>
                                         <mat-option [value]="false" selected>No</mat-option>
@@ -135,7 +136,7 @@
                                 <div class="row">
                                     <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                         <mat-form-field appearance="fill" class="full-width">
-                                            <mat-label>Date Time</mat-label>
+                                            <mat-label>Time</mat-label>
                                             <input matInput [ngxTimepicker]="timepicker" placeholder="Select time"
                                                 formControlName="TDateTime">
                                             <ngx-material-timepicker #timepicker></ngx-material-timepicker>
@@ -180,7 +181,8 @@
                                     </div>
                                     <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                         <mat-form-field appearance="fill" class="full-width">
-                                            <mat-label>Is Correct?</mat-label>
+                                            <!-- <mat-label>Is Correct?</mat-label> -->
+                                            <mat-label>Is Date, Code Correct And Visible?</mat-label>
                                             <mat-select formControlName="IsCorrect">
                                                 <mat-option [value]="true">Yes</mat-option>
                                                 <mat-option [value]="false">No</mat-option>

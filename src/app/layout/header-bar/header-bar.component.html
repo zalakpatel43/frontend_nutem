@@ -33,26 +33,26 @@
                     <mat-icon>arrow_drop_down</mat-icon>
                 </button>
                 <mat-menu #ProcessMenu="matMenu">
-                    <a  *ngIf="hasPermission('Weight Check (PER_WEIGHTCHECK) - View')"  routerLinkActive="active" mat-menu-item
-                        [routerLink]="['/secure/masters', 'weight-check']">Weight Check</a>
+                    <!-- <a  *ngIf="hasPermission('Weight Check (PER_WEIGHTCHECK) - View')"  routerLinkActive="active" mat-menu-item
+                        [routerLink]="['/secure/masters', 'weight-check']">Weight Check</a> -->
                     <a *ngIf="TrailerLoadingPermission" routerLinkActive="active" mat-menu-item
                         [routerLink]="['/secure/masters', 'trailor-loading']">Trailer Loading</a>
                     <a *ngIf="PalletPackingPermission" routerLinkActive="active" mat-menu-item
                         [routerLink]="['/secure/masters', 'pallet-packing']">Pallet Packing</a>
-                    <a *ngIf="AttributeCheckPermission" routerLinkActive="active" mat-menu-item
-                        [routerLink]="['/secure/masters', 'attribute-check']">Attribute Check</a>
+                    <!-- <a *ngIf="AttributeCheckPermission" routerLinkActive="active" mat-menu-item
+                        [routerLink]="['/secure/masters', 'attribute-check']">Attribute Check</a> -->
                     <a *ngIf="TrailerInspectionPermission" routerLinkActive="active" mat-menu-item
                         [routerLink]="['/secure/masters', 'trailer-inspection']">Trailer Inspection</a>
-                    <a *ngIf="DowntimeTrackingPermission" routerLinkActive="active" mat-menu-item
-                        [routerLink]="['/secure/masters', 'downtimeTracking']">DownTime Tracking</a>
-                    <a *ngIf="LiquidPreaprationPermission" routerLinkActive="active" mat-menu-item
-                        [routerLink]="['/secure/masters', 'liquid-preparation']">Liquid Preparation</a>
-                    <a *ngIf="PostCheckPermission" routerLinkActive="active" mat-menu-item
+                    <!-- <a *ngIf="DowntimeTrackingPermission" routerLinkActive="active" mat-menu-item
+                        [routerLink]="['/secure/masters', 'downtimeTracking']">DownTime Tracking</a> -->
+                    <!-- <a *ngIf="LiquidPreaprationPermission" routerLinkActive="active" mat-menu-item
+                        [routerLink]="['/secure/masters', 'liquid-preparation']">Liquid Preparation</a> -->
+                    <!-- <a *ngIf="PostCheckPermission" routerLinkActive="active" mat-menu-item
                         [routerLink]="['/secure/masters', 'post-check']">
                         Post Check</a>
                     <a *ngIf="PrecheckPermission" routerLinkActive="active" mat-menu-item
                         [routerLink]="['/secure/masters', 'pre-check']">
-                        Pre Check</a>
+                        Pre Check</a> -->
                     <a *ngIf="ProductionOrderPermission" routerLinkActive="active" mat-menu-item
                         [routerLink]="['/secure/masters', 'labor-variance']">
                         Labor Variance</a>

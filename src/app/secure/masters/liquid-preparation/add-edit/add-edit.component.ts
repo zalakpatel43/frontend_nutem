@@ -50,6 +50,7 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
   EditInstructionId: number = -1;
   totalWeight: number = 0;
   totalWeightAdded: number = 0;
+  searchKeyword: string = '';
 
   isEndCheckListFormSubmitted: boolean;
   EndCheckListForm: UntypedFormGroup;
@@ -69,6 +70,7 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
   usersList: any[] = [];
   startEndBatchChecklist: any[] = [];
   materialMasterList: any[] = [];
+  filteredMaterialList: any[] = [];
   productInstructionDetailsList: any[] = [];
   qCTSpecificationMasterList: any[] = [];
   tankList: any[] = [];
@@ -380,6 +382,7 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
     this.liquidPreparationService.getMaterialMasterList()
       .subscribe((result: any) => {
         this.materialMasterList = result;
+        this.filteredMaterialList = result;
       });
 
 
@@ -643,6 +646,7 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
     }
     // console.log("AddedInstructionList", this.AddedInstructionList)
   }
+
  
   calculateTotals() {
     this.totalWeight = this.AddedInstructionList
@@ -651,6 +655,14 @@ export class LiquidPreparationAddEditComponent implements OnInit, OnDestroy {
     this.totalWeightAdded = this.AddedInstructionList
       .reduce((sum, ins) => sum + (ins.WeightAdded || 0), 0);
   }
+
+  filterMaterials(event: any): void {
+    const searchValue = event.target.value.toLowerCase();
+    this.filteredMaterialList = this.materialMasterList.filter(mat =>
+      mat.materialName.toLowerCase().includes(searchValue)
+    );
+  }
+ 
 
   onEditDetail(instruction, i) {
     //  console.log("details selected for edit", this.AddedInstructionList[i]);

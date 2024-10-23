@@ -445,12 +445,12 @@ export class PalletPackingAddEditComponent implements OnInit, OnDestroy {
   }
 
   cancel() {
-    this.router.navigate(['/secure/masters', 'production-order']);
-    // if (this.isEditMode) {
-    //   this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
-    // } else {
-    //   this.router.navigate(['..', 'list'], { relativeTo: this.activatedRoute });
-    // }
+  //  this.router.navigate(['/secure/masters', 'production-order']);
+    if (this.isEditMode) {
+      this.router.navigate(['../..', 'list'], { relativeTo: this.activatedRoute });
+    } else {
+      this.router.navigate(['..', 'list'], { relativeTo: this.activatedRoute });
+    }
   }
 
   ngOnDestroy(): void {

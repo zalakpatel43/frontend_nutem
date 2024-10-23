@@ -8,14 +8,14 @@
         <div class="col-12 col-md-4 d-flex justify-content-end">
           <div class="d-flex flex-column flex-md-row ">
             <div class="me-2 flex-grow-1">
-              <mat-form-field appearance="outline" >
+              <mat-form-field appearance="outline" class="compact-form-field">
                 <mat-label>Status</mat-label>
                 <mat-select [(ngModel)]="selectedStatus" (selectionChange)="GetPOBystatus()">
                   <mat-option *ngFor="let status of statusOptions" [value]="status">{{ status }}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
-            <production-order-search-panel (searchChanged)="updateSearch($event)"></production-order-search-panel>
+            <production-order-search-panel class="custom-search-field" (searchChanged)="updateSearch($event)"></production-order-search-panel>
           </div>
         </div>
       </div>

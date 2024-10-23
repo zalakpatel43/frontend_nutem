@@ -20,14 +20,14 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                            <!-- <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <mat-form-field appearance="fill" class="full-width">
                                     <mat-label>Code</mat-label>
                                     <input matInput formControlName="Code" [disabled]="true">
                                     <mat-validation-message [control]="trailerInspectionForm.controls.Code"
                                         [message]="'Code'" [formSubmitted]="isFormSubmitted"></mat-validation-message>
                                 </mat-form-field>
-                            </div>
+                            </div> -->
                             <!-- Date Time -->
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <mat-form-field appearance="fill" class="full-width">
@@ -109,7 +109,7 @@
                             <!-- Date Time -->
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <mat-form-field appearance="fill" class="full-width">
-                                    <mat-label>TimeOfInspection</mat-label>
+                                    <mat-label>Time Of Inspection</mat-label>
                                     <input matInput [ngxTimepicker]="InspectionPicker" placeholder="Select time"
                                         formControlName="TimeOfInspection" (ngModelChange)="OnInspectionTime($event)"  >
                                     <ngx-material-timepicker #InspectionPicker></ngx-material-timepicker>

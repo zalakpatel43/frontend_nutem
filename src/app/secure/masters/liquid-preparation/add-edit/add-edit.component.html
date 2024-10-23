@@ -200,13 +200,13 @@
                                         <div class="row">
                                             <div formArrayName="questions">
                                                 <div *ngFor="let questionGroup of questionsArray.controls; let i = index"
-                                                    [formGroupName]="i" class="mb-3">
+                                                    [formGroupName]="i" >
                                                     <div class="row">
-                                                        <div class="col-12 col-sm-12 col-md-5 col-lg-5 mb-3">
+                                                        <div class="col-12 col-sm-12 col-md-5 col-lg-5">
                                                             <mat-label>{{ questionGroup.get('question').value
                                                                 }}</mat-label>
                                                         </div>
-                                                        <div class="col-12 col-sm-12 col-md-3 col-lg-3 mb-3">
+                                                        <div class="col-12 col-sm-12 col-md-3 col-lg-3">
                                                             <mat-radio-group formControlName="answer"
                                                                 (change)="onAnswerChange($event,i)">
                                                                 <mat-radio-button value="Yes">Yes</mat-radio-button>
@@ -215,7 +215,7 @@
                                                                 <mat-radio-button value="NA">NA</mat-radio-button>
                                                             </mat-radio-group>
                                                         </div>
-                                                        <div class="col-12 col-sm-12 col-md-4 col-lg-4 mb-3">
+                                                        <div class="col-12 col-sm-12 col-md-4 col-lg-4">
                                                             <mat-form-field appearance="fill" class="full-width"
                                                                 *ngIf="questionGroup.get('answer').value === 'NA'">
                                                                 <mat-label>Reason</mat-label>
@@ -260,7 +260,7 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                            <div class="col-12 col-sm-12 col-md-6 col-lg-6 ">
                                                 <mat-form-field appearance="fill" class="full-width">
                                                     <mat-label>Instruction</mat-label>
                                                     <mat-select formControlName="InstructionId"
@@ -278,11 +278,16 @@
                                                 </mat-form-field>
                                             </div>
 
-                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 ">
                                                 <mat-form-field appearance="fill" class="full-width">
                                                     <mat-label>Material</mat-label>
                                                     <mat-select formControlName="MaterialId">
-                                                        <mat-option *ngFor="let mat of materialMasterList"
+                                                        <mat-option>
+                                                            <input type="text" matInput placeholder="Search Material..." 
+                                                                   (keyup)="filterMaterials($event)" [(ngModel)]="searchKeyword"
+                                                                   (click)="$event.stopPropagation()" >
+                                                          </mat-option>
+                                                        <mat-option *ngFor="let mat of filteredMaterialList"
                                                             [value]="mat.id">
                                                             {{ mat.materialName }}
                                                         </mat-option>
@@ -294,7 +299,7 @@
                                                 </mat-form-field>
                                             </div>
 
-                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 ">
                                                 <mat-form-field appearance="fill" class="full-width">
                                                     <mat-label>Lot Number</mat-label>
                                                     <input matInput formControlName="LotNumber">
@@ -305,7 +310,7 @@
                                                 </mat-form-field>
                                             </div>
 
-                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 ">
                                                 <mat-form-field appearance="fill" class="full-width">
                                                     <mat-label>Weight</mat-label>
                                                     <input matInput formControlName="Weight" type="number" min="0">
@@ -315,7 +320,7 @@
                                                 </mat-form-field>
                                             </div>
 
-                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 ">
                                                 <mat-form-field appearance="fill" class="full-width">
                                                     <mat-label>Weight Added</mat-label>
                                                     <input matInput formControlName="WeightAdded" type="number" min="0">
@@ -326,7 +331,7 @@
                                                 </mat-form-field>
                                             </div>
 
-                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 ">
                                                 <mat-form-field appearance="fill" class="full-width">
                                                     <mat-label>Done By</mat-label>
                                                     <mat-select formControlName="DoneByIds" multiple>
@@ -341,7 +346,7 @@
                                                 </mat-form-field>
                                             </div>
 
-                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 ">
                                                 <mat-form-field appearance="fill" class="full-width">
                                                     <mat-label>Added Time</mat-label>
                                                     <input matInput formControlName="AddedTime" readonly>
@@ -353,7 +358,7 @@
                                             </div>
 
                                             <div
-                                                class="col-12 col-sm-12 col-md-1 col-lg-1 mb-3 p-1 d-flex align-items-center">
+                                                class="col-12 col-sm-12 col-md-1 col-lg-1  p-1 d-flex align-items-center">
                                                 <button type="button" mat-icon-button class="icon-green"
                                                     (click)="addInstruction()">
                                                     <mat-icon>add</mat-icon>
@@ -372,14 +377,14 @@
                                                 class="table table-hover table-bordered display mb-30 fixed-table-scroll-inner">
                                                 <thead class="bg-primary text-primary text-center">
                                                     <tr>
-                                                        <th style="width:20%" class="back-Green">Instruction</th>
+                                                        <th style="width:30%" class="back-Green">Instruction</th>
                                                         <th class="back-Green">Material & Part Code</th>
                                                         <th class="back-Green">Lot Number </th>
                                                         <th class="back-Green">Weight (kg)</th>
                                                         <th class="back-Green">Weight Added (kg)</th>
                                                         <th class="back-Green">Done By</th>
                                                         <th class="back-Green"> Added Time </th>
-                                                        <th class="back-Green">Action</th>
+                                                        <th style="width:8%" class="back-Green">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -429,13 +434,13 @@
                                         <div class="row">
                                             <div formArrayName="questions">
                                                 <div *ngFor="let questionGroup of EndquestionsArray.controls; let i = index"
-                                                    [formGroupName]="i" class="mb-3">
+                                                    [formGroupName]="i" >
                                                     <div class="row">
-                                                        <div class="col-12 col-sm-12 col-md-5 col-lg-5 mb-3">
+                                                        <div class="col-12 col-sm-12 col-md-5 col-lg-5">
                                                             <mat-label>{{ questionGroup.get('question').value
                                                                 }}</mat-label>
                                                         </div>
-                                                        <div class="col-12 col-sm-12 col-md-3 col-lg-3 mb-3">
+                                                        <div class="col-12 col-sm-12 col-md-3 col-lg-3">
                                                             <mat-radio-group formControlName="answer"
                                                                 (change)="onAnswerChange($event,i)">
                                                                 <mat-radio-button value="Yes">Yes</mat-radio-button>
@@ -444,7 +449,7 @@
                                                                 <mat-radio-button value="NA">NA</mat-radio-button>
                                                             </mat-radio-group>
                                                         </div>
-                                                        <div class="col-12 col-sm-12 col-md-4 col-lg-4 mb-3">
+                                                        <div class="col-12 col-sm-12 col-md-4 col-lg-4">
                                                             <mat-form-field appearance="fill" class="full-width"
                                                                 *ngIf="questionGroup.get('answer').value === 'NA'">
                                                                 <mat-label>Reason</mat-label>
@@ -498,7 +503,7 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 ">
                                                 <mat-form-field appearance="fill">
                                                     <input matInput [ngxMatDatetimePicker]="pickerTestingDateTime"
                                                         (dateChange)="onTestingDateTimeChange()"
@@ -514,7 +519,7 @@
                                             </div>
 
 
-                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                                 <mat-form-field appearance="fill" class="full-width">
                                                     <mat-label>Analysis Done By</mat-label>
                                                     <mat-select formControlName="AnalysisDoneByIds" multiple>
@@ -529,7 +534,7 @@
                                                 </mat-form-field>
                                             </div>
 
-                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 ">
                                                 <mat-form-field appearance="fill">
                                                     <input matInput [ngxMatDatetimePicker]="pickerSampleReceivedTime"
                                                         placeholder="Sample Received At"
@@ -544,7 +549,7 @@
                                                 </mat-form-field>
                                             </div>
 
-                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                                 <mat-form-field appearance="fill">
                                                     <input matInput [ngxMatDatetimePicker]="pickerSampleTestedTime"
                                                         placeholder="Sample Tested At"
@@ -559,7 +564,7 @@
                                                 </mat-form-field>
                                             </div>
 
-                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 ">
                                                 <mat-form-field appearance="fill" class="full-width">
                                                     <mat-label>Specification Limit</mat-label>
                                                     <mat-select formControlName="SpecificationLimitId">
@@ -575,14 +580,14 @@
                                                 </mat-form-field>
                                             </div>
 
-                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 ">
                                                 <mat-form-field appearance="fill" class="full-width">
                                                     <mat-label>Result</mat-label>
                                                     <input matInput formControlName="Test1">
                                                 </mat-form-field>
                                             </div>
 
-                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 ">
                                                 <mat-form-field appearance="fill" class="full-width">
                                                     <mat-label> Comments</mat-label>
                                                     <input matInput formControlName="Test2">
@@ -590,7 +595,7 @@
                                             </div>
 
                                             <div
-                                                class="col-12 col-sm-12 col-md-1 col-lg-1 mb-3 p-1 d-flex align-items-center">
+                                                class="col-12 col-sm-12 col-md-1 col-lg-1  p-1 d-flex align-items-center">
                                                 <button type="button" mat-icon-button class="icon-green"
                                                     (click)="addQuality()">
                                                     <mat-icon>add</mat-icon>
@@ -632,6 +637,9 @@
                                                         <td> {{Qa.Test1}} </td>
                                                         <td> {{Qa.Test2}} </td>
                                                         <td>
+                                                            <!-- <a  class="button-padding icon-green"  (click)="onEditQualityDetail(Qa,i)">
+                                                                <mat-icon>edit</mat-icon>
+                                                            </a> -->
                                                             <button (click)="onEditQualityDetail(Qa,i)" type="button"
                                                                 class="btn btn-success btn-sm btnModifyRow back-Green"><i
                                                                     class="fa fa-pencil"></i></button>
@@ -655,7 +663,7 @@
                        </ng-template>
                         <ng-template matTabContent>
                             <div class="card mb-4 mt-4">
-                                <div class="card-header">
+                                <div class="card-header mb-3">
                                     <h5 class="mb-0">Adjustment Details</h5>
                                 </div>
                                 <div class="card-body">

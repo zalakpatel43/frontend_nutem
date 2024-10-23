@@ -9,8 +9,8 @@ export const environment = {
   production: false,
   serverPath: 'https://localhost:7032/',  //local
 
-  // production: true,
- // serverPath: 'https://nutemapi.skywardcloud.com/',
+ //  production: true,
+//  serverPath: 'https://nutemapi.skywardcloud.com/',
 };
 
 /*

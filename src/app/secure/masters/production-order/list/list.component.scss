@@ -6,7 +6,7 @@ table {
     background-color: rgb(23, 187, 88) !important;
     color: white;  
     text-align: left;  
-    padding: 10px;  
+    padding: 2px;  
   }
   
   tr.matgrid-detail-row {
@@ -33,20 +33,20 @@ table {
   .matgrid-element-diagram {
     min-width: 80px;
     border: 2px solid black;
-    padding: 8px;
+    padding: 4px;
     font-weight: lighter;
-    margin: 8px 0;
-    height: 114px;
+    margin: 5px 0;
+    height: 60px;
   }
   
   .matgrid-element-symbol {
     font-weight: bold;
-    font-size: 40px;
+    font-size: 30px;
     line-height: normal;
   }
   
   .matgrid-element-description {
-    padding: 16px;
+    padding: 4px;
   }
   
   .matgrid-element-description-attribution {
@@ -108,4 +108,49 @@ table {
   .mat-form-field {
     width: 100%; /* Ensures the form field takes full width on small screens */
   }
+}
+
+h4 {
+  font-size: 1.25rem; /* Adjust this if needed */
+  line-height: 1.5;   /* Matches the control height */
+}
+
+.compact-form-field {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  height: 36px; /* Adjust the height to match the line height of the header */
+}
+
+.mat-form-field-wrapper {
+  padding: 0 8px; /* Reduce padding inside the mat-form-field */
+}
+
+.mat-select {
+  line-height: 1.5; /* Ensures the dropdown aligns vertically */
+}
+
+
+
+::ng-deep .mat-mdc-form-field-infix {
+   min-height: 0px !important; 
+   padding-top: 8px !important; 
+  padding-bottom: 0px !important;
+}
+
+
+ ::ng-deep .mat-mdc-floating-label {
+  top: 20px !important;
+}
+
+::ng-deep .mat-mdc-header-row {
+  height: 30px !important;
+}
+
+//  ::ng-deep .mat-mdc-row {
+//   height: 30px !important;
+// }
+
+::ng-deep .mat-mdc-cell {
+  line-height: 30px !important;
 }

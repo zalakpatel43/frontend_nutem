@@ -23,8 +23,8 @@ import { MatTableDataSource } from '@angular/material/table';
 export class ProductionOrderListComponent implements OnInit {
 
   productionOrderData: any[] = [];
- // filteredProductionOrderData: any[] = [];
-   filteredProductionOrderData = new MatTableDataSource<any>([]);
+  // filteredProductionOrderData: any[] = [];
+  filteredProductionOrderData = new MatTableDataSource<any>([]);
   columnsToDisplay: string[] = ['code', 'poNumber', 'poDateTimeFormatted', 'plannedQty', 'itemName', 'actions'];
   expandedElement: any | null = null;
   relatedData: any[] = [];
@@ -32,7 +32,7 @@ export class ProductionOrderListComponent implements OnInit {
   statusOptions: string[] = ['Open', 'Closed']; // Dropdown options
   selectedStatus: string = 'Open';
 
-  IsAddPemission:boolean = false;
+  IsAddPemission: boolean = false;
   IsEditPermission: boolean = false;
   IsDeletePermission: boolean = false;
   customHeaders: { [key: string]: string } = {
@@ -44,13 +44,13 @@ export class ProductionOrderListComponent implements OnInit {
     'actions': 'Actions'
   };
 
-  Childloading : boolean = false;
-  isParentDataLoading : boolean = false;
+  Childloading: boolean = false;
+  isParentDataLoading: boolean = false;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  
+
   constructor(private productionOrderService: ProductionOrderService,
-              private notificationService: ToastrService,private router: Router,
-              private permissionService: PermissionService) { }
+    private notificationService: ToastrService, private router: Router,
+    private permissionService: PermissionService) { }
 
   ngOnInit(): void {
     this.IsAddPemission = this.permissionService.hasPermission('Production Order (PER_PURCHASEORDER) - Add');
@@ -67,26 +67,26 @@ export class ProductionOrderListComponent implements OnInit {
     this.isParentDataLoading = true;
     this.productionOrderService.getPOByStatus(this.selectedStatus)
       .subscribe((result: any) => {
-        this.productionOrderData = result; 
-       // console.log("ProductionOrderdata:",this.productionOrderData);
-        
+        this.productionOrderData = result;
+        // console.log("ProductionOrderdata:",this.productionOrderData);
+
         this.filteredProductionOrderData.data = result;
         this.filteredProductionOrderData.paginator = this.paginator;
         this.isParentDataLoading = false;
-       // this.filterByStatus();
+        // this.filterByStatus();
         // .filter((list: any) => list.status == "Open")
       },
-      (error) => {
-        this.notificationService.error('Failed to load production orders.');
-        this.isParentDataLoading = false;
-      });
+        (error) => {
+          this.notificationService.error('Failed to load production orders.');
+          this.isParentDataLoading = false;
+        });
   }
 
   GetPOBystatus(): void {
-    this.getProductionOrderData(); 
-   // this.filteredProductionOrderData = this.productionOrderData.filter(order => order.status === this.selectedStatus);
+    this.getProductionOrderData();
+    // this.filteredProductionOrderData = this.productionOrderData.filter(order => order.status === this.selectedStatus);
   }
-  
+
   toggleExpandRow(row: any) {
     if (this.expandedElement === row) {
       this.expandedElement = null; // Collapse if the same row is clicked
@@ -104,27 +104,31 @@ export class ProductionOrderListComponent implements OnInit {
   }
 
   toggleStatus(row: any) {
-    this.productionOrderService.toggleProductionOrderStatus(row.id).subscribe(
-      () => {
-        // Update the status in the UI after the API call
-        row.status = row.status === 'Open' ? 'Closed' : 'Open';
-        this.notificationService.success(`Status updated successfully for Production Order: ${row.code}`);
-        this.getProductionOrderData();
-      },
-      (error) => {
-        this.notificationService.error(`Failed to update status for Production Order: ${row.code}`);
-      }
-    );
+    const result = confirm(`Are you sure you want to chnage PO status?`);
+    if (result) {
+      this.productionOrderService.toggleProductionOrderStatus(row.id).subscribe(
+        () => {
+          // Update the status in the UI after the API call
+          row.status = row.status === 'Open' ? 'Closed' : 'Open';
+          this.notificationService.success(`Status updated successfully for Production Order: ${row.code}`);
+          this.getProductionOrderData();
+        },
+        (error) => {
+          this.notificationService.error(`Failed to update status for Production Order: ${row.code}`);
+        }
+      );
+    }
+
   }
 
   pageChanged(event: any) {
     // Handle page changes if necessary
   }
-  
+
   isRowExpanded(row: any): boolean {
     return this.expandedElement === row;
   }
-  
+
   getRelatedData(row: any): any[] {
     const relatedData: any[] = [];
 
@@ -137,7 +141,7 @@ export class ProductionOrderListComponent implements OnInit {
         endDate: item.endDateTime,
         productName: item.productName,
         shiftName: item.shiftName,
-        totalcaseproduced:''
+        totalcaseproduced: ''
       }));
     }
 
@@ -150,7 +154,7 @@ export class ProductionOrderListComponent implements OnInit {
         endDate: '',
         productName: item.productName,
         shiftName: '',
-        totalcaseproduced:''
+        totalcaseproduced: ''
       }));
     }
 
@@ -163,7 +167,7 @@ export class ProductionOrderListComponent implements OnInit {
         date: item.startDateTime,
         productName: item.productName,
         shiftName: item.shiftName,
-        totalcaseproduced:''
+        totalcaseproduced: ''
       }));
     }
 
@@ -176,22 +180,22 @@ export class ProductionOrderListComponent implements OnInit {
         endDate: '',
         productName: item.productName,
         shiftName: item.shiftName,
-        totalcaseproduced:''
+        totalcaseproduced: ''
       }));
     }
 
-    if (row.palletPackingList) {
-      row.palletPackingList.forEach(item => relatedData.push({
-        type: 'Pallet Packing List',
-        id: item.id,
-        code: item.code,
-        date: item.packingDateTime,
-        endDate: '',
-        productName: item.productName,
-        shiftName: ' ',
-        totalcaseproduced:item.totalCasesProduced
-      }));
-    }
+    // if (row.palletPackingList) {
+    //   row.palletPackingList.forEach(item => relatedData.push({
+    //     type: 'Pallet Packing List',
+    //     id: item.id,
+    //     code: item.code,
+    //     date: item.packingDateTime,
+    //     endDate: '',
+    //     productName: item.productName,
+    //     shiftName: ' ',
+    //     totalcaseproduced:item.totalCasesProduced
+    //   }));
+    // }
 
     if (row.liquidPreparationList) {
       row.liquidPreparationList.forEach(item => relatedData.push({
@@ -202,7 +206,20 @@ export class ProductionOrderListComponent implements OnInit {
         endDate: item.endDateTime,
         productName: item.productName,
         shiftName: item.shiftName,
-        totalcaseproduced:''
+        totalcaseproduced: ''
+      }));
+    }
+
+    if (row.downtimeTrackingList) {
+      row.downtimeTrackingList.forEach(item => relatedData.push({
+        type: 'Downtime Tracking',
+        id: item.id,
+        code: item.code,
+        date: item.productionDateTime,
+        endDate: '',
+        productName: item.productName,
+        shiftName: '',
+        totalcaseproduced: ''
       }));
     }
 
@@ -213,13 +230,13 @@ export class ProductionOrderListComponent implements OnInit {
     const navigateTo = (route: string) => {
       this.router.navigate([route]);
       setTimeout(() => {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }, 100); // Adjust the timeout as necessary
-  };
+    };
 
     if (data.type === 'Weight Check') {
       navigateTo(`/secure/masters/weight-check/edit/${data.id}`);
-    //  this.router.navigate(['/secure/masters/weight-check/edit', data.id]);
+      //  this.router.navigate(['/secure/masters/weight-check/edit', data.id]);
     } else if (data.type === 'Attribute Check') {
       this.router.navigate(['/secure/masters/attribute-check/edit', data.id]);
     } else if (data.type === 'Pre Check List') {
@@ -228,18 +245,20 @@ export class ProductionOrderListComponent implements OnInit {
       this.router.navigate(['/secure/masters/post-check/edit', data.id]);
     } else if (data.type === 'Pallet Packing List') {
       this.router.navigate(['/secure/masters/pallet-packing/edit', data.id]);
-    }else if (data.type === 'Liquid Preparation') {
+    } else if (data.type === 'Liquid Preparation') {
       this.router.navigate(['/secure/masters/liquid-preparation/edit', data.id]);
+    } else if (data.type === 'Downtime Tracking') {
+      this.router.navigate(['/secure/masters/downtimeTracking/edit', data.id]);
     }
-     else {
+    else {
       console.error('Unknown type:', data.type);
     }
 
 
   }
 
-   // Method to update search results based on emitted data from the search panel
-   updateSearch(search: { [key: string]: any }) {
+  // Method to update search results based on emitted data from the search panel
+  updateSearch(search: { [key: string]: any }) {
     this.searchData = { ...search };  // Store the search data
 
     // Filtering logic based on code, poNumber, and status
@@ -249,7 +268,7 @@ export class ProductionOrderListComponent implements OnInit {
       const matchesPONumber = order.poNumber.toLowerCase().includes(searchText);
       const matchesplannedQty = order.plannedQty.toString().includes(searchText);
       const matchesitemName = order.itemName.toLowerCase().includes(searchText);
-     // const matchesDate = order.poDateTimeFormatted.toLowerCase()().includes(searchText);
+      // const matchesDate = order.poDateTimeFormatted.toLowerCase()().includes(searchText);
       const formattedDate = new Date(order.poDateTimeFormatted).toLocaleDateString(); // You can customize the format as needed
       const matchesDate = formattedDate.includes(searchText);
       // Status filter (if isActive is checked, we apply that as well)
@@ -258,8 +277,10 @@ export class ProductionOrderListComponent implements OnInit {
         : true;
 
       // Combine all search filters
-      return (matchesCode || matchesPONumber || matchesplannedQty || matchesitemName || matchesDate ) && matchesStatus;
+      return (matchesCode || matchesPONumber || matchesplannedQty || matchesitemName || matchesDate) && matchesStatus;
     });
   }
+
+
 
 }

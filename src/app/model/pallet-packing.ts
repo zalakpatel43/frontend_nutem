@@ -5,6 +5,9 @@ export class PalletPacking {
     productId: number;
     productName: string;
     productionOrderId: number;
+    poNumber:string;
+    sapProductionOrderId:number;
+    packingDateTime:Date;
 
     fillerUserIds: string;
     comments: string;

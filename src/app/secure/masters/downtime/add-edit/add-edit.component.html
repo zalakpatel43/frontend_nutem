@@ -16,7 +16,7 @@
         <!-- Basic Details Section -->
         <div class="card mb-4">
           <div class="card-header">
-            <h5 class="mb-0">Downtime Tracking Header</h5>
+            <h5 class="mb-0">Basic Details</h5>
           </div>
           <div class="card-body">
             <div class="row">
@@ -150,14 +150,6 @@
                     </mat-form-field>
                   </div>
 
-
-                  <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
-                    <mat-form-field appearance="fill" class="full-width">
-                      <mat-label>Action Taken</mat-label>
-                      <input matInput formControlName="ActionTaken">
-                    </mat-form-field>
-                  </div>
-
                   <!-- Done By User IDs -->
                   <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                     <mat-form-field appearance="fill" class="full-width">
@@ -170,7 +162,15 @@
                     </mat-form-field>
                   </div>
 
-                  <div class="col-12 col-sm-12 col-md-2 col-lg-2 mb-3 p-1 d-flex align-items-center">
+                  <div class="col-11 col-sm-11 col-md-11 col-lg-11 mb-3">
+                    <mat-form-field appearance="fill" class="full-width">
+                      <mat-label>Action Taken</mat-label>
+                      <textarea matInput formControlName="ActionTaken"></textarea>
+                      <!-- <input matInput formControlName="ActionTaken"> -->
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-6 col-sm-6 col-md-1 col-lg-1 mb-3 p-1 d-flex align-items-center">
                     <button type="button" mat-icon-button  (click)="addFinalDowntimeDetail()">
                       <mat-icon class="icon-green">add</mat-icon>
                     </button>

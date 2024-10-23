@@ -6,12 +6,13 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./search-panel.component.scss']
 })
 export class PalletPackingSearchPanelComponent {
-  @Output() searchChanged = new EventEmitter();
-  searchData: { [key: string]: any } = {};
-  searchKey = "startDateTime, endDateTime, shiftName";
 
+  @Output() searchChanged = new EventEmitter<{ [key: string]: any }>();
+  searchData: { [key: string]: any } = {};
+
+  // Function to update search terms dynamically
   updateSearchTerms(key: string, value: any) {
-      this.searchData[key] = value;
-      this.searchChanged.emit(this.searchData);
+    this.searchData[key] = value;
+    this.searchChanged.emit(this.searchData);  // Emit the updated search data
   }
 }

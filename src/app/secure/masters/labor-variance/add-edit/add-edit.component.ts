@@ -73,7 +73,7 @@ export class LaborVarianceAddEditComponent implements OnInit, OnDestroy {
         this.laborVarianceData = result;
         this.setlaborVariancekData();
 
-        //  console.log("get by id data", result)
+          console.log("get by id data", result)
       },
         (error) => {
           console.log(error);
@@ -104,10 +104,10 @@ export class LaborVarianceAddEditComponent implements OnInit, OnDestroy {
         let DetailsData = {
           SAPProductionOrderId: element.sapProductionOrderId,
           ProductId: element.productId,
-          StartDateTime: formatTimeWithAMPM(element.startDateTime),
-          EndDateTime: formatTimeWithAMPM(element.endDateTime),
+          StartDateTime: element.startDateTime? formatTimeWithAMPM(element.startDateTime) : '',
+          EndDateTime: element.endDateTime? formatTimeWithAMPM(element.endDateTime) : '',
           LateStartReason: element.lateStartReason,
-          ChangeOverTime: formatTimeWithAMPM(element.changeOverTime),
+          ChangeOverTime: element.changeOverTime,
           ActualBottleProduced: element.actualBottleProduced,
           TotalRunTImeMins: element.totalRunTImeMins,
           ShiftComments: element.shiftComments,
@@ -125,10 +125,15 @@ export class LaborVarianceAddEditComponent implements OnInit, OnDestroy {
           AdditionalComments: element.additionalComments,
           TimePerPerson: element.timePerPerson,
           TotalMins: element.totalMins,
-          Description: element.description
+          Description: element.description,
+          POName : this.productionOrderList.find(x => x.id === element.sapProductionOrderId)?.poNumber,
+          ProductName : this.productList.find(x => x.id === element.productId)?.productName
         }
 
         this.AddedlaborVarianceDetailsList.push(DetailsData);
+      //  console.log("PO list", this.productionOrderList); 
+     // console.log("AddedDetails array", this.AddedlaborVarianceDetailsList); 
+
       });
     }, 500);
 
@@ -145,6 +150,12 @@ export class LaborVarianceAddEditComponent implements OnInit, OnDestroy {
     this.weightCheckService.getProductionOrderList()
       .subscribe((result: any) => {
         this.productionOrderList = result;
+
+        this.AddedlaborVarianceDetailsList.forEach(element => {
+          element.POName = this.productionOrderList.find(x => x.id == element.SAPProductionOrderId)?.poNumber,
+          element.ProductName = this.productList.find(x => x.id == element.ProductId)?.productName
+        });
+       // console.log("added after PO list", this.AddedlaborVarianceDetailsList)
       });
 
     this.weightCheckService.getProductList()
@@ -246,16 +257,18 @@ export class LaborVarianceAddEditComponent implements OnInit, OnDestroy {
       this.updatePercentage();
     });
 
-    this.LaborVarianceDetails.at(0).get('HC')?.valueChanges.subscribe(() => {
+    this.LaborVarianceDetails.at(0).get('CaseTarget')?.valueChanges.subscribe(() => {
       this.updatePercentage();
     });
   }
 
   updatePercentage() {
     const caseAttainment = this.LaborVarianceDetails.at(0).get('CaseAttainment')?.value || 0;
-    const totalEmployees = this.TotalEmployee || 0;
+    const caseTarget = this.LaborVarianceDetails.at(0).get('CaseTarget')?.value || 0;
+   
+    // const totalEmployees = this.TotalEmployee || 0;
 
-    const percentage = totalEmployees ? (caseAttainment / totalEmployees).toFixed(2) : 0 // totalEmployees ? (caseAttainment / totalEmployees) * 100 : 0; 
+    const percentage = caseTarget ? ((caseAttainment / caseTarget) * 100 ).toFixed(2)  : 0 // totalEmployees ? (caseAttainment / totalEmployees) * 100 : 0; 
     this.LaborVarianceDetails.at(0).get('Percentage')?.setValue(percentage);
 
   }
@@ -273,10 +286,16 @@ export class LaborVarianceAddEditComponent implements OnInit, OnDestroy {
     }
     else {
       if (this.EditDetailsId >= 0) {
+        laborDetail.POName = this.productionOrderList.find(x => x.id == laborDetail.SAPProductionOrderId).poNumber;
+        laborDetail.ProductName = this.productList.find(x => x.id == laborDetail.ProductId).productName;
+
         this.AddedlaborVarianceDetailsList[this.EditDetailsId] = laborDetail;
         this.addlaborDetail();
       }
       else {
+        laborDetail.POName = this.productionOrderList.find(x => x.id == laborDetail.SAPProductionOrderId).poNumber;
+        laborDetail.ProductName = this.productList.find(x => x.id == laborDetail.ProductId).productName;
+
         this.AddedlaborVarianceDetailsList.push(laborDetail);
         this.addlaborDetail();
 
@@ -336,7 +355,7 @@ export class LaborVarianceAddEditComponent implements OnInit, OnDestroy {
         this.updatePercentage();
       });
 
-      this.LaborVarianceDetails.at(0).get('HC')?.valueChanges.subscribe(() => {
+      this.LaborVarianceDetails.at(0).get('CaseTarget')?.valueChanges.subscribe(() => {
         this.updatePercentage();
       });
     });
@@ -482,27 +501,27 @@ export class LaborVarianceAddEditComponent implements OnInit, OnDestroy {
         headerId: 0,
         SAPProductionOrderId: details.SAPProductionOrderId,
         ProductId: details.ProductId,
-        StartDateTime: formatToTime(details.StartDateTime),
-        EndDateTime: formatToTime(details.EndDateTime),
+        StartDateTime: details.StartDateTime? formatToTime(details.StartDateTime) : null,
+        EndDateTime: details.EndDateTime? formatToTime(details.EndDateTime) : null,
         LateStartReason: details.LateStartReason,
-        ChangeOverTime: formatToTime(details.ChangeOverTime),
-        ActualBottleProduced: details.ActualBottleProduced,
-        TotalRunTImeMins: details.TotalRunTImeMins,
+        ChangeOverTime: Number(details.ChangeOverTime),
+        ActualBottleProduced: Number(details.ActualBottleProduced),
+        TotalRunTImeMins: Number(details.TotalRunTImeMins),
         ShiftComments: details.ShiftComments,
-        DownTimeMins: details.DownTimeMins,
+        DownTimeMins: Number(details.DownTimeMins),
         DownTImeComments: details.DownTImeComments,
         HC: details.HC,
-        CaseAttainment: details.CaseAttainment,
-        CaseTarget: details.CaseTarget,
+        CaseAttainment: Number(details.CaseAttainment),
+        CaseTarget: Number(details.CaseTarget),
         Percentage: Number(details.Percentage),
-        BottleTarget: details.BottleTarget,
+        BottleTarget: Number(details.BottleTarget),
         ShiftIndex: details.ShiftIndex,
         Criteria: details.Criteria,
-        MissingFGItems: details.MissingFGItems,
-        NonProductionTime: details.NonProductionTime,
+        MissingFGItems: Number(details.MissingFGItems),
+        NonProductionTime: Number(details.NonProductionTime),
         AdditionalComments: details.AdditionalComments,
-        TimePerPerson: details.TimePerPerson,
-        TotalMins: details.TotalMins,
+        TimePerPerson: Number(details.TimePerPerson),
+        TotalMins: Number(details.TotalMins),
         Description: details.Description
       })) : []
     };
