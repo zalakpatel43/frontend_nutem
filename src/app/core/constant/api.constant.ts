@@ -133,6 +133,8 @@ export const APIConstant = {
     GetAllMaterialMaster:`${basePath}MaterialMaster/GetAllMaterialMaster`,
     GetAllTankMaster:`${basePath}TankMaster/GetAllTankMaster`,
     GetAllQCTSpecificationMaster:`${basePath}QCTSpecificationMaster/GetAllQCTSpecificationMaster`,
+    GetProductInstructionDetailsByProductId:`${basePath}ProductInstructionDetails/GetProductInstructionDetailsById`,
+
 
      //LiquidPreparation
      LiquidPreparationList: `${basePath}LiquidPreparation/GetAllLiquidPreparation`,
